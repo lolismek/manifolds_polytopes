@@ -140,7 +140,46 @@ shapes in the easy setting before the latent-feature headline run.
 
 ## v2 — co-occurrence dissociation world (Claim B in miniature)
 
-**Status: spec agreed, implementing.**
+**Status: done (seed 0). Result: M wins every symmetric venue — including embeddings, where
+co-occurrence was predicted to win. Co-occurrence structure lives in the *asymmetric*
+embedding→next-token-head product instead.**
+
+### v2 findings
+
+Correlations of each venue's attribute Gram with the two kernels (`cooc` run, ring feature is the
+headline; kernel dissociation corr(M, C) = 0.15 for ring):
+
+| Venue | corr M | corr C |
+|---|---|---|
+| token embeddings | 0.83 | 0.42 |
+| evidence-position states, layer 2 | 0.96 | 0.23 |
+| belief state at `:`, layer 2 | 0.82 | 0.59 |
+| **emb × tok_head cross-product (asymmetric)** | **−0.31** | **0.76** |
+
+- **The predicted split did not happen.** Embedding geometry follows M (0.83), not C (0.42), even
+  with next-token loss providing the co-occurrence channel. The model *does* learn C — but it
+  stores it in the asymmetric product emb·W_tokᵀ (corr C 0.76, corr M negative), i.e. in the
+  readout cross-terms, not in the symmetric geometry of any representation.
+- Interpretation: the outcome task *requires* M-structure in representations (belief accumulation
+  = summing M rows linearly), while next-token prediction only requires C in a bilinear form,
+  which the architecture can satisfy asymmetrically. Symmetric geometry inherits the kernel the
+  computation needs, not the kernel the surface statistics contain. This is a stronger-than-planned
+  version of Claim B in miniature — and a direct counterexample to "co-occurrence shapes
+  representational geometry" as a mechanism: given the choice, the model declined.
+- Controls: `cooc_ctrl` (same correlated data, outcome-only loss) shows the same pattern, so
+  next-token training isn't what puts M in the embeddings. v1 `main` run re-analyzed with the
+  venue pipeline: all venues follow M (C has no structure there), embeddings at 0.90–0.98.
+- Caveat: belief state at `:` shows mildly elevated corr C (~0.6) in *both* cooc and ctrl runs —
+  a data-distribution artifact (partner sampling flattens/bimodalizes posteriors, mixing argmax
+  groups), not a training-channel effect. Posterior confidences are much lower than v1
+  (mean max-posterior 0.19–0.45), though conf > 0.5 grouping still had enough samples.
+- Open question for the LLM study: real LLM embeddings *do* show co-occurrence geometry
+  (Karkada's data). Why does the toy decline the symmetric factorization when real models
+  apparently don't? Candidates: tied vs. untied embeddings, weight decay strength (balanced-
+  factorization pressure), depth. Worth one targeted follow-up before exp 02.
+
+Reproduce: `python src/train.py --preset cooc --seed 0 && python src/analyze_venues.py
+results/cooc_seed0` (control: `--preset cooc_ctrl`).
 
 v1 sampled evidence tokens i.i.d., so co-occurrence carried no structure and geometry could only
 come from M. v2 builds a world where the two rival kernels coexist and *disagree*:

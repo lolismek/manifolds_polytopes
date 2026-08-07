@@ -1,0 +1,131 @@
+{
+  "run": "cooc_seed0",
+  "cooc_rho": 0.6,
+  "corr_between_kernels_M_vs_C": [
+    0.48,
+    0.15,
+    0.195
+  ],
+  "venues": {
+    "identity": {
+      "embeddings": {
+        "corr_M": 0.987,
+        "corr_C": 0.457,
+        "PR": 6.82
+      },
+      "evidence_pos_layer0": {
+        "corr_M": 0.987,
+        "corr_C": 0.456,
+        "PR": 6.82
+      },
+      "evidence_pos_layer1": {
+        "corr_M": 0.98,
+        "corr_C": 0.342,
+        "PR": 6.72
+      },
+      "evidence_pos_layer2": {
+        "corr_M": 0.982,
+        "corr_C": 0.45,
+        "PR": 6.74
+      },
+      "sep_layer0": {
+        "corr_M": 0.504,
+        "corr_C": 0.117,
+        "PR": 1.78,
+        "conf_thr": 0.5
+      },
+      "sep_layer1": {
+        "corr_M": 0.899,
+        "corr_C": 0.464,
+        "PR": 5.66,
+        "conf_thr": 0.5
+      },
+      "sep_layer2": {
+        "corr_M": 0.972,
+        "corr_C": 0.662,
+        "PR": 6.61,
+        "conf_thr": 0.5
+      }
+    },
+    "ring": {
+      "embeddings": {
+        "corr_M": 0.833,
+        "corr_C": 0.418,
+        "PR": 6.34
+      },
+      "evidence_pos_layer0": {
+        "corr_M": 0.833,
+        "corr_C": 0.418,
+        "PR": 6.35
+      },
+      "evidence_pos_layer1": {
+        "corr_M": 0.97,
+        "corr_C": 0.144,
+        "PR": 4.12
+      },
+      "evidence_pos_layer2": {
+        "corr_M": 0.959,
+        "corr_C": 0.225,
+        "PR": 4.93
+      },
+      "sep_layer0": {
+        "corr_M": 0.297,
+        "corr_C": 0.397,
+        "PR": 2.62,
+        "conf_thr": 0.5
+      },
+      "sep_layer1": {
+        "corr_M": 0.619,
+        "corr_C": 0.631,
+        "PR": 4.73,
+        "conf_thr": 0.5
+      },
+      "sep_layer2": {
+        "corr_M": 0.822,
+        "corr_C": 0.594,
+        "PR": 4.2,
+        "conf_thr": 0.5
+      }
+    },
+    "line": {
+      "embeddings": {
+        "corr_M": 0.863,
+        "corr_C": 0.389,
+        "PR": 6.5
+      },
+      "evidence_pos_layer0": {
+        "corr_M": 0.864,
+        "corr_C": 0.388,
+        "PR": 6.49
+      },
+      "evidence_pos_layer1": {
+        "corr_M": 0.963,
+        "corr_C": 0.188,
+        "PR": 4.35
+      },
+      "evidence_pos_layer2": {
+        "corr_M": 0.923,
+        "corr_C": 0.313,
+        "PR": 5.12
+      },
+      "sep_layer0": {
+        "corr_M": 0.681,
+        "corr_C": 0.19,
+        "PR": 3.15,
+        "conf_thr": 0.5
+      },
+      "sep_layer1": {
+        "corr_M": 0.651,
+        "corr_C": 0.689,
+        "PR": 4.58,
+        "conf_thr": 0.5
+      },
+      "sep_layer2": {
+        "corr_M": 0.787,
+        "corr_C": 0.661,
+        "PR": 3.89,
+        "conf_thr": 0.5
+      }
+    }
+  }
+}

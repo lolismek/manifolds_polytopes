@@ -1,0 +1,71 @@
+{
+  "per_layer": [
+    {
+      "layer": 0,
+      "features": [
+        {
+          "feature": 0,
+          "kind": "ring",
+          "gram_corr": 0.6145975655446357,
+          "gram_corr_sampled_labels": 0.6260268516088086,
+          "participation_ratio": 3.873770236968994,
+          "group_counts": [
+            1320,
+            1363,
+            1348,
+            1374,
+            1410,
+            1311,
+            1277,
+            1313
+          ]
+        }
+      ]
+    },
+    {
+      "layer": 1,
+      "features": [
+        {
+          "feature": 0,
+          "kind": "ring",
+          "gram_corr": 0.98849504642262,
+          "gram_corr_sampled_labels": 0.9746641537322075,
+          "participation_ratio": 3.164560556411743,
+          "group_counts": [
+            1320,
+            1363,
+            1348,
+            1374,
+            1410,
+            1311,
+            1277,
+            1313
+          ]
+        }
+      ]
+    },
+    {
+      "layer": 2,
+      "features": [
+        {
+          "feature": 0,
+          "kind": "ring",
+          "gram_corr": 0.9890706593233227,
+          "gram_corr_sampled_labels": 0.9738276085843112,
+          "participation_ratio": 3.0930511951446533,
+          "group_counts": [
+            1320,
+            1363,
+            1348,
+            1374,
+            1410,
+            1311,
+            1277,
+            1313
+          ]
+        }
+      ]
+    }
+  ],
+  "behavioral_M_corr": 0.9768251397271888
+}

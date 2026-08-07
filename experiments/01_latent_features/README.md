@@ -1,6 +1,43 @@
 # Experiment 01 — Latent feature geometry in a toy transformer
 
-**Status: spec — not yet implemented.** (Open questions at the bottom to resolve first.)
+**Status: v1 complete (Aug 2026). Hypothesis confirmed — see Findings.**
+
+## Findings (v1, 3 seeds)
+
+All three geometries form side by side in one 2-layer transformer, each matching its coupling
+matrix. Headline numbers at layer 2 (residual stream at `:` after block 2), posterior-argmax
+grouping with confidence > 0.5:
+
+| Seed | identity corr / PR | ring corr / PR | line corr / PR |
+|---|---|---|---|
+| 0 | 0.995 / 6.94 | 0.996 / 3.63 | 0.994 / 3.70 |
+| 1 | 0.993 / 6.91 | 0.997 / 3.49 | 0.991 / 3.58 |
+| 2 | 0.996 / 6.95 | 0.994 / 3.37 | 0.995 / 3.68 |
+
+(corr = Pearson between measured Gram matrix and double-centered M; PR = participation ratio.
+Theoretical PR targets from M itself: identity 7.0, ring 3.82, line 4.1.)
+
+- **Simplex:** identity feature reaches PR ≈ 6.94 of max 7 — a regular 7-simplex (its 2D PCA
+  scatter is shapeless, as a regular simplex must be; the flat spectrum is the signature).
+- **Ring:** attributes in exact circular order, closed loop. **Line:** open horseshoe, endpoints
+  unjoined.
+- **Built, not inherited:** correlations are 0.36–0.75 at embeddings/layer 1 and snap to >0.99
+  after block 2. Attributes are never surface tokens.
+- **Factorization:** principal angles between the three feature subspaces 83°–90° across all
+  seeds — Park's hierarchical orthogonality emerges unimposed.
+- **Behavioral M:** single-evidence-token prompts → marginalized outcome log-odds correlate
+  0.996–0.998 with the true M rows.
+- Robustness: grouping by sampled attribute (instead of posterior argmax) gives the same
+  conclusions (see `metrics.json`, `gram_corr_sampled_labels`).
+
+Implementation choices vs. the spec below: evidence tokens are feature-specific (each token
+informative about exactly one feature, α = 1, round-robin assignment → balanced marginals);
+output head predicts over the 512 outcome tokens only (makes model CE directly comparable to
+Bayes-optimal); k fixed per batch (no padding). Training stops when KL(true‖model) < 0.02 nats
+(seed 0 plateaued at ≈ 0.022 at the 30k-step cap; geometry unaffected).
+
+Reproduce: `python src/train.py --preset main --seed 0 && python src/analyze.py results/main_seed0`
+(v0 sanity: `--preset v0`). Runs ~5 min on MPS.
 
 ## Question
 

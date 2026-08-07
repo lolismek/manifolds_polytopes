@@ -1,0 +1,190 @@
+{
+  "per_layer": [
+    {
+      "layer": 0,
+      "features": [
+        {
+          "feature": 0,
+          "kind": "identity",
+          "gram_corr": 0.5818054411755298,
+          "gram_corr_sampled_labels": 0.6207099546463278,
+          "participation_ratio": 2.3694827556610107,
+          "group_counts": [
+            1950,
+            1988,
+            2094,
+            2060,
+            2047,
+            1918,
+            1175,
+            1235
+          ]
+        },
+        {
+          "feature": 1,
+          "kind": "ring",
+          "gram_corr": 0.6772804120078135,
+          "gram_corr_sampled_labels": 0.4428488148306927,
+          "participation_ratio": 2.6914069652557373,
+          "group_counts": [
+            550,
+            556,
+            576,
+            599,
+            530,
+            230,
+            261,
+            245
+          ]
+        },
+        {
+          "feature": 2,
+          "kind": "line",
+          "gram_corr": 0.5992112667984916,
+          "gram_corr_sampled_labels": 0.6303852706693718,
+          "participation_ratio": 3.0537362098693848,
+          "group_counts": [
+            525,
+            603,
+            629,
+            582,
+            607,
+            257,
+            261,
+            221
+          ]
+        }
+      ]
+    },
+    {
+      "layer": 1,
+      "features": [
+        {
+          "feature": 0,
+          "kind": "identity",
+          "gram_corr": 0.4192491040327101,
+          "gram_corr_sampled_labels": 0.3916969634238579,
+          "participation_ratio": 1.2303885221481323,
+          "group_counts": [
+            1950,
+            1988,
+            2094,
+            2060,
+            2047,
+            1918,
+            1175,
+            1235
+          ]
+        },
+        {
+          "feature": 1,
+          "kind": "ring",
+          "gram_corr": 0.6599991698840583,
+          "gram_corr_sampled_labels": 0.9143633362292795,
+          "participation_ratio": 3.3192837238311768,
+          "group_counts": [
+            550,
+            556,
+            576,
+            599,
+            530,
+            230,
+            261,
+            245
+          ]
+        },
+        {
+          "feature": 2,
+          "kind": "line",
+          "gram_corr": 0.637396512586775,
+          "gram_corr_sampled_labels": 0.5363922521986285,
+          "participation_ratio": 3.231311082839966,
+          "group_counts": [
+            525,
+            603,
+            629,
+            582,
+            607,
+            257,
+            261,
+            221
+          ]
+        }
+      ]
+    },
+    {
+      "layer": 2,
+      "features": [
+        {
+          "feature": 0,
+          "kind": "identity",
+          "gram_corr": 0.9934388266897795,
+          "gram_corr_sampled_labels": 0.9799526618999367,
+          "participation_ratio": 6.908444881439209,
+          "group_counts": [
+            1950,
+            1988,
+            2094,
+            2060,
+            2047,
+            1918,
+            1175,
+            1235
+          ]
+        },
+        {
+          "feature": 1,
+          "kind": "ring",
+          "gram_corr": 0.9966663450296092,
+          "gram_corr_sampled_labels": 0.9768472576975342,
+          "participation_ratio": 3.490427017211914,
+          "group_counts": [
+            550,
+            556,
+            576,
+            599,
+            530,
+            230,
+            261,
+            245
+          ]
+        },
+        {
+          "feature": 2,
+          "kind": "line",
+          "gram_corr": 0.9912304504645212,
+          "gram_corr_sampled_labels": 0.9755190200914644,
+          "participation_ratio": 3.5848135948181152,
+          "group_counts": [
+            525,
+            603,
+            629,
+            582,
+            607,
+            257,
+            261,
+            221
+          ]
+        }
+      ]
+    }
+  ],
+  "subspace_angles_deg": {
+    "identity-ring": [
+      88.2,
+      89.2,
+      89.5
+    ],
+    "identity-line": [
+      83.5,
+      86.9,
+      87.4
+    ],
+    "ring-line": [
+      86.1,
+      88.8,
+      89.9
+    ]
+  },
+  "behavioral_M_corr": 0.996146275932468
+}

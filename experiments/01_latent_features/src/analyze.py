@@ -178,7 +178,7 @@ def main(run_dir: Path):
             Vs.append(V)
         results["subspace_angles_deg"] = {
             f"{world.m_kinds[a]}-{world.m_kinds[b]}":
-                [round(x, 1) for x in principal_angles(Vs[a], Vs[b])]
+                [round(float(x), 1) for x in principal_angles(Vs[a], Vs[b])]
             for a in range(world.F) for b in range(a + 1, world.F)}
 
     results["behavioral_M_corr"] = behavioral_M(model, world, device)

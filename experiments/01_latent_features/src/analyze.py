@@ -111,7 +111,7 @@ def main(run_dir: Path):
     world = World(**ckpt["world"])
     device = "mps" if torch.backends.mps.is_available() else "cpu"
     model = TinyGPT(world.vocab_in, world.n_outcomes, max_len=world.max_len)
-    model.load_state_dict(ckpt["model"])
+    model.load_state_dict(ckpt["model"], strict=False)  # v1 ckpts lack tok_head
     model.to(device).eval()
 
     states, p, attrs, ks = collect_states(model, world, device)

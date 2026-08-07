@@ -138,10 +138,45 @@ shapes in the easy setting before the latent-feature headline run.
 5. **Sequence length range.** k ≤ 8 assumed; longer k strengthens the trajectory analysis (meas. 4).
 6. **Where to read states.** `:` position only vs. all positions; layer choice for headline figure.
 
-## Future extensions (explicitly out of scope for v1)
+## v2 — co-occurrence dissociation world (Claim B in miniature)
 
-- Co-occurrence dissociation world (Claim B in miniature): input co-occurrence structure ≠ output
-  coupling; which one does geometry follow?
+**Status: spec agreed, implementing.**
+
+v1 sampled evidence tokens i.i.d., so co-occurrence carried no structure and geometry could only
+come from M. v2 builds a world where the two rival kernels coexist and *disagree*:
+
+- **Output law unchanged**: posteriors still computed with the same M's.
+- **Correlated sampler**: after the first token, each next evidence token is (with prob ρ = 0.6) a
+  "partner" of the previous one — same feature, *opposite* attribute ((a + N/2) mod N) — else
+  uniform. So tokens targeting opposite attributes co-occur heavily (the synthetic red/green), while
+  M still says neighbors couple. The attribute-level PMI matrix C (measured empirically from the
+  sampler, like a corpus) is anti-banded — maximally dissociated from the smooth-banded M.
+- **Loss at all positions**: the model also predicts the next evidence token (separate head), which
+  is the channel Karkada's mechanism needs — real LLMs predict every token. Note this stacks the
+  loss toward co-occurrence (k token positions vs. 1 outcome position), which is the direction we
+  want to be unfair in.
+
+**Measurement: not "which kernel wins" but *where each kernel lives*.** The state at `:` must
+encode the posterior for a Bayes-optimal model, so M-geometry there is near-forced; symmetrically,
+next-token prediction forces co-occurrence structure somewhere in the embedding/evidence-position
+representations. Each venue's attribute Gram is scored against both kernels (corr with M, corr
+with C):
+
+1. **Token embeddings** (grouped by target attribute) — predicted to follow C;
+2. **Hidden states at evidence positions** (grouped by current token's attribute, per layer) — the
+   battleground; how fast does C-structure give way to M-structure?
+3. **Belief state at `:`** (v1 measurement) — predicted to follow M regardless of C.
+
+Sharp version of the claim: **vocabulary-level geometry inherits co-occurrence; contextual
+belief-state geometry inherits evidence coupling.** This reframes Claim B for the LLM study:
+the color manifold should live in mid-layer contextual states (cf. Abdou's mid-layer peak) and
+track hue, while embedding-layer color-word geometry should look more like PMI.
+
+**Controls:** (a) same correlated sampler but loss only at `:` — if belief-state geometry is
+unchanged, input co-occurrence alone doesn't leak into it; (b) three-venue analysis on the v1 runs
+(uniform sampler) — with no co-occurrence structure, all venues should follow M.
+
+## Future extensions (explicitly out of scope)
 - Modifier/NOT token so evidence must be *computed* by attention (makes the transformer earn its
   place; does geometry form after resolution?).
 - Architecture sweep (minimal log-linear model, MLP vs. transformer): architecture-independence as

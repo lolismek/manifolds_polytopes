@@ -34,6 +34,9 @@ class TinyGPT(nn.Module):
         self.blocks = nn.ModuleList(Block(d, n_heads) for _ in range(n_layers))
         self.ln_f = nn.LayerNorm(d)
         self.head = nn.Linear(d, n_out)
+        # v2: next-token head over input vocab (evidence tokens + SEP); used
+        # only by presets that train with loss at all positions.
+        self.tok_head = nn.Linear(d, vocab_in)
 
     def forward(self, x, return_states: bool = False):
         T = x.shape[1]

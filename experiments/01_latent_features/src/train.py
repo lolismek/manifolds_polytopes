@@ -24,6 +24,13 @@ PRESETS = {
     "v0": dict(m_kinds=["ring"], E=16, run="v0_ring"),
     # headline: three latent features, combination-token outcomes.
     "main": dict(m_kinds=["identity", "ring", "line"], E=64, run="main"),
+    # v2 dissociation: correlated sampler (opposite-attribute partners),
+    # loss at all positions (next-token + outcome).
+    "cooc": dict(m_kinds=["identity", "ring", "line"], E=64, run="cooc",
+                 cooc_rho=0.6, tok_loss=True),
+    # v2 control: same correlated data, loss only at the outcome position.
+    "cooc_ctrl": dict(m_kinds=["identity", "ring", "line"], E=64,
+                      run="cooc_ctrl", cooc_rho=0.6, tok_loss=False),
 }
 
 
@@ -49,7 +56,9 @@ def train(preset: str, seed: int, max_steps: int, tol: float, out_root: Path):
     torch.manual_seed(seed)
     gen = torch.Generator().manual_seed(seed + 10_000)  # data stream
 
-    world = World(m_kinds=cfg["m_kinds"], E=cfg["E"])
+    world = World(m_kinds=cfg["m_kinds"], E=cfg["E"],
+                  cooc_rho=cfg.get("cooc_rho", 0.0))
+    tok_loss = cfg.get("tok_loss", False)
     device = "mps" if torch.backends.mps.is_available() else "cpu"
     model = TinyGPT(world.vocab_in, world.n_outcomes,
                     max_len=world.max_len).to(device)
@@ -62,8 +71,14 @@ def train(preset: str, seed: int, max_steps: int, tol: float, out_root: Path):
     t0, patience, history = time.time(), 0, []
     for step in range(1, max_steps + 1):
         x, y, _, _ = world.sample_batch(B, generator=gen)
-        logits = model(x.to(device))[:, -1]
-        loss = F.cross_entropy(logits, y.to(device))
+        x_dev = x.to(device)
+        logits, states = model(x_dev, return_states=True)
+        loss = F.cross_entropy(logits[:, -1], y.to(device))
+        if tok_loss and x.shape[1] > 1:
+            tok_logits = model.tok_head(model.ln_f(states[-1][:, :-1]))
+            loss = loss + F.cross_entropy(
+                tok_logits.reshape(-1, world.vocab_in),
+                x_dev[:, 1:].reshape(-1))
         opt.zero_grad()
         loss.backward()
         opt.step()

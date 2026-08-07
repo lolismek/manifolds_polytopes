@@ -37,9 +37,11 @@ class World:
         beta: float = 2.0,
         sigma: float = 1.0,
         k_max: int = 8,
+        cooc_rho: float = 0.0,
     ):
         self.m_kinds = tuple(m_kinds)
         self.N, self.E, self.beta, self.sigma, self.k_max = N, E, beta, sigma, k_max
+        self.cooc_rho = cooc_rho
         self.F = len(m_kinds)
         self.Ms = np.stack([make_M(k, N, sigma) for k in m_kinds])  # (F, N, N)
 
@@ -62,16 +64,44 @@ class World:
         self.n_outcomes = N**self.F
         self.max_len = k_max + 1
 
+        # v2 correlated sampler: each token's "partners" are the tokens of the
+        # same feature targeting the *opposite* attribute ((a + N/2) mod N).
+        # Padded to 6 slots by cycling (2 or 3 partners both divide 6, so
+        # uniform sampling over slots is exactly uniform over partners).
+        P = 6
+        self.partner_table = np.zeros((E, P), dtype=np.int64)
+        for e in range(E):
+            f, a2 = self.tok_feat[e], (self.tok_attr[e] + N // 2) % N
+            ids = np.where((self.tok_feat == f) & (self.tok_attr == a2))[0]
+            self.partner_table[e] = np.resize(ids, P)
+        self.partner_table = torch.tensor(self.partner_table)
+
     def config(self):
         return dict(m_kinds=list(self.m_kinds), N=self.N, E=self.E,
-                    beta=self.beta, sigma=self.sigma, k_max=self.k_max)
+                    beta=self.beta, sigma=self.sigma, k_max=self.k_max,
+                    cooc_rho=self.cooc_rho)
+
+    def _sample_tokens(self, B: int, k: int, generator=None):
+        if self.cooc_rho == 0 or k == 1:
+            return torch.randint(0, self.E, (B, k), generator=generator)
+        toks = torch.empty(B, k, dtype=torch.long)
+        toks[:, 0] = torch.randint(0, self.E, (B,), generator=generator)
+        for i in range(1, k):
+            partner = self.partner_table[
+                toks[:, i - 1],
+                torch.randint(0, self.partner_table.shape[1], (B,),
+                              generator=generator)]
+            uniform = torch.randint(0, self.E, (B,), generator=generator)
+            use = torch.rand(B, generator=generator) < self.cooc_rho
+            toks[:, i] = torch.where(use, partner, uniform)
+        return toks
 
     def sample_batch(self, B: int, k: int | None = None, generator=None):
         """Returns x (B, k+1) input tokens, y (B,) outcome ids, attrs (B, F)
         sampled attributes, p (B, F, N) true per-feature posteriors."""
         if k is None:
             k = int(torch.randint(1, self.k_max + 1, (1,), generator=generator))
-        toks = torch.randint(0, self.E, (B, k), generator=generator)
+        toks = self._sample_tokens(B, k, generator=generator)
         z = self.R[toks].sum(dim=1)                     # (B, F, N)
         p = torch.softmax(z, dim=-1)
         attrs = torch.stack(
@@ -95,3 +125,29 @@ class World:
     def bayes_entropy(self, p: torch.Tensor) -> torch.Tensor:
         """Per-sample entropy of the true outcome distribution (nats)."""
         return -(p * torch.log(p)).sum(-1).sum(-1)
+
+    def cooc_pmi(self, n_seq: int = 200_000, seed: int = 7) -> np.ndarray:
+        """Attribute-level within-sequence PMI per feature, measured empirically
+        from the sampler — the toy analogue of measuring word co-occurrence in a
+        corpus. Returns (F, N, N)."""
+        gen = torch.Generator().manual_seed(seed)
+        counts = np.zeros((self.F, self.N, self.N))
+        B = 4096
+        for _ in range(n_seq // B):
+            k = int(torch.randint(2, self.k_max + 1, (1,), generator=gen))
+            toks = self._sample_tokens(B, k, generator=gen).numpy()
+            feats, attrs = self.tok_feat[toks], self.tok_attr[toks]
+            for i in range(k):
+                for j in range(i + 1, k):
+                    same = feats[:, i] == feats[:, j]
+                    np.add.at(counts, (feats[same, i], attrs[same, i],
+                                       attrs[same, j]), 1)
+                    np.add.at(counts, (feats[same, j], attrs[same, j],
+                                       attrs[same, i]), 1)
+        pmi = np.zeros_like(counts)
+        for f in range(self.F):
+            C = counts[f] + 1.0  # smoothing
+            joint = C / C.sum()
+            marg = joint.sum(axis=1)
+            pmi[f] = np.log(joint / (marg[:, None] * marg[None, :]))
+        return pmi

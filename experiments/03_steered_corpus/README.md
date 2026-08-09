@@ -108,6 +108,19 @@ designed T (Fourier ring for circulant T in variant A; measured-confusability ma
 Controls (all variants): student trained on unsteered teacher text (readout must fail); shuffled
 state–posterior pairing; multiple structures on identical emissions (A) or engineered mismatch (B).
 
+Two further controls suggested by the literature (see prior-work section):
+
+- **Dilution.** Mix the steered corpus into ordinary text at some rate (e.g. 10%) and ask whether
+  the geometry still forms. Answers the strongest expected objection ("steered LLM text is not
+  real pretraining data") — if the geometry survives dilution, the bridge to real pretraining
+  corpora is made. Flagship extension for a strong version of the paper.
+- **Paraphrase / re-tokenization.** Subliminal-learning work shows steering signals can travel
+  through non-semantic token statistics and die under paraphrase or tokenizer change. Testing
+  whether the student's latent survives paraphrasing tells us whether the signal lives in meaning
+  or in surface statistics — either answer is informative, and reviewers from that community will
+  ask. (Note: for our ground truth this distinction is not a confound — the posterior is computed
+  from teacher likelihoods, so any signal actually in the text is legitimate evidence about z.)
+
 ## Known tensions (flagged, unresolved)
 
 - **Emission strength vs. interesting geometry.** If one token reveals z, posteriors live at the
@@ -137,3 +150,45 @@ no corpus-level latent, no retraining; names this experiment's setting as open. 
 TinyStories: controlled corpora but no hidden per-document latent with computable posterior. The
 full loop here (steered teacher → secret-z corpus → fresh student → comparison against exactly
 computable posteriors) appears unclaimed.
+
+### Scoop check, Aug 2026 (both papers read in full)
+
+- **Sarfati et al. 2026, "The Shape of Beliefs" (Goodfire, [2602.02315](https://arxiv.org/abs/2602.02315)).**
+  Posterior manifolds in *pretrained* Llama over parameters (μ, σ) of number distributions fed
+  in-context; linear field probes tile the curved manifold; belief dynamics under distribution
+  switches; linear steering moves representations off-manifold while manifold-aware steering
+  preserves the belief family. No training from scratch, no controlled corpus latent. Their
+  limitations section: analysis "constrained to numerical settings; extending... to broader
+  natural language processing contexts remains open." Relevant methodology for us: linear field
+  probes as the readout formalism, intensive PCA for probability vectors, ideal-observer
+  comparison, off- vs on-manifold steering.
+- **Morgulis & Hewitt 2026, "Subliminal Steering" ([2604.25783](https://arxiv.org/abs/2604.25783)).**
+  Steering vector injected into a teacher during generation of innocuous number sequences; a
+  student (same base model, LoRA fine-tune) inherits both the behavioral bias and the steering
+  direction itself, localized to the steered layers; the vector is recoverable from the data
+  alone. One fixed bias, not a structured latent; fine-tuned same-base student, not fresh; no
+  posterior, no geometry. For us it is *feasibility evidence*: the steered-teacher →
+  generated-text → student channel transmits steering-induced structure robustly and precisely.
+  It also motivates the paraphrase/re-tokenization control above (subliminal transfer dies across
+  tokenizers — Cloud et al. 2025).
+
+Running tally: three groups have independently named this experiment's setting as the open
+problem — Shai et al. 2024 (beyond toy processes), the Bayesian Attention Trilogy
+("natural-language wind tunnels"), Goodfire 2026 ("beyond numerical settings"). No paper found
+occupying the intersection: from-scratch training × natural language × designed latent structure
+× exactly computable posterior × geometry as dependent variable.
+
+### Stakes / positioning (assessment, Aug 2026)
+
+The field has belief-geometry results on synthetic token streams and correlational manifold
+observations in real LLMs, with nothing connecting them. This experiment is the connection, and
+it is *constructive*: design a geometry, inject it into natural-language training data, watch it
+appear in a fresh model — then change the design on identical emissions and watch the geometry
+change with it. Causal evidence for where feature geometry comes from. Expected pushback:
+(1) steered LLM text is not real pretraining data (→ dilution control); (2) "unsurprising given
+Shai 2024" (→ three limitations sections say otherwise; multi-geometry + spectral match is a new
+kind of claim); (3) execution risk in steering quality and the emission-strength/entropy tension
+(engineering, not conceptual — pilot sweep first); (4) compute (TinyStories-scale student
+suffices; ground-truth scoring at K teacher passes per document is the real cost, arguing for
+modest K). Timing: several well-resourced groups are circling this gap; the window is open now
+but plausibly not for more than about a year.

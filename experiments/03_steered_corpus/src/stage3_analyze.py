@@ -28,6 +28,15 @@ LR = 0.05
 SEED = 0
 
 
+def distinct_n(ids, n):
+    """Per-seq fraction of unique n-grams (repetition check: loops score low)."""
+    out = np.empty(ids.shape[0])
+    for i, row in enumerate(ids):
+        grams = {tuple(row[k : k + n]) for k in range(len(row) - n + 1)}
+        out[i] = len(grams) / (len(row) - n + 1)
+    return out
+
+
 def bow(ids, vocab_index, n_vocab, budget):
     """log(1+count) bag-of-words over the first `budget` tokens."""
     n = ids.shape[0]
@@ -73,6 +82,8 @@ def main():
     nll = np.concatenate([np.load(s)["nll"] for s in shards])
 
     clean_nll = float(np.median(nll[lat == -1]))
+    d2 = distinct_n(ids, 2)
+    clean_d2 = float(np.median(d2[lat == -1]))
     pool = sorted(set(lat[lat >= 0].tolist()))
     cls = {j: c for c, j in enumerate(pool)}
 
@@ -81,7 +92,8 @@ def main():
     vocab_index = {int(t): k for k, t in enumerate(uniq)}
     n_vocab = len(uniq)
 
-    report = {"clean_nll_median": clean_nll, "n_pool": len(pool),
+    report = {"clean_nll_median": clean_nll, "clean_distinct2_median": clean_d2,
+              "n_pool": len(pool),
               "n_seqs": int((lat >= 0).sum()), "per_strength": {}, "per_latent": {}}
 
     rng = np.random.default_rng(SEED)
@@ -114,13 +126,16 @@ def main():
         report["per_strength"][str(m)] = {
             "median_nll": round(med_nll, 4),
             "nll_ratio_vs_clean": round(med_nll / clean_nll, 4),
+            "median_distinct2": round(float(np.median(d2[sel])), 4),
             "acc_by_budget": acc_by_budget,
             "chance": round(1 / len(pool), 4),
         }
         print(f"mult {m}: nll_ratio {med_nll / clean_nll:.3f}, acc {acc_by_budget}", flush=True)
 
     for j in pool:
-        row = {"recall_at_top_strength": recall_top.get(j)}
+        row = {"recall_at_top_strength": recall_top.get(j),
+               "distinct2_at_top_strength": round(
+                   float(np.median(d2[(lat == j) & (mult == MULTS[-1])])), 4)}
         for m in MULTS:
             s = nll[(lat == j) & (mult == m)]
             row[f"nll_ratio_{m}x"] = round(float(np.median(s)) / clean_nll, 4)

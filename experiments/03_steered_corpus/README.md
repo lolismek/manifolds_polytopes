@@ -170,6 +170,14 @@ latents mean or how they relate — hash states must stay arbitrary.
   vs. independence. Flagged 818/13203 pairs (lift > 5 or Jaccard > 0.1); median pair is
   *anti*-correlated (lift 0.56). Even under the strict rule (avoid every flagged pair) a mutually
   clean set of 48 latents exists — 8 hash states are easily cast. `src/stage2_coactivation.py`.
+- **One-hot clamp (decided).** Generation-time intervention: the active state's latent clamped at
+  strength s, all other cast latents ablated to 0 — "exactly one state active" holds in the
+  residual stream, not just the bookkeeping (natural mid-document firing of an off-state latent
+  would otherwise be spurious evidence the ground-truth posterior can't see). Strength s is an
+  empirical dial set by the stage-3 sweep (s ∈ {1,2,3,5}× mean firing activation) against
+  posterior entropy: 1× is likely below the evidence floor (median prefix KL@2× is 0.011 —
+  natural magnitude injected off-context is a whisper), 5–10× was a screening probe, and
+  autoregressive feedback during generation argues for the low end (~2–4×).
 - Remaining: stage 3 generation audition (fluency perplexity + mini-M separability, measures the
   per-token evidence rate that sets T's stay probability), stage 4 casting report (joint review).
 

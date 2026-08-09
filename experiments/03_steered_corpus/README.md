@@ -190,8 +190,22 @@ latents mean or how they relate — hash states must stay arbitrary.
   texts in `results/stage4/casting_report.md`. Selection caveat (flagged, accepted for now): the
   final-8 shortlist used a bag-of-words classifier, which biases toward word-choice carriers;
   an exact-likelihood confusability re-selection is the upgrade if casting is ever revisited.
-- Remaining: corpus generation (ring T, one-hot clamp at 5x, pre-sampled z-paths, shuffled
-  control) and student training.
+- **Corpus generation** (running, `src/corpus_generate.py`): 100k ring documents + 25k unsteered
+  control, 1024 tokens each (BOS + unique 12-token Pile opener + 1011 steered tokens). Hidden path
+  pre-sampled per document from the ring chain (p_stay 0.99, uniform neighbour), one-hot clamp at
+  5x mean_act follows the path per token in a custom KV-cache decode loop (opener prefill clamped
+  with the initial state). Chunked/resumable output; measured 4.4k tok/s/GPU at batch 224 on the
+  4 A100s (~2 h total). Smoke test verified ring-adjacent transitions (~10/doc) and fluent text.
+- **Ideal-reader ground truth** (written, runs after generation; `src/corpus_score_posterior.py`):
+  eval split = first 1250 docs of each shard's last ring chunk (5k docs, held out from student
+  training). Per doc: 8 whole-sequence-clamp replays (the stage-4 instrument) give per-token
+  emissions; the HMM forward algorithm with the known ring T turns them into the filtered
+  posterior the student is compared against. Exact filtering is intractable (emissions condition
+  on the whole past clamp path through the KV cache, not just the current state), so this
+  static-hypothesis reader is the operational definition; a 9th replay under the true per-position
+  clamp path reproduces generation exactly and quantifies the approximation.
+- Remaining: run posterior scoring, then student training (fresh ~100M-param transformer on the
+  ring corpus; control student on the unsteered corpus).
 
 ## Relation to prior work (boundary)
 

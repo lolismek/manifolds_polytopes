@@ -243,9 +243,26 @@ latents mean or how they relate — hash states must stay arbitrary.
   (improving vs declining). Caveat: the control also shows partial ring geometry (corr ~0.69)
   — state is partly readable from text content/context by any reader; the claim rests on the
   margins above, not on the control being at zero.
-- Remaining: belief-geometry analysis beyond class means (does the *graded* posterior trace a
-  ring/simplex in the probe subspace?), near- vs far-from-transition probe accuracy, and the
-  writeup.
+- **Belief-geometry analysis** (done, `src/belief_geometry.py`,
+  `results/probe/belief_geometry.json` + `belief_ring.png`), final checkpoints, best layers
+  (ring L12, ctrl L8):
+  - *Time-in-dwell curves (the integration test):* ring-student probe accuracy climbs with
+    tokens since the last transition — 0.16 / 0.18 / 0.23 / 0.29 / 0.46 for offsets 0-10 /
+    10-25 / 25-50 / 50-100 / 100+ — tracking the shape of the ideal reader's own curve
+    (0.17 / 0.30 / 0.47 / 0.65 / 0.83) at roughly half its height. The control climbs far
+    more slowly (0.15 / 0.16 / 0.19 / 0.22 / 0.30). The ring advantage grows from ~1 pt right
+    after a transition to ~16 pts deep in a dwell: evidence *accumulation*, not static topic
+    readout, and deep in dwells the ring student reaches 56% of the ideal reader's accuracy.
+  - *Graded position:* circular correlation between the probe's belief angle and the true
+    posterior's angle (confident tokens): ring 0.33 vs ctrl 0.17. Tokens whose true belief
+    splits mass over two neighbouring states land between those states' centroids 40% of the
+    time vs a 30% confident-token baseline for the ring student (+10 pts); ctrl +1.7 pts.
+    Both directionally right, modest in size — per-token readout is noisy.
+  - *Uncertainty:* probe → posterior entropy R² 0.087 (ring) vs 0.061 (ctrl); weak, the
+    reader's uncertainty signal is only marginally represented.
+- Remaining: writeup / synthesis of variant A; optional upgrades: true-past-context
+  emissions for a tighter ideal reader, exact-likelihood confusability re-selection of the
+  cast.
 
 ## Relation to prior work (boundary)
 

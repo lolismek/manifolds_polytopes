@@ -166,7 +166,11 @@ computable posteriors) appears unclaimed.
   Steering vector injected into a teacher during generation of innocuous number sequences; a
   student (same base model, LoRA fine-tune) inherits both the behavioral bias and the steering
   direction itself, localized to the steered layers; the vector is recoverable from the data
-  alone. One fixed bias, not a structured latent; fine-tuned same-base student, not fresh; no
+  alone. Note: their vector is *learned* (trained to elicit a target phrase) and injected at
+  every token position across nearly all layers ([2, L−2]) — not an SAE direction at a single
+  layer. So their transfer result certifies the channel for an all-layers signal; whether a
+  single-layer SAE signal transfers as cleanly is for our pilot to confirm (fallback ladder:
+  stronger clamp → adjacent-layer window → learned per-setting vectors à la this paper). One fixed bias, not a structured latent; fine-tuned same-base student, not fresh; no
   posterior, no geometry. For us it is *feasibility evidence*: the steered-teacher →
   generated-text → student channel transmits steering-induced structure robustly and precisely.
   It also motivates the paraphrase/re-tokenization control above (subliminal transfer dies across

@@ -190,13 +190,13 @@ latents mean or how they relate — hash states must stay arbitrary.
   texts in `results/stage4/casting_report.md`. Selection caveat (flagged, accepted for now): the
   final-8 shortlist used a bag-of-words classifier, which biases toward word-choice carriers;
   an exact-likelihood confusability re-selection is the upgrade if casting is ever revisited.
-- **Corpus generation** (running, `src/corpus_generate.py`): 100k ring documents + 25k unsteered
+- **Corpus generation** (done, `src/corpus_generate.py`): 100k ring documents + 25k unsteered
   control, 1024 tokens each (BOS + unique 12-token Pile opener + 1011 steered tokens). Hidden path
   pre-sampled per document from the ring chain (p_stay 0.99, uniform neighbour), one-hot clamp at
   5x mean_act follows the path per token in a custom KV-cache decode loop (opener prefill clamped
   with the initial state). Chunked/resumable output; measured 4.4k tok/s/GPU at batch 224 on the
   4 A100s (~2 h total). Smoke test verified ring-adjacent transitions (~10/doc) and fluent text.
-- **Ideal-reader ground truth** (written, runs after generation; `src/corpus_score_posterior.py`):
+- **Ideal-reader ground truth** (done, `src/corpus_score_posterior.py`):
   eval split = first 1250 docs of each shard's last ring chunk (5k docs, held out from student
   training). Per doc: 8 whole-sequence-clamp replays (the stage-4 instrument) give per-token
   emissions; the HMM forward algorithm with the known ring T turns them into the filtered
@@ -204,8 +204,34 @@ latents mean or how they relate — hash states must stay arbitrary.
   on the whole past clamp path through the KV cache, not just the current state), so this
   static-hypothesis reader is the operational definition; a 9th replay under the true per-position
   clamp path reproduces generation exactly and quantifies the approximation.
-- Remaining: run posterior scoring, then student training (fresh ~100M-param transformer on the
-  ring corpus; control student on the unsteered corpus).
+- **Filter quality + vocab** (`src/corpus_checks.py`, `results/corpus/corpus_checks.json`):
+  per-token filter argmax accuracy 0.58 overall; median re-convergence 22 tokens after a
+  transition (q25 7, q75 46 — faster than the ~34-token cold start, the ring prior helps);
+  13.7% of transitions unresolved within 150 tokens (mostly dwells too short by design);
+  late-dwell accuracy 0.70, explained by the measured static-approximation gap (−0.039
+  nats/token mid-dwell, −0.089 post-transition). This attenuates the yardstick (adds noise)
+  but cannot fake a positive result; upgrade path is true-past-context emissions. Vocab:
+  Gemma tokenizer has 212,955 distinct ids in the corpus; top 32,768 cover 96.6% of training
+  tokens → compact vocab 32,769 with id 0 = unk. OOV tokens are 3.4% of tokens carrying 7.2%
+  of state evidence (~0.6 of ~9 nats/dwell) — accepted and documented.
+- **Student training** (done, `src/train_student.py`): two identical 110M-param (85M
+  non-embedding) Llama-style students from scratch — 12 layers, width 768, context 1024, tied
+  embeddings over the 32k vocab; batch 128, 2812 steps (4 ring epochs), cosine 3e-4 → 3e-5,
+  bf16, checkpoints every 250 steps. Ring student: heldout loss 3.42 → 3.23 (steps 1250 →
+  2812), still improving at the end. Control student (same steps on the 25k unsteered docs =
+  ~16 epochs): loss on the same held-out ring docs plateaued ~3.6 and drifted to 4.10 — it
+  never sees steered text. One checkpoint was corrupted by a transient quota/FS error
+  mid-save; trainer now does verified saves (tmp + load-check + rename) and has a --resume
+  flag; ctrl finished by resuming from step 2500.
+- **Quick mid-training geometry check** (`src/quick_geometry_check.py`): at ring ckpt 1000
+  (~1/3 of training), layer 6, the 8 mid-dwell class means already sit in exact ring order in
+  their top-2 PC plane (68% of class-mean variance), pairwise distances correlate 0.655 with
+  ring graph distance, and a ridge probe reads the current state at 25.8% vs 12.5% chance
+  (ideal-reader ceiling 57.6%). At ckpt 2000: same geometry, probe R² 0.088 → 0.109, acc
+  26.7% — the ring locks in early and is stable while belief tracking keeps sharpening.
+- Remaining: full probe sweep (`src/probe_sweep.py`, running): 13 layers × all 12 checkpoints
+  × both students, ridge probe to the 5k-doc posteriors with doc-level split, shuffled-pairing
+  control, ring-geometry metrics per layer; then analysis + plots.
 
 ## Relation to prior work (boundary)
 

@@ -50,10 +50,29 @@ def load_corpus(root, corpus, vmap):
     return torch.from_numpy(vmap[ids].astype(np.int32))
 
 
+def save_ckpt(sd, path):
+    """torch.save with verify-and-retry (the shared FS can drop a write)."""
+    for attempt in range(3):
+        tmp = path.with_suffix(".tmp")
+        try:
+            torch.save(sd, tmp)
+            torch.load(tmp, map_location="cpu")
+            tmp.rename(path)
+            return
+        except Exception as e:
+            print(f"ckpt save to {path.name} failed ({e}), attempt {attempt+1}",
+                  flush=True)
+            time.sleep(10)
+    raise RuntimeError(f"could not save {path}")
+
+
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--corpus", choices=["ring", "ctrl"], required=True)
     ap.add_argument("--device", default="cuda:0")
+    ap.add_argument("--resume", default=None,
+                    help="checkpoint filename to resume from, e.g. ckpt_02500.pt "
+                         "(model weights only; optimizer restarts fresh)")
     args = ap.parse_args()
 
     root = Path(__file__).parent.parent / "results" / "corpus"
@@ -106,13 +125,21 @@ def main():
         model.train()
         return float(np.mean(losses))
 
-    rng = np.random.default_rng(SEED)
+    start = 0
+    if args.resume:
+        sd = torch.load(out / args.resume, map_location="cpu")
+        model.load_state_dict({k: v.float() for k, v in sd.items()})
+        start = int(args.resume.split("_")[1].split(".")[0])
+        print(f"resumed from {args.resume} at step {start}", flush=True)
+        rng = np.random.default_rng([SEED, start])
+    else:
+        rng = np.random.default_rng(SEED)
     order = rng.permutation(data.shape[0])
     pos = 0
-    log = open(out / "train_log.jsonl", "w")
+    log = open(out / "train_log.jsonl", "a" if args.resume else "w")
     model.train()
     t0, tok_count = time.time(), 0
-    for step in range(STEPS):
+    for step in range(start, STEPS):
         for g in opt.param_groups:
             g["lr"] = lr_at(step)
         opt.zero_grad(set_to_none=True)
@@ -146,7 +173,7 @@ def main():
             log.flush()
         if (step + 1) % CKPT_EVERY == 0 or step + 1 == STEPS:
             sd = {k: v.bfloat16() for k, v in model.state_dict().items()}
-            torch.save(sd, out / f"ckpt_{step+1:05d}.pt")
+            save_ckpt(sd, out / f"ckpt_{step+1:05d}.pt")
 
     print(f"{args.corpus} training done: final heldout loss {run_eval():.4f}",
           flush=True)

@@ -166,8 +166,10 @@ latents mean or how they relate — hash states must stay arbitrary.
   never gets populated. (Our regime is gentler than theirs — the text stays natural prose — but
   the readout philosophy is the same.) If strong and gentle latents both reach casting, pick the
   final 8 at similar evidence rates so no state is louder than the others.
-- **Stage 2 — co-activation check** (in progress): pairwise co-firing of the 163 pool latents on
-  natural text vs. independence prediction; exclude behaviorally entangled pairs from casting.
+- **Stage 2 — co-activation check** (2M pile tokens): pairwise co-firing of the 163 pool latents
+  vs. independence. Flagged 818/13203 pairs (lift > 5 or Jaccard > 0.1); median pair is
+  *anti*-correlated (lift 0.56). Even under the strict rule (avoid every flagged pair) a mutually
+  clean set of 48 latents exists — 8 hash states are easily cast. `src/stage2_coactivation.py`.
 - Remaining: stage 3 generation audition (fluency perplexity + mini-M separability, measures the
   per-token evidence rate that sets T's stay probability), stage 4 casting report (joint review).
 

@@ -75,7 +75,7 @@ def main():
     dev = torch.device(args.device)
 
     out = Path(__file__).parent.parent / "results" / "stage3"
-    shards = sorted(out.glob("gen_shard*.npz"))
+    shards = sorted(p for p in out.glob("gen_shard*.npz") if "_raw" not in p.name)
     ids = np.concatenate([np.load(s)["ids"] for s in shards])
     lat = np.concatenate([np.load(s)["latent"] for s in shards])
     mult = np.concatenate([np.load(s)["mult"] for s in shards])

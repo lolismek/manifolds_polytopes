@@ -178,8 +178,20 @@ latents mean or how they relate — hash states must stay arbitrary.
   posterior entropy: 1× is likely below the evidence floor (median prefix KL@2× is 0.011 —
   natural magnitude injected off-context is a whisper), 5–10× was a screening probe, and
   autoregressive feedback during generation argues for the low end (~2–4×).
-- Remaining: stage 3 generation audition (fluency perplexity + mini-M separability, measures the
-  per-token evidence rate that sets T's stay probability), stage 4 casting report (joint review).
+- **Stage 3 — generation audition** (48 latents x {1,2,3,5}x, then 20 audible x {5,8,12}x, 20-40
+  docs/cell, 300 tokens): fluency clean everywhere (NLL ratio <= 1.10 at 5x, distinct-2 flat);
+  1-2x at classifier chance (measured per-token KL at 1x: 0.004 nats — below any reader's floor);
+  KL grows quadratically with clamp strength (Fisher). `src/stage3_audition.py`, `stage3_analyze.py`.
+- **Stage 4 — pilot + ideal-reader calibration** (static-state docs, exact posterior over the cast
+  via 8 clamped replays/doc): median tokens to 90% confidence = 98 / 34 / 13 at 3x / 5x / 8x; end
+  accuracy 0.964 / 1.000 / 1.000. **Verdict: 5x, dwell ~100 tokens (p_stay ~0.99)** — graded
+  beliefs for the first ~third of a dwell, ~10 transitions per 1024-token context. Cast of 8:
+  368, 1220, 2404, 2970, 6172, 10615, 10621, 13931 (reserves 9508, 10013); identities and sample
+  texts in `results/stage4/casting_report.md`. Selection caveat (flagged, accepted for now): the
+  final-8 shortlist used a bag-of-words classifier, which biases toward word-choice carriers;
+  an exact-likelihood confusability re-selection is the upgrade if casting is ever revisited.
+- Remaining: corpus generation (ring T, one-hot clamp at 5x, pre-sampled z-paths, shuffled
+  control) and student training.
 
 ## Relation to prior work (boundary)
 

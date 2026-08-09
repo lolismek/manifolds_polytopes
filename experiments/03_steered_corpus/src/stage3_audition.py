@@ -79,7 +79,15 @@ def main():
     ap.add_argument("--shard", type=int, required=True)
     ap.add_argument("--n_shards", type=int, default=4)
     ap.add_argument("--device", default="cuda:0")
+    ap.add_argument("--latents", default=None,
+                    help="comma-separated latent ids; overrides pool sharding (still sharded)")
+    ap.add_argument("--mults", default=None, help="comma-separated strength multipliers")
+    ap.add_argument("--n_samples", type=int, default=N_SAMPLES)
+    ap.add_argument("--tag", default="", help="suffix for output files, e.g. 'b'")
     args = ap.parse_args()
+
+    mults = [float(m) for m in args.mults.split(",")] if args.mults else MULTS
+    n_samples = args.n_samples
 
     root = Path(__file__).parent.parent / "results"
     out = root / "stage3"
@@ -92,10 +100,11 @@ def main():
     sae = sae.to(torch.float32)
 
     pool = audition_pool(root / "stage2")
-    if args.shard == 0:
+    if args.shard == 0 and not args.tag:
         (out / "audition_pool.json").write_text(json.dumps({"pool": pool}, indent=2))
-    mine = pool[args.shard :: args.n_shards]
-    print(f"shard {args.shard}: {len(mine)} of {len(pool)} pool latents", flush=True)
+    subset = [int(x) for x in args.latents.split(",")] if args.latents else pool
+    mine = subset[args.shard :: args.n_shards]
+    print(f"shard {args.shard}: {len(mine)} of {len(subset)} latents", flush=True)
 
     stats = np.load(root / "stage1" / "latent_stats.npz")
     mean_act = stats["mean_act"]
@@ -162,32 +171,32 @@ def main():
         print("clean arm done", flush=True)
 
     for li, j in enumerate(mine):
-        for mult in MULTS:
+        for mult in mults:
             t = torch.zeros(len(pool), device=dev)
             t[pos_in_pool[j]] = mult * float(mean_act[j])
             steer["t"] = t
-            cont = generate(N_SAMPLES, seed=SEED + 1000 * j + int(mult * 10))
+            cont = generate(n_samples, seed=SEED + 1000 * j + int(mult * 10))
             steer["t"] = None
             all_ids.append(cont)
-            all_lat += [j] * N_SAMPLES
-            all_mult += [mult] * N_SAMPLES
+            all_lat += [j] * n_samples
+            all_mult += [mult] * n_samples
             texts += [{"latent": j, "mult": mult, "text": tokenizer.decode(c)} for c in cont[:2]]
         print(f"shard {args.shard}: latent {j} done ({li + 1}/{len(mine)})", flush=True)
 
     cont_all = torch.cat(all_ids)
     # save generations before scoring so an OOM in scoring can't lose them
-    np.savez(out / f"gen_shard{args.shard}_raw.npz",
+    np.savez(out / f"gen{args.tag}_shard{args.shard}_raw.npz",
              ids=cont_all.numpy().astype(np.int32),
              latent=np.array(all_lat, dtype=np.int32),
              mult=np.array(all_mult, dtype=np.float32))
     nll = clean_nll(cont_all)
 
-    np.savez(out / f"gen_shard{args.shard}.npz",
+    np.savez(out / f"gen{args.tag}_shard{args.shard}.npz",
              ids=cont_all.numpy().astype(np.int32),
              latent=np.array(all_lat, dtype=np.int32),
              mult=np.array(all_mult, dtype=np.float32),
              nll=nll.numpy().astype(np.float32))
-    with open(out / f"texts_shard{args.shard}.jsonl", "w") as f:
+    with open(out / f"texts{args.tag}_shard{args.shard}.jsonl", "w") as f:
         for row in texts:
             f.write(json.dumps(row) + "\n")
     print(f"shard {args.shard} finished: {cont_all.shape[0]} seqs, "

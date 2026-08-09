@@ -71,11 +71,15 @@ def fit_logistic(xtr, ytr, xte, dev):
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--device", default="cuda:0")
+    ap.add_argument("--tag", default="")
+    ap.add_argument("--mults", default=None)
+    ap.add_argument("--train_per_cell", type=int, default=TRAIN_PER_CELL)
     args = ap.parse_args()
+    mults = [float(m) for m in args.mults.split(",")] if args.mults else MULTS
     dev = torch.device(args.device)
 
     out = Path(__file__).parent.parent / "results" / "stage3"
-    shards = sorted(p for p in out.glob("gen_shard*.npz") if "_raw" not in p.name)
+    shards = sorted(p for p in out.glob(f"gen{args.tag}_shard*.npz") if "_raw" not in p.name)
     ids = np.concatenate([np.load(s)["ids"] for s in shards])
     lat = np.concatenate([np.load(s)["latent"] for s in shards])
     mult = np.concatenate([np.load(s)["mult"] for s in shards])
@@ -98,7 +102,7 @@ def main():
 
     rng = np.random.default_rng(SEED)
     recall_top = {}
-    for m in MULTS:
+    for m in mults:
         sel = np.where((lat >= 0) & (mult == m))[0]
         y = np.array([cls[int(j)] for j in lat[sel]])
         # split within each cell
@@ -106,8 +110,8 @@ def main():
         for c in range(len(pool)):
             rows = sel[y == c]
             perm = rng.permutation(len(rows))
-            tr_idx += rows[perm[:TRAIN_PER_CELL]].tolist()
-            te_idx += rows[perm[TRAIN_PER_CELL:]].tolist()
+            tr_idx += rows[perm[:args.train_per_cell]].tolist()
+            te_idx += rows[perm[args.train_per_cell:]].tolist()
         tr_idx, te_idx = np.array(tr_idx), np.array(te_idx)
         ytr = np.array([cls[int(j)] for j in lat[tr_idx]])
         yte = np.array([cls[int(j)] for j in lat[te_idx]])
@@ -118,7 +122,7 @@ def main():
             xte = bow(ids[te_idx], vocab_index, n_vocab, budget)
             pred = fit_logistic(xtr, ytr, xte, dev)
             acc_by_budget[budget] = round(float((pred == yte).mean()), 4)
-            if m == MULTS[-1] and budget == BUDGETS[-1]:
+            if m == mults[-1] and budget == BUDGETS[-1]:
                 for c, j in enumerate(pool):
                     recall_top[j] = round(float((pred[yte == c] == c).mean()), 3)
 
@@ -135,13 +139,13 @@ def main():
     for j in pool:
         row = {"recall_at_top_strength": recall_top.get(j),
                "distinct2_at_top_strength": round(
-                   float(np.median(d2[(lat == j) & (mult == MULTS[-1])])), 4)}
-        for m in MULTS:
+                   float(np.median(d2[(lat == j) & (mult == mults[-1])])), 4)}
+        for m in mults:
             s = nll[(lat == j) & (mult == m)]
             row[f"nll_ratio_{m}x"] = round(float(np.median(s)) / clean_nll, 4)
         report["per_latent"][str(j)] = row
 
-    (out / "audition_report.json").write_text(json.dumps(report, indent=2))
+    (out / f"audition_report{args.tag}.json").write_text(json.dumps(report, indent=2))
     print(json.dumps(report["per_strength"], indent=2))
 
 

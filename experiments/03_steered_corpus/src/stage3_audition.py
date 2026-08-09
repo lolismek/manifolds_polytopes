@@ -139,16 +139,18 @@ def main():
     def clean_nll(cont_ids):
         """Per-seq mean NLL of continuations under the unsteered teacher (hook off)."""
         steer["t"] = None
+        torch.cuda.empty_cache()
         nlls = []
         with torch.no_grad():
-            for i in range(0, cont_ids.shape[0], 32):
-                chunk = cont_ids[i : i + 32].to(dev)
+            for i in range(0, cont_ids.shape[0], 4):
+                chunk = cont_ids[i : i + 4].to(dev)
                 bos = torch.full((chunk.shape[0], 1), tokenizer.bos_token_id, device=dev)
                 seq = torch.cat([bos, chunk], 1)
-                logits = model(seq).logits[:, :-1].float()
-                lp = torch.log_softmax(logits, -1)
-                nll = -lp.gather(-1, seq[:, 1:, None]).squeeze(-1).mean(-1)
-                nlls.append(nll.cpu())
+                logits = model(seq).logits[:, :-1]
+                nll = torch.nn.functional.cross_entropy(
+                    logits.reshape(-1, logits.shape[-1]).float(),
+                    seq[:, 1:].reshape(-1), reduction="none")
+                nlls.append(nll.reshape(chunk.shape[0], -1).mean(-1).cpu())
         return torch.cat(nlls)
 
     all_ids, all_lat, all_mult, texts = [], [], [], []
@@ -173,6 +175,11 @@ def main():
         print(f"shard {args.shard}: latent {j} done ({li + 1}/{len(mine)})", flush=True)
 
     cont_all = torch.cat(all_ids)
+    # save generations before scoring so an OOM in scoring can't lose them
+    np.savez(out / f"gen_shard{args.shard}_raw.npz",
+             ids=cont_all.numpy().astype(np.int32),
+             latent=np.array(all_lat, dtype=np.int32),
+             mult=np.array(all_mult, dtype=np.float32))
     nll = clean_nll(cont_all)
 
     np.savez(out / f"gen_shard{args.shard}.npz",

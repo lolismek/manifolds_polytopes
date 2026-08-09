@@ -99,7 +99,7 @@ def main():
     # capture the residual stream after block LAYER (what the res SAE was trained on)
     resid = {}
     def hook(_, __, output):
-        resid["x"] = output[0]
+        resid["x"] = output[0] if isinstance(output, tuple) else output
     model.model.layers[LAYER].register_forward_hook(hook)
 
     nc_mask = torch.tensor(noncontent_mask(tokenizer), device=dev)

@@ -135,6 +135,7 @@ Why the first experiment is synthetic, and shaped the way it is:
 |---|---|---|---|
 | 01 | `experiments/01_latent_features/` | **done — hypothesis confirmed** | Toy transformer; 3 latent features with chosen M's (identity / circular band / linear band). Each feature's layer-2 geometry matches its M (Gram-M corr > 0.99, 3 seeds): simplex, ring, and open curve in one network. Feature subspaces near-orthogonal (a replication of the Factored World Hypothesis — see Position section). v2: co-occurrence dissociation — M wins all symmetric venues; C lives only in the asymmetric readout product. |
 | 02 | `experiments/02_llm_colors/` | planned | Companion in-the-wild study: color-term geometry in a real LLM (Gemma-2), Park separability violation along CIELAB, PMI vs. perceptual-metric regression. |
+| 03 | `experiments/03_steered_corpus/` | spec (broad) | Natural-language wind tunnel: SAE-steered teacher generates a corpus with a secret latent z; fresh student trained on the text; test whether it tracks the computable posterior over z and arranges z-values with the predicted geometry. Variants: hash latents + designed dynamics (T-dial), concept manifold static (M-dial), both. |
 
 ## Conventions
 

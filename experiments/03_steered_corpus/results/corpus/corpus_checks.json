@@ -1,0 +1,18 @@
+{
+  "n_train_files": 36,
+  "vocab_size": 32769,
+  "train_token_coverage": 0.9659745985243056,
+  "evidence_frac_oov": 0.07187064029712646,
+  "token_frac_oov_eval": 0.03444530168150346,
+  "n_transitions": 50390,
+  "reconv_lag_median": 22.0,
+  "reconv_lag_q25_q75": [
+    7.0,
+    46.0
+  ],
+  "frac_never_reconverged_150": 0.13711053780512006,
+  "frac_transitions_resolved_within_50": 0.6673744790633062,
+  "late_dwell_argmax_acc": 0.7045624383684833,
+  "approx_gap_middwell_nats": -0.03881371270812502,
+  "approx_gap_posttransition_nats": -0.08882218899953423
+}

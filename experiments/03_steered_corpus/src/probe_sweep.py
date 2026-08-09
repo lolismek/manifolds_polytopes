@@ -31,6 +31,7 @@ Usage (on tigerfish):
 import argparse
 import glob
 import json
+import time
 from pathlib import Path
 
 import numpy as np
@@ -244,7 +245,13 @@ def main():
         del model
         torch.cuda.empty_cache()
         out_path = root / "probe" / f"{args.student}_sweep.json"
-        out_path.write_text(json.dumps(results, indent=1))
+        for attempt in range(5):     # shared FS intermittently rejects writes
+            try:
+                out_path.write_text(json.dumps(results, indent=1))
+                break
+            except OSError as e:
+                print(f"write failed ({e}), retry {attempt+1}", flush=True)
+                time.sleep(30)
     print(f"wrote {out_path}", flush=True)
 
 

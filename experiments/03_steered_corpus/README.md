@@ -151,6 +151,26 @@ TinyStories: controlled corpora but no hidden per-document latent with computabl
 full loop here (steered teacher → secret-z corpus → fresh student → comparison against exactly
 computable posteriors) appears unclaimed.
 
+### Where variant A sits relative to the factored-representations paper (2602.02385)
+
+Their conditional-independence condition is about beliefs: given the observed tokens, the
+posterior over latent factors must factorize (emission coupling between factors is allowed;
+their breaking case makes observations ambiguous about *which* factor explains them). Our world
+satisfies this trivially: the teacher is autoregressive, so all its "other latents" (topic,
+style, ...) are deterministic functions of the visible text — the corpus is an HMM with exactly
+one uncertain hidden variable, z. One-factor uncertainty cannot entangle. Consequences:
+
+- Real residual concern is *context-modulated evidence rate* (the clamp's effect depends on
+  context → heteroscedastic posterior trajectories), not broken factorization. Check variance
+  around measured M, not just its mean.
+- Running multiple simultaneous designed latents WOULD make factorization live: ambiguous
+  emissions create cross-factor belief correlations — their §4.3 predicts a lossy-factored
+  attractor first. Reproducing that in natural language is a candidate follow-up experiment.
+- Two free predictions for the test battery: (i) the z-belief geometry should occupy a
+  subspace ~orthogonal to general language directions (natural-language analog of exp01's
+  near-orthogonal feature subspaces); (ii) factored structure forms early — checkpoint the
+  student densely in early training and date the ring's appearance.
+
 ### Scoop check, Aug 2026 (both papers read in full)
 
 - **Sarfati et al. 2026, "The Shape of Beliefs" (Goodfire, [2602.02315](https://arxiv.org/abs/2602.02315)).**

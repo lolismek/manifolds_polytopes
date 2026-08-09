@@ -141,6 +141,36 @@ Two further controls suggested by the literature (see prior-work section):
 - Prior over z; transition matrix parameters (stay probability, graph).
 - Which variant runs first (current lean: A), and whether B/C reuse the same teacher.
 
+## Execution log — variant A casting funnel (Aug 2026)
+
+Teacher: Gemma-2-2B base + Gemma Scope 16k residual SAE, layer 12. Funnel order 1 → 2.5 → 2 → 3
+→ 4 (the causal screen runs before the co-activation check because it is the harsher filter).
+Selection principle throughout: filter for *usability* (fires, causal, fluent), never for what
+latents mean or how they relate — hash states must stay arbitrary.
+
+- **Stage 1 — cheap filters** (4M pile tokens): of 16384 latents, cut 6 dead, 1932 too common
+  (>1% of tokens), 4049 formatting-dominated, 13 early-position-dominated → **10838 survivors**;
+  only 32 decoder-cosine near-duplicate pairs (>0.7). `src/stage1_filters.py`.
+- **Stage 2.5 — causal power screen** (500 random survivors, seed 0; clamp at layer 12 to
+  {2,5,10}× mean firing activation over 256 pile prefixes; final-position KL vs. clean):
+  median KL@5× 0.038, dose–response monotone for **all 500** — single-layer clamping steers,
+  no multi-layer fallback needed. Cuts: KL@5× in [0.05, 2] and steered entropy within 0.3 nats
+  of clean (2.38) → **163-latent causal pool** (306 inert, 18 over-loud, 13 entropy-degenerate).
+  `src/stage2_5_causal.py`, `src/stage2_5_apply_cut.py`.
+- **Carrier, not caption.** The upper KL cut is a design principle, not just hygiene: as in
+  Subliminal Steering (2604.25783), where the trait was recoverable from accumulated statistics
+  of generated number sequences rather than any single giveaway token, the state z should be a
+  statistical tilt the reader integrates over many tokens. A latent with KL > ~2 nats on
+  arbitrary natural prefixes overrides context instead of flavoring it — states become trivially
+  separable per token, posteriors sit at the vertices, and the belief geometry we want to study
+  never gets populated. (Our regime is gentler than theirs — the text stays natural prose — but
+  the readout philosophy is the same.) If strong and gentle latents both reach casting, pick the
+  final 8 at similar evidence rates so no state is louder than the others.
+- **Stage 2 — co-activation check** (in progress): pairwise co-firing of the 163 pool latents on
+  natural text vs. independence prediction; exclude behaviorally entangled pairs from casting.
+- Remaining: stage 3 generation audition (fluency perplexity + mini-M separability, measures the
+  per-token evidence rate that sets T's stay probability), stage 4 casting report (joint review).
+
 ## Relation to prior work (boundary)
 
 Shai 2024 / Shai 2026 / Piotrowski 2025: synthetic token streams, known HMM, no natural language,

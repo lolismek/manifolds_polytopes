@@ -166,10 +166,19 @@ one uncertain hidden variable, z. One-factor uncertainty cannot entangle. Conseq
 - Running multiple simultaneous designed latents WOULD make factorization live: ambiguous
   emissions create cross-factor belief correlations — their §4.3 predicts a lossy-factored
   attractor first. Reproducing that in natural language is a candidate follow-up experiment.
-- Two free predictions for the test battery: (i) the z-belief geometry should occupy a
-  subspace ~orthogonal to general language directions (natural-language analog of exp01's
-  near-orthogonal feature subspaces); (ii) factored structure forms early — checkpoint the
-  student densely in early training and date the ring's appearance.
+- Nuance (from discussion): the teacher mechanically entangles z with its internal features —
+  that entanglement IS the channel — but those internals are deterministic functions of
+  (prefix, z), so they add no independent uncertainty; the world's posterior stays
+  one-dimensional over K states. Two consequences that DO carry the worry forward:
+  (i) the student computes z-beliefs *from* content features, so whether the ring gets a
+  dedicated subspace ~orthogonal to language machinery or lives in borrowed content
+  coordinates is an open empirical question (either answer is informative re: FWH in natural
+  language) — test, don't assume; (ii) design rule: anything that conditions generation
+  (seed prompts etc.) must be visible in the document or constant across the corpus —
+  randomized-and-hidden conditioning is a second uncertain latent and reintroduces exactly
+  the cross-factor ambiguity we're avoiding.
+- Free prediction that survives: factored structure forms early — checkpoint the student
+  densely in early training and date the ring's appearance.
 
 ### Scoop check, Aug 2026 (both papers read in full)
 

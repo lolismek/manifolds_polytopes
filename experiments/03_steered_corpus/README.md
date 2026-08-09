@@ -229,9 +229,23 @@ latents mean or how they relate — hash states must stay arbitrary.
   ring graph distance, and a ridge probe reads the current state at 25.8% vs 12.5% chance
   (ideal-reader ceiling 57.6%). At ckpt 2000: same geometry, probe R² 0.088 → 0.109, acc
   26.7% — the ring locks in early and is stable while belief tracking keeps sharpening.
-- Remaining: full probe sweep (`src/probe_sweep.py`, running): 13 layers × all 12 checkpoints
-  × both students, ridge probe to the 5k-doc posteriors with doc-level split, shuffled-pairing
-  control, ring-geometry metrics per layer; then analysis + plots.
+- **Probe sweep** (done, `src/probe_sweep.py`, `results/probe/{ring,ctrl}_sweep.json` + png):
+  ridge probe residual → 8-dim filtered posterior, 13 layers × 12 checkpoints × both students,
+  1600/400 doc-level split, shuffled-pairing control. Ring student (final ckpt): R² rises
+  monotonically with depth to 0.191 at the last layer, state accuracy 29.6% (chance 12.5%,
+  ideal-reader ceiling 58.1%), ring order in the top-2 PC plane at every layer 1–12, distance/
+  ring-distance corr up to 0.765. Control student on the same eval docs: R² caps at 0.066,
+  peaking mid-stack (L8) and *decaying* toward the output; over training its probe performance
+  declines after step ~1250 (0.078 → 0.066) as it specialises on unsteered text, while the ring
+  student's climbs monotonically (0.117 → 0.191). Shuffled-pairing probes ≈ 0 everywhere.
+  Three-way dissociation: magnitude (≈3× R², over-chance accuracy 17.1 vs 9.3 pts), depth
+  profile (computed toward the output vs generic mid-stack features), and training dynamics
+  (improving vs declining). Caveat: the control also shows partial ring geometry (corr ~0.69)
+  — state is partly readable from text content/context by any reader; the claim rests on the
+  margins above, not on the control being at zero.
+- Remaining: belief-geometry analysis beyond class means (does the *graded* posterior trace a
+  ring/simplex in the probe subspace?), near- vs far-from-transition probe accuracy, and the
+  writeup.
 
 ## Relation to prior work (boundary)
 

@@ -1,0 +1,48 @@
+{
+  "ring": {
+    "layer": 12,
+    "acc_by_time_in_dwell": {
+      "0-10": 0.1594,
+      "10-25": 0.1825,
+      "25-50": 0.226,
+      "50-100": 0.2896,
+      "100-end": 0.4594
+    },
+    "ideal_reader_acc_by_time_in_dwell": [
+      0.1696,
+      0.2976,
+      0.4714,
+      0.6521,
+      0.826
+    ],
+    "n_split_belief_tokens": 46238,
+    "frac_between_neighbour_centroids_split": 0.40079588217483453,
+    "frac_between_neighbour_centroids_confident_baseline": 0.3014035351071415,
+    "circular_corr_graded_theta": 0.3291,
+    "n_confident_tokens": 393625,
+    "entropy_probe_R2": 0.0868
+  },
+  "ctrl": {
+    "layer": 8,
+    "acc_by_time_in_dwell": {
+      "0-10": 0.1495,
+      "10-25": 0.1625,
+      "25-50": 0.1885,
+      "50-100": 0.2161,
+      "100-end": 0.2988
+    },
+    "ideal_reader_acc_by_time_in_dwell": [
+      0.1696,
+      0.2976,
+      0.4714,
+      0.6521,
+      0.826
+    ],
+    "n_split_belief_tokens": 46238,
+    "frac_between_neighbour_centroids_split": 0.2249664777888317,
+    "frac_between_neighbour_centroids_confident_baseline": 0.20804405749240065,
+    "circular_corr_graded_theta": 0.1677,
+    "n_confident_tokens": 393625,
+    "entropy_probe_R2": 0.0606
+  }
+}

@@ -17,8 +17,8 @@ from pathlib import Path
 
 import numpy as np
 
-BAND = (0.05, 0.30)          # nats/token, evidence rate (KL clamped||clean)
-NLL_RATIO_MAX = 1.12
+BAND = (0.02, 0.30)          # nats/token, evidence rate (KL clamped||clean)
+NLL_RATIO_MAX = 1.15
 ENT_TOL = 0.35
 SHORTLIST_MAX = 24
 

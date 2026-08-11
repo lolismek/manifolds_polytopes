@@ -9,8 +9,9 @@ generated text (fluency — computed for free from the clean pass), and the
 clamped output entropy. Shard 0 also runs a clean arm (no clamp) for the
 fluency baseline.
 
-The single-position clamp is weaker per token than exp03's compounding clamp
-(exp03 stage-2.5 numbers were whole-prefix), hence MULTS reach 18x.
+The single-position clamp is weaker per token than exp03's compounding clamp:
+the step-0 check measured ~0.01 nats/token at 8x (exp03 whole-prefix numbers
+were ~10x larger at comparable strengths), hence MULTS reach 40x.
 
 Sharded by latent: python audition.py --shard i --n_shards 4 --device cuda:i
 """
@@ -25,7 +26,7 @@ import torch
 from steering import (Steerer, audition_pool, generate_clean_cache,
                       get_prompts, load_teacher, mean_act)
 
-MULTS = [3.0, 5.0, 8.0, 12.0, 18.0]
+MULTS = [5.0, 8.0, 12.0, 18.0, 27.0, 40.0]
 N_DOCS = 16                # docs per (latent, strength) cell
 N_CLEAN = 32
 GEN_LEN = 300

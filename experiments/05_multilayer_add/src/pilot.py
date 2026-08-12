@@ -22,7 +22,8 @@ import torch
 from addsteer import (AddSteerer, cast, generate_clean_cache, get_prompts,
                       load_teacher, mean_act, score_emissions)
 
-MULTS = [1.0, 2.0, 4.0]
+MULTS = [1.0, 1.5, 2.0]    # verify_identity: s=2 already gives KL 0.89/tok,
+                           # margin ~0.45 — 4x would be pointlessly loud
 N_DOCS = 6                  # per (latent, mult)
 N_CLEAN = 8
 GEN_LEN = 300

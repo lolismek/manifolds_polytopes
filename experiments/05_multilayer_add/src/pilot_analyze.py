@@ -61,20 +61,19 @@ def main():
         off = M[~np.eye(K, dtype=bool)]
         wa, wb = np.unravel_index(
             np.argmin(M + np.eye(K) * 1e9), M.shape)
-        print(f"s={m:.0f}x  KL/tok {kl_m:.3f}  NLLr {nllr:.2f}  "
+        print(f"s={m:.1f}x  KL/tok {kl_m:.3f}  NLLr {nllr:.2f}  "
               f"dent {dent:+.2f}  d2 {np.median(d2[sel]):.3f}  |  "
               f"margin min {off.min():.3f} med {np.median(off):.3f} "
               f"(worst {hyp[wa]} vs {hyp[wb]})  noise_std {np.mean(noise):.2f}  "
               f"evid {np.mean(ev):.3f}")
         ok = off.min() >= 0.3 and nllr <= NLL_RATIO_MAX
-        if ok and (best is None or m < best[0]):
-            best = (m, M)
+        if best is None or (ok and not best[2]) or \
+                (ok == best[2] and off.min() > best[3]):
+            best = (m, M, ok, off.min())
 
-    if best is None:
-        print("\nGATE NOT PASSED at any s.")
-        return
-    m, M = best
-    print(f"\nGATE PASSED at s={m:.0f}x. Margin matrix (row=true, col=hyp):")
+    m, M, ok, _ = best
+    verdict = "GATE PASSED" if ok else "GATE NOT PASSED — best cell"
+    print(f"\n{verdict} at s={m:.1f}x. Margin matrix (row=true, col=hyp):")
     print("        " + "".join(f"{j:>8d}" for j in hyp))
     for a, j in enumerate(hyp):
         print(f"{j:>7d} " + "".join(f"{M[a, b]:8.3f}" for b in range(len(hyp))))

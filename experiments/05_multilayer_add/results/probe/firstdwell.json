@@ -1,0 +1,54 @@
+{
+ "ring": {
+  "pc12_var_frac": 0.5691,
+  "angular_order_pc12": [
+   5,
+   0,
+   7,
+   1,
+   4,
+   2,
+   3,
+   6
+  ],
+  "is_ring_order": false,
+  "dist_vs_ringdist_corr": 0.0399,
+  "layer": 12,
+  "tokens_per_state": [
+   22334,
+   23839,
+   22086,
+   22964,
+   19734,
+   21075,
+   22463,
+   23104
+  ]
+ },
+ "ctrl": {
+  "pc12_var_frac": 0.6975,
+  "angular_order_pc12": [
+   6,
+   4,
+   1,
+   7,
+   2,
+   3,
+   5,
+   0
+  ],
+  "is_ring_order": false,
+  "dist_vs_ringdist_corr": -0.0474,
+  "layer": 3,
+  "tokens_per_state": [
+   22334,
+   23839,
+   22086,
+   22964,
+   19734,
+   21075,
+   22463,
+   23104
+  ]
+ }
+}

@@ -152,6 +152,17 @@ learned per-setting vectors (Subliminal Steering style).
   1309) offset, the ring-neighbor polygon self-crossing, and within-state
   token clouds far larger than the mean separations. No ring shape in
   either student; the ring student's clump is just slightly more spread.
+- **First-dwell geometry test** (`src/firstdwell_geometry.py`, user's
+  design; kills the last live geometry signal): class means from ONLY the
+  tokens before each doc's first state switch — no previous dwell in the
+  context, so the neighbor-carryover artifact cannot operate (~20k
+  tokens/state). Ring-distance corr collapses to 0.04 (ring student) /
+  -0.05 (ctrl), no ring order. The mid-dwell 0.30-vs-0.12 gap was the
+  carryover artifact (which scales with tracking sharpness, hence larger
+  for the better tracker). Geometry verdict at s=1 is now clean and final:
+  **no ring structure in the student's representation at all**; every
+  ring-shaped signal in exp03/exp05 measurements traces to the documents'
+  own dynamics leaking through the context window.
 - **Capacity-matched-reader check** (is the 0.704 ceiling unfair? it embeds
   the 2B teacher's emission model; a perfectly-Bayesian 110M student would
   sit lower): fit the student's lag curve with (1) the forward algorithm on

@@ -39,14 +39,17 @@ FINAL = {"ring": (ROOT / "students" / "ring", ROOT, "ckpt_04218.pt"),
 FIG_PANELS = [("ring", 10), ("ring", 12), ("ctrl", 3)]
 
 
-def first_dwell_mask(z):
-    """(n, T) int: state z[i,0] on tokens before the first switch, else -1."""
+def first_dwell_mask(z, min_into=0, min_len=0):
+    """(n, T) int: state z[i,0] on tokens before the first switch, else -1.
+    min_into/min_len restrict to LATE first dwells: only tokens >= min_into
+    positions in, and only if the first dwell lasts >= min_len tokens."""
     n, T = z.shape
     ms = np.full((n, T), -1, dtype=np.int64)
     for i in range(n):
         sw = np.nonzero(z[i] != z[i, 0])[0]
         end = sw[0] if len(sw) else T
-        ms[i, :end] = z[i, 0]
+        if end >= min_len:
+            ms[i, min_into:end] = z[i, 0]
     return ms
 
 
@@ -164,11 +167,18 @@ def panel(ax, pts, title):
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--device", default="cuda:0")
+    ap.add_argument("--min-into", type=int, default=0,
+                    help="use only tokens >= this many positions into the "
+                         "first dwell (late-first-dwell variant)")
+    ap.add_argument("--min-len", type=int, default=0,
+                    help="require the first dwell to last >= this many tokens")
+    ap.add_argument("--tag", default="",
+                    help="output name suffix, e.g. _late")
     args = ap.parse_args()
     dev = torch.device(args.device)
 
     ids, post, z, tr, te = load_eval()
-    ms = first_dwell_mask(z)
+    ms = first_dwell_mask(z, args.min_into, args.min_len)
     sel = ms >= 0
     reader_fd_acc = float((post.argmax(-1) == z)[sel].mean())
     print(f"first-dwell tokens: {int(sel.sum())} "
@@ -212,9 +222,10 @@ def main():
                  "neighbor-carryover (top: raw activation means, "
                  "bottom: probe read-out directions)")
     fig.tight_layout()
-    fig.savefig(ROOT / "probe" / "firstdwell.png", dpi=150)
-    (ROOT / "probe" / "firstdwell.json").write_text(json.dumps(out, indent=1))
-    print("wrote firstdwell.json / firstdwell.png", flush=True)
+    fig.savefig(ROOT / "probe" / f"firstdwell{args.tag}.png", dpi=150)
+    (ROOT / "probe" / f"firstdwell{args.tag}.json").write_text(
+        json.dumps(out, indent=1))
+    print(f"wrote firstdwell{args.tag}.json / .png", flush=True)
 
 
 if __name__ == "__main__":

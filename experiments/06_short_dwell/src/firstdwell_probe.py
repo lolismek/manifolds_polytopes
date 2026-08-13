@@ -145,8 +145,15 @@ def analyze(student, dev, ids, post, ms, tr, te):
             "posterior_cols_unitnorm": ring_metrics(cols_n),
             "onehot_cols_unitnorm": ring_metrics(zcols_n)})
         fig_data[l] = (means, zcols_n)
+    arrays = {
+        "means": np.stack([(csum[l] / ccount[:, None]).cpu().numpy()
+                           for l in range(L)]).astype(np.float32),
+        "post_cols": np.stack([solved[l][0].T.cpu().numpy()
+                               for l in range(L)]).astype(np.float32),
+        "onehot_cols": np.stack([solved[l][1].T.cpu().numpy()
+                                 for l in range(L)]).astype(np.float32)}
     return {"ckpt": ckpt, "n_train_tokens": int(n), "n_test_tokens": int(n_te),
-            "layers": recs}, fig_data
+            "layers": recs}, fig_data, arrays
 
 
 def panel(ax, pts, title):
@@ -186,11 +193,13 @@ def main():
           f"exact reader acc there: {reader_fd_acc:.4f}", flush=True)
 
     out = {"reader_firstdwell_acc": round(reader_fd_acc, 4)}
-    all_fig = {}
+    all_fig, npz_out = {}, {}
     for student in ("ring", "ctrl"):
-        rec, fig_data = analyze(student, dev, ids, post, ms, tr, te)
+        rec, fig_data, arrays = analyze(student, dev, ids, post, ms, tr, te)
         out[student] = rec
         all_fig[student] = fig_data
+        for k, v in arrays.items():
+            npz_out[f"{student}_{k}"] = v
         best = max(rec["layers"], key=lambda r: r["probe_R2"])
         print(f"{student}: best L{best['layer']} R2 {best['probe_R2']} "
               f"acc {best['acc_vs_true_state']} "
@@ -225,7 +234,8 @@ def main():
     fig.savefig(ROOT / "probe" / f"firstdwell{args.tag}.png", dpi=150)
     (ROOT / "probe" / f"firstdwell{args.tag}.json").write_text(
         json.dumps(out, indent=1))
-    print(f"wrote firstdwell{args.tag}.json / .png", flush=True)
+    np.savez(ROOT / "probe" / f"firstdwell{args.tag}_arrays.npz", **npz_out)
+    print(f"wrote firstdwell{args.tag}.json / .png / _arrays.npz", flush=True)
 
 
 if __name__ == "__main__":

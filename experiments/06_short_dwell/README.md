@@ -277,3 +277,16 @@ Figure: `results/probe/perclass_late.png` (corr and f1 fraction vs lambda).
 Combined with the Fourier result: the ring plane is real; every estimator
 reads it with a sign set by how it treats the within-state variance that
 shares that plane. Data: `results/probe/perclass_late.json`.
+
+## Probe-direction cosine heatmaps (`src/probe_heatmap.py`)
+
+8x8 pairwise cosine of the per-state direction vectors, states in ring
+order (`results/probe/probe_heatmap.png`; L10, late-first-dwell fits).
+Ring student: the lam=10 ridge panel shows the soft-identity band — the
+two diagonals adjacent to the principal one (wrap included) are the
+warmest off-diagonal cells (~0.0 vs ~-0.2 for ring-distance >= 2); the
+whitened panel inverts the band (neighbors coldest); class means show it
+faintly; logistic nearly flat. Ctrl: no band in any panel. Note the
+baseline: 8 competing centered directions force mean pairwise cosine
+~ -1/7, so the leak appears as least-negative, not positive, and is
+diluted by the ~63% of direction energy outside the ring plane.

@@ -121,3 +121,23 @@ learned per-setting vectors (Subliminal Steering style).
     an artifact: the information is in the text (reader 0.70) but a 110M
     student trained ~6 epochs on 90M tokens recovers less than half of it
     and shows no sign of belief-state ring geometry.
+- **Concat probe + lag curves** (`src/probe_concat.py`; Shai et al.'s RRXOR
+  lesson — probe the concatenation of all 13 layers, 9984 dims,
+  per-feature standardized; final ckpts):
+  - concat helps both students the same modest amount (ring R2 0.150 ->
+    0.206, acc 0.320 -> 0.361; ctrl 0.078 -> 0.114, 0.258 -> 0.296): some
+    state info is written then overwritten mid-stream, but no RRXOR-style
+    hidden geometry unlocks — same non-ring angular order in concat space,
+    ring-dist corr 0.22 (ring) / 0.08 (ctrl).
+  - **the ring student integrates evidence**: probe accuracy by
+    tokens-since-transition climbs 0.18 -> 0.48 (reader: 0.21 -> 0.90),
+    and the ring-over-ctrl gap GROWS through the dwell (+0.9pt at lag 0-4
+    -> +10.6pt at 50+). Replicates exp03's dynamic signature (there +1 ->
+    +16pt); deep-dwell student accuracy is 53% of the reader's (exp03:
+    56%). Not static topic readout.
+  - net verdict: belief *tracking* is real, graded, and integrative in both
+    exp03 and exp05 at ~half the ideal reader's height; belief *geometry*
+    (the ring) does not form when the test is strict (natural-magnitude
+    steering, margin-chosen ring order, controls in place). exp03's exact
+    ring order rode on loud 5x steering + neighbor carryover that any
+    reader exhibits (its control: corr 0.69).

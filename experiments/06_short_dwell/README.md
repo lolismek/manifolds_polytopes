@@ -179,3 +179,36 @@ clean geometry test).
 
 Figure: `results/probe/firstdwell.png` (class means + one-hot columns in
 2D, ring L10/L12 vs ctrl L3). Data: `results/probe/firstdwell.json`.
+
+## Late-first-dwell variant (user's design: carryover-free AND evidence-rich)
+
+Same script, `--min-into 10 --min-len 15 --tag _late`: only tokens >=10
+positions into a first dwell lasting >=15 tokens (58k tokens; reader
+ceiling there 0.933 — the state is essentially identified). Results:
+
+- Decoding sharpens further: ring R2 0.541 / acc 0.722 at L12 (ctrl 0.236
+  / 0.479). Confirms the low any-lag first-dwell accuracy was just
+  early-token ignorance, not a probe failure.
+- **Class-mean circle still absent**: corr 0.17-0.19 at L9-12, no ring
+  order (ctrl -0.07). So the missing circle was NOT caused by
+  evidence-poor early tokens — even with the state confidently
+  identified, the 8 centroids do not sit on a ring unless a previous
+  dwell is in context. The mid-dwell circle (0.45) is manufactured by the
+  previous-dwell trace: the predecessor is always a ring neighbor, so
+  each state's centroid gets pulled toward its neighbors.
+- **One-hot read-out anti-ring strengthens**: corr -0.78..-0.82 at L9-12
+  (any-lag: -0.65..-0.72; ctrl ~0.1). Layer profile in the ring student:
+  positive (+0.3..+0.5) in early layers, strongly negative in the last
+  four. The adjacency structure in the decoder directions grows exactly
+  where and when tracking is sharpest.
+
+Reading: the student does not represent the 8 states as a static circle.
+Ring knowledge lives in (a) the tracking dynamics (belief smear across
+switches) and (b) the within-state structure that makes ring NEIGHBORS the
+discriminable-with-effort pairs — consistent with a predictor that hedges
+toward the identified state's neighbors because that is where the next
+switch goes. Direct test of (b) left open: does the student's own
+next-token belief, and its hidden-state covariance, point at ring
+neighbors specifically during dwells?
+
+Data: `results/probe/firstdwell_late.{json,png}`.

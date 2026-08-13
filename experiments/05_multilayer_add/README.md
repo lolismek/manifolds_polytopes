@@ -141,6 +141,17 @@ learned per-setting vectors (Subliminal Steering style).
     steering, margin-chosen ring order, controls in place). exp03's exact
     ring order rode on loud 5x steering + neighbor carryover that any
     reader exhibits (its control: corr 0.69).
+- **MLP probe + PCA figure** (`src/probe_mlp.py`, `src/pca_shapes.py`):
+  nonlinear probe (768-512-512-8 MLP, same split/target, each student's best
+  layer) beats linear by only ~0.02 for both students — ring 0.171/acc
+  0.326 (epoch 1, overfits after) vs linear 0.150/0.320; ctrl 0.099/0.271
+  vs 0.078/0.258 — and stays below the linear concat probe (0.206).
+  Nonlinear encoding is ruled out. The 2D picture
+  (`results/probe/pca_shapes.png`) matches: in both students the 8
+  mid-dwell class means sit in a small clump with state 0 (weak carrier
+  1309) offset, the ring-neighbor polygon self-crossing, and within-state
+  token clouds far larger than the mean separations. No ring shape in
+  either student; the ring student's clump is just slightly more spread.
 - **Capacity-matched-reader check** (is the 0.704 ceiling unfair? it embeds
   the 2B teacher's emission model; a perfectly-Bayesian 110M student would
   sit lower): fit the student's lag curve with (1) the forward algorithm on

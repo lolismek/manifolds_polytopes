@@ -162,10 +162,12 @@ def main():
     ids, post, z, tr, te = load_eval()
     ms = first_dwell_mask(z, args.min_into, args.min_len)
     out = {}
+    dirs_out = {"lam_scales": np.array(LAM_SCALES)}
     for student in ("ring", "ctrl"):
         st = collect(student, dev, ids, ms, tr, te)
         L = st["L"]
         srec = {"ridge": [], "logistic": []}
+        ridge_saved = {l: [] for l in PERM_LAYERS}
         for lam_scale in LAM_SCALES:
             for l in range(L):
                 W, mx, mz = ridge_dirs(st, l, lam_scale, dev)
@@ -175,9 +177,14 @@ def main():
                     pred = (st["Xte"][l] - mx) @ W + mz
                     rec["acc"] = round(float(
                         (pred.argmax(1) == st["zte"]).float().mean()), 4)
+                    ridge_saved[l].append(W.T.cpu().numpy())
                 srec["ridge"].append(rec)
         for l in PERM_LAYERS:
+            dirs_out[f"{student}_ridge_L{l}"] = np.stack(
+                ridge_saved[l]).astype(np.float32)      # (n_lam, K, d)
             W, mu, b = logistic_dirs(st, l, dev)
+            dirs_out[f"{student}_logistic_L{l}"] = \
+                W.T.cpu().numpy().astype(np.float32)     # (K, d)
             rec = {"layer": l}
             rec.update(geometry(W.T.cpu().numpy(), True))
             pred = (st["Xte"][l] - mu) @ W + b
@@ -186,6 +193,7 @@ def main():
             srec["logistic"].append(rec)
             print(f"{student} logistic L{l}: {json.dumps(rec)}", flush=True)
         out[student] = srec
+    np.savez(ROOT / "probe" / f"perclass{args.tag}_dirs.npz", **dirs_out)
         for rec in srec["ridge"]:
             if rec["layer"] == 10:
                 print(f"{student} ridge L10 lam {rec['lam_scale']}: "

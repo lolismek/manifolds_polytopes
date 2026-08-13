@@ -107,8 +107,10 @@ def main():
     A += lam * torch.eye(D, dtype=torch.float64, device=dev)
     By = (XtY - n * torch.outer(mx, my)) * s[:, None]
     Bys = (XtYs - n * torch.outer(mx, my)) * s[:, None]
-    W = (torch.linalg.solve(A, By) * s[:, None]).float()
-    Ws = (torch.linalg.solve(A, Bys) * s[:, None]).float()
+    # GPU cusolver dlopen is broken in the seahorse env; solve on CPU
+    Ac = A.cpu()
+    W = (torch.linalg.solve(Ac, By.cpu()).to(dev) * s[:, None]).float()
+    Ws = (torch.linalg.solve(Ac, Bys.cpu()).to(dev) * s[:, None]).float()
     mx, my = mx.float(), my.float()
     del G, XtY, XtYs, A, By, Bys
     torch.cuda.empty_cache()

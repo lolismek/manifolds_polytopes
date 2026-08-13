@@ -131,8 +131,12 @@ class LayerStats:
         lam = LAM_SCALE * torch.diagonal(Gc).mean()
         A = Gc + lam * torch.eye(Gc.shape[0], dtype=torch.float64,
                                  device=Gc.device)
-        W = torch.linalg.solve(A, self.XtY - self.n * torch.outer(mx, my))
-        Ws = torch.linalg.solve(A, self.XtYs - self.n * torch.outer(mx, my))
+        # GPU cusolver dlopen is broken in the seahorse env; solve on CPU
+        Ac = A.cpu()
+        W = torch.linalg.solve(
+            Ac, (self.XtY - self.n * torch.outer(mx, my)).cpu()).to(A.device)
+        Ws = torch.linalg.solve(
+            Ac, (self.XtYs - self.n * torch.outer(mx, my)).cpu()).to(A.device)
         return W.float(), Ws.float(), mx.float(), my.float()
 
 

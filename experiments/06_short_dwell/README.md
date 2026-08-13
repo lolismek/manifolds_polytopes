@@ -244,3 +244,36 @@ sits on a (subdominant) circle in ring order; within-state variance also
 lives along that plane (hedging/uncertainty), which is why discriminative
 probes invert it. Mid-dwell's crisp 0.45 corr = this real circle +
 carryover amplification on top. Data: `results/probe/fourier_ringmode.json`.
+
+## Per-state probes with the whitening dial (`src/perclass_probe.py`)
+
+User's push: maybe accurate per-state probes can exhibit the circle, and
+the anti-ring is the estimator's whitening, not the representation. For
+ridge the per-class and joint solutions are identical column-for-column,
+but lambda IS the whitening dial: lambda -> 0 fully whitens, lambda -> inf
+converges to raw class-correlation directions (centroids). Swept lambda
+(x mean Gram diag) on late-first-dwell tokens; plus one-vs-rest logistic
+probes (class-balanced) as a non-whitening-family estimator.
+
+Ring student L10 (L9/11/12 same shape):
+| lam scale | dir corr | ring order | f1 frac | p_f1 | heldout acc |
+|---|---|---|---|---|---|
+| 1e-3 (whitened) | -0.81 | no | 0.23 | 1.0 | 0.7045 |
+| 1 | +0.27 | no | 0.30 | 0.03 | 0.7062 |
+| 10 | **+0.69** | **YES** | 0.36 | 0.0008 | 0.6755 |
+| 100 | +0.60 | no | 0.38 | 0.0008 | 0.5644 |
+
+- **At lam=10 the 8 read-out directions sit in exact ring order (corr
+  +0.69) while still decoding at 0.676 vs the 0.706 optimum.** An accurate
+  probe family CAN be circle-shaped — the anti-ring at small lam is the
+  whitening's doing, not the representation's. Note acc is FLAT from
+  lam 1e-4 to 1 (0.7045-0.7062): the whitened extreme buys nothing.
+- Ctrl at any lam: corr +0.12 -> -0.15, f1 never significant. The swing
+  from -0.81 to +0.69 across the dial is ring-student-specific.
+- Logistic (implicitly partial-whitening): intermediate, corr -0.2..-0.55
+  at L9-12, acc 0.68-0.70 — sits between the ridge extremes, as expected.
+
+Figure: `results/probe/perclass_late.png` (corr and f1 fraction vs lambda).
+Combined with the Fourier result: the ring plane is real; every estimator
+reads it with a sign set by how it treats the within-state variance that
+shares that plane. Data: `results/probe/perclass_late.json`.

@@ -1,0 +1,1556 @@
+{
+ "ring": {
+  "ridge": [
+   {
+    "layer": 0,
+    "lam_scale": 0.0001,
+    "dist_vs_ringdist_corr": -0.5664,
+    "is_ring_order": false
+   },
+   {
+    "layer": 1,
+    "lam_scale": 0.0001,
+    "dist_vs_ringdist_corr": 0.5257,
+    "is_ring_order": false
+   },
+   {
+    "layer": 2,
+    "lam_scale": 0.0001,
+    "dist_vs_ringdist_corr": 0.4711,
+    "is_ring_order": false
+   },
+   {
+    "layer": 3,
+    "lam_scale": 0.0001,
+    "dist_vs_ringdist_corr": 0.2976,
+    "is_ring_order": false,
+    "frac_f1": 0.3011,
+    "frac_f34": 0.4154,
+    "p_f1": 0.0683,
+    "p_f34": 0.8837,
+    "acc": 0.6124
+   },
+   {
+    "layer": 4,
+    "lam_scale": 0.0001,
+    "dist_vs_ringdist_corr": 0.3008,
+    "is_ring_order": false
+   },
+   {
+    "layer": 5,
+    "lam_scale": 0.0001,
+    "dist_vs_ringdist_corr": 0.3757,
+    "is_ring_order": false
+   },
+   {
+    "layer": 6,
+    "lam_scale": 0.0001,
+    "dist_vs_ringdist_corr": 0.5116,
+    "is_ring_order": false
+   },
+   {
+    "layer": 7,
+    "lam_scale": 0.0001,
+    "dist_vs_ringdist_corr": -0.3691,
+    "is_ring_order": false
+   },
+   {
+    "layer": 8,
+    "lam_scale": 0.0001,
+    "dist_vs_ringdist_corr": -0.2812,
+    "is_ring_order": false
+   },
+   {
+    "layer": 9,
+    "lam_scale": 0.0001,
+    "dist_vs_ringdist_corr": -0.7841,
+    "is_ring_order": false,
+    "frac_f1": 0.2368,
+    "frac_f34": 0.472,
+    "p_f1": 1.0,
+    "p_f34": 0.0004,
+    "acc": 0.6964
+   },
+   {
+    "layer": 10,
+    "lam_scale": 0.0001,
+    "dist_vs_ringdist_corr": -0.8135,
+    "is_ring_order": false,
+    "frac_f1": 0.2296,
+    "frac_f34": 0.4769,
+    "p_f1": 1.0,
+    "p_f34": 0.0004,
+    "acc": 0.7044
+   },
+   {
+    "layer": 11,
+    "lam_scale": 0.0001,
+    "dist_vs_ringdist_corr": -0.8193,
+    "is_ring_order": false,
+    "frac_f1": 0.2216,
+    "frac_f34": 0.488,
+    "p_f1": 1.0,
+    "p_f34": 0.0004,
+    "acc": 0.7096
+   },
+   {
+    "layer": 12,
+    "lam_scale": 0.0001,
+    "dist_vs_ringdist_corr": -0.7868,
+    "is_ring_order": false,
+    "frac_f1": 0.2152,
+    "frac_f34": 0.4986,
+    "p_f1": 1.0,
+    "p_f34": 0.0004,
+    "acc": 0.715
+   },
+   {
+    "layer": 0,
+    "lam_scale": 0.001,
+    "dist_vs_ringdist_corr": -0.5662,
+    "is_ring_order": false
+   },
+   {
+    "layer": 1,
+    "lam_scale": 0.001,
+    "dist_vs_ringdist_corr": 0.5233,
+    "is_ring_order": false
+   },
+   {
+    "layer": 2,
+    "lam_scale": 0.001,
+    "dist_vs_ringdist_corr": 0.4713,
+    "is_ring_order": false
+   },
+   {
+    "layer": 3,
+    "lam_scale": 0.001,
+    "dist_vs_ringdist_corr": 0.2983,
+    "is_ring_order": false,
+    "frac_f1": 0.3011,
+    "frac_f34": 0.4153,
+    "p_f1": 0.0679,
+    "p_f34": 0.8849,
+    "acc": 0.6123
+   },
+   {
+    "layer": 4,
+    "lam_scale": 0.001,
+    "dist_vs_ringdist_corr": 0.3017,
+    "is_ring_order": false
+   },
+   {
+    "layer": 5,
+    "lam_scale": 0.001,
+    "dist_vs_ringdist_corr": 0.3769,
+    "is_ring_order": false
+   },
+   {
+    "layer": 6,
+    "lam_scale": 0.001,
+    "dist_vs_ringdist_corr": 0.5124,
+    "is_ring_order": false
+   },
+   {
+    "layer": 7,
+    "lam_scale": 0.001,
+    "dist_vs_ringdist_corr": -0.367,
+    "is_ring_order": false
+   },
+   {
+    "layer": 8,
+    "lam_scale": 0.001,
+    "dist_vs_ringdist_corr": -0.2789,
+    "is_ring_order": false
+   },
+   {
+    "layer": 9,
+    "lam_scale": 0.001,
+    "dist_vs_ringdist_corr": -0.7838,
+    "is_ring_order": false,
+    "frac_f1": 0.2369,
+    "frac_f34": 0.4719,
+    "p_f1": 1.0,
+    "p_f34": 0.0004,
+    "acc": 0.6966
+   },
+   {
+    "layer": 10,
+    "lam_scale": 0.001,
+    "dist_vs_ringdist_corr": -0.8131,
+    "is_ring_order": false,
+    "frac_f1": 0.2298,
+    "frac_f34": 0.4768,
+    "p_f1": 1.0,
+    "p_f34": 0.0004,
+    "acc": 0.7045
+   },
+   {
+    "layer": 11,
+    "lam_scale": 0.001,
+    "dist_vs_ringdist_corr": -0.8189,
+    "is_ring_order": false,
+    "frac_f1": 0.2218,
+    "frac_f34": 0.4879,
+    "p_f1": 1.0,
+    "p_f34": 0.0004,
+    "acc": 0.7097
+   },
+   {
+    "layer": 12,
+    "lam_scale": 0.001,
+    "dist_vs_ringdist_corr": -0.7864,
+    "is_ring_order": false,
+    "frac_f1": 0.2153,
+    "frac_f34": 0.4984,
+    "p_f1": 1.0,
+    "p_f34": 0.0004,
+    "acc": 0.7151
+   },
+   {
+    "layer": 0,
+    "lam_scale": 0.01,
+    "dist_vs_ringdist_corr": -0.5639,
+    "is_ring_order": false
+   },
+   {
+    "layer": 1,
+    "lam_scale": 0.01,
+    "dist_vs_ringdist_corr": 0.5059,
+    "is_ring_order": false
+   },
+   {
+    "layer": 2,
+    "lam_scale": 0.01,
+    "dist_vs_ringdist_corr": 0.4722,
+    "is_ring_order": false
+   },
+   {
+    "layer": 3,
+    "lam_scale": 0.01,
+    "dist_vs_ringdist_corr": 0.3049,
+    "is_ring_order": false,
+    "frac_f1": 0.3014,
+    "frac_f34": 0.415,
+    "p_f1": 0.0619,
+    "p_f34": 0.8964,
+    "acc": 0.612
+   },
+   {
+    "layer": 4,
+    "lam_scale": 0.01,
+    "dist_vs_ringdist_corr": 0.3099,
+    "is_ring_order": false
+   },
+   {
+    "layer": 5,
+    "lam_scale": 0.01,
+    "dist_vs_ringdist_corr": 0.3888,
+    "is_ring_order": false
+   },
+   {
+    "layer": 6,
+    "lam_scale": 0.01,
+    "dist_vs_ringdist_corr": 0.5196,
+    "is_ring_order": false
+   },
+   {
+    "layer": 7,
+    "lam_scale": 0.01,
+    "dist_vs_ringdist_corr": -0.3459,
+    "is_ring_order": false
+   },
+   {
+    "layer": 8,
+    "lam_scale": 0.01,
+    "dist_vs_ringdist_corr": -0.2555,
+    "is_ring_order": false
+   },
+   {
+    "layer": 9,
+    "lam_scale": 0.01,
+    "dist_vs_ringdist_corr": -0.7806,
+    "is_ring_order": false,
+    "frac_f1": 0.2381,
+    "frac_f34": 0.4708,
+    "p_f1": 1.0,
+    "p_f34": 0.0004,
+    "acc": 0.6973
+   },
+   {
+    "layer": 10,
+    "lam_scale": 0.01,
+    "dist_vs_ringdist_corr": -0.8091,
+    "is_ring_order": false,
+    "frac_f1": 0.2313,
+    "frac_f34": 0.4756,
+    "p_f1": 1.0,
+    "p_f34": 0.0004,
+    "acc": 0.7044
+   },
+   {
+    "layer": 11,
+    "lam_scale": 0.01,
+    "dist_vs_ringdist_corr": -0.8146,
+    "is_ring_order": false,
+    "frac_f1": 0.2233,
+    "frac_f34": 0.4867,
+    "p_f1": 1.0,
+    "p_f34": 0.0004,
+    "acc": 0.7103
+   },
+   {
+    "layer": 12,
+    "lam_scale": 0.01,
+    "dist_vs_ringdist_corr": -0.7818,
+    "is_ring_order": false,
+    "frac_f1": 0.217,
+    "frac_f34": 0.4971,
+    "p_f1": 1.0,
+    "p_f34": 0.0004,
+    "acc": 0.716
+   },
+   {
+    "layer": 0,
+    "lam_scale": 0.1,
+    "dist_vs_ringdist_corr": -0.5017,
+    "is_ring_order": false
+   },
+   {
+    "layer": 1,
+    "lam_scale": 0.1,
+    "dist_vs_ringdist_corr": 0.4152,
+    "is_ring_order": false
+   },
+   {
+    "layer": 2,
+    "lam_scale": 0.1,
+    "dist_vs_ringdist_corr": 0.4377,
+    "is_ring_order": false
+   },
+   {
+    "layer": 3,
+    "lam_scale": 0.1,
+    "dist_vs_ringdist_corr": 0.3532,
+    "is_ring_order": false,
+    "frac_f1": 0.3041,
+    "frac_f34": 0.4124,
+    "p_f1": 0.0242,
+    "p_f34": 0.9413,
+    "acc": 0.6121
+   },
+   {
+    "layer": 4,
+    "lam_scale": 0.1,
+    "dist_vs_ringdist_corr": 0.3666,
+    "is_ring_order": false
+   },
+   {
+    "layer": 5,
+    "lam_scale": 0.1,
+    "dist_vs_ringdist_corr": 0.4664,
+    "is_ring_order": false
+   },
+   {
+    "layer": 6,
+    "lam_scale": 0.1,
+    "dist_vs_ringdist_corr": 0.567,
+    "is_ring_order": false
+   },
+   {
+    "layer": 7,
+    "lam_scale": 0.1,
+    "dist_vs_ringdist_corr": -0.1201,
+    "is_ring_order": false
+   },
+   {
+    "layer": 8,
+    "lam_scale": 0.1,
+    "dist_vs_ringdist_corr": -0.0136,
+    "is_ring_order": false
+   },
+   {
+    "layer": 9,
+    "lam_scale": 0.1,
+    "dist_vs_ringdist_corr": -0.7358,
+    "is_ring_order": false,
+    "frac_f1": 0.2485,
+    "frac_f34": 0.4608,
+    "p_f1": 1.0,
+    "p_f34": 0.0004,
+    "acc": 0.6988
+   },
+   {
+    "layer": 10,
+    "lam_scale": 0.1,
+    "dist_vs_ringdist_corr": -0.7612,
+    "is_ring_order": false,
+    "frac_f1": 0.244,
+    "frac_f34": 0.4648,
+    "p_f1": 1.0,
+    "p_f34": 0.0004,
+    "acc": 0.7062
+   },
+   {
+    "layer": 11,
+    "lam_scale": 0.1,
+    "dist_vs_ringdist_corr": -0.7671,
+    "is_ring_order": false,
+    "frac_f1": 0.2361,
+    "frac_f34": 0.4759,
+    "p_f1": 1.0,
+    "p_f34": 0.0004,
+    "acc": 0.7146
+   },
+   {
+    "layer": 12,
+    "lam_scale": 0.1,
+    "dist_vs_ringdist_corr": -0.7333,
+    "is_ring_order": false,
+    "frac_f1": 0.23,
+    "frac_f34": 0.4853,
+    "p_f1": 1.0,
+    "p_f34": 0.0004,
+    "acc": 0.7182
+   },
+   {
+    "layer": 0,
+    "lam_scale": 1.0,
+    "dist_vs_ringdist_corr": -0.1391,
+    "is_ring_order": false
+   },
+   {
+    "layer": 1,
+    "lam_scale": 1.0,
+    "dist_vs_ringdist_corr": 0.0529,
+    "is_ring_order": false
+   },
+   {
+    "layer": 2,
+    "lam_scale": 1.0,
+    "dist_vs_ringdist_corr": 0.2093,
+    "is_ring_order": false
+   },
+   {
+    "layer": 3,
+    "lam_scale": 1.0,
+    "dist_vs_ringdist_corr": 0.421,
+    "is_ring_order": false,
+    "frac_f1": 0.3126,
+    "frac_f34": 0.4092,
+    "p_f1": 0.0075,
+    "p_f34": 0.9508,
+    "acc": 0.597
+   },
+   {
+    "layer": 4,
+    "lam_scale": 1.0,
+    "dist_vs_ringdist_corr": 0.447,
+    "is_ring_order": false
+   },
+   {
+    "layer": 5,
+    "lam_scale": 1.0,
+    "dist_vs_ringdist_corr": 0.5166,
+    "is_ring_order": false
+   },
+   {
+    "layer": 6,
+    "lam_scale": 1.0,
+    "dist_vs_ringdist_corr": 0.5547,
+    "is_ring_order": false
+   },
+   {
+    "layer": 7,
+    "lam_scale": 1.0,
+    "dist_vs_ringdist_corr": 0.6423,
+    "is_ring_order": false
+   },
+   {
+    "layer": 8,
+    "lam_scale": 1.0,
+    "dist_vs_ringdist_corr": 0.6703,
+    "is_ring_order": false
+   },
+   {
+    "layer": 9,
+    "lam_scale": 1.0,
+    "dist_vs_ringdist_corr": 0.313,
+    "is_ring_order": false,
+    "frac_f1": 0.2964,
+    "frac_f34": 0.4155,
+    "p_f1": 0.025,
+    "p_f34": 0.9841,
+    "acc": 0.6974
+   },
+   {
+    "layer": 10,
+    "lam_scale": 1.0,
+    "dist_vs_ringdist_corr": 0.2731,
+    "is_ring_order": false,
+    "frac_f1": 0.2954,
+    "frac_f34": 0.4152,
+    "p_f1": 0.0345,
+    "p_f34": 0.9873,
+    "acc": 0.7062
+   },
+   {
+    "layer": 11,
+    "lam_scale": 1.0,
+    "dist_vs_ringdist_corr": 0.0294,
+    "is_ring_order": false,
+    "frac_f1": 0.287,
+    "frac_f34": 0.4237,
+    "p_f1": 0.4032,
+    "p_f34": 0.7929,
+    "acc": 0.7106
+   },
+   {
+    "layer": 12,
+    "lam_scale": 1.0,
+    "dist_vs_ringdist_corr": -0.1238,
+    "is_ring_order": false,
+    "frac_f1": 0.2806,
+    "frac_f34": 0.4295,
+    "p_f1": 0.7591,
+    "p_f34": 0.4571,
+    "acc": 0.7135
+   },
+   {
+    "layer": 0,
+    "lam_scale": 10.0,
+    "dist_vs_ringdist_corr": 0.0189,
+    "is_ring_order": false
+   },
+   {
+    "layer": 1,
+    "lam_scale": 10.0,
+    "dist_vs_ringdist_corr": 0.0556,
+    "is_ring_order": false
+   },
+   {
+    "layer": 2,
+    "lam_scale": 10.0,
+    "dist_vs_ringdist_corr": 0.1261,
+    "is_ring_order": false
+   },
+   {
+    "layer": 3,
+    "lam_scale": 10.0,
+    "dist_vs_ringdist_corr": 0.184,
+    "is_ring_order": false,
+    "frac_f1": 0.3078,
+    "frac_f34": 0.4272,
+    "p_f1": 0.1468,
+    "p_f34": 0.5278,
+    "acc": 0.5438
+   },
+   {
+    "layer": 4,
+    "lam_scale": 10.0,
+    "dist_vs_ringdist_corr": 0.1801,
+    "is_ring_order": false
+   },
+   {
+    "layer": 5,
+    "lam_scale": 10.0,
+    "dist_vs_ringdist_corr": 0.1315,
+    "is_ring_order": false
+   },
+   {
+    "layer": 6,
+    "lam_scale": 10.0,
+    "dist_vs_ringdist_corr": 0.1094,
+    "is_ring_order": false
+   },
+   {
+    "layer": 7,
+    "lam_scale": 10.0,
+    "dist_vs_ringdist_corr": 0.5511,
+    "is_ring_order": false
+   },
+   {
+    "layer": 8,
+    "lam_scale": 10.0,
+    "dist_vs_ringdist_corr": 0.5775,
+    "is_ring_order": true
+   },
+   {
+    "layer": 9,
+    "lam_scale": 10.0,
+    "dist_vs_ringdist_corr": 0.6766,
+    "is_ring_order": false,
+    "frac_f1": 0.3596,
+    "frac_f34": 0.3671,
+    "p_f1": 0.0008,
+    "p_f34": 0.9992,
+    "acc": 0.666
+   },
+   {
+    "layer": 10,
+    "lam_scale": 10.0,
+    "dist_vs_ringdist_corr": 0.6869,
+    "is_ring_order": true,
+    "frac_f1": 0.3579,
+    "frac_f34": 0.3655,
+    "p_f1": 0.0008,
+    "p_f34": 1.0,
+    "acc": 0.6755
+   },
+   {
+    "layer": 11,
+    "lam_scale": 10.0,
+    "dist_vs_ringdist_corr": 0.6644,
+    "is_ring_order": true,
+    "frac_f1": 0.3536,
+    "frac_f34": 0.3625,
+    "p_f1": 0.0004,
+    "p_f34": 1.0,
+    "acc": 0.6735
+   },
+   {
+    "layer": 12,
+    "lam_scale": 10.0,
+    "dist_vs_ringdist_corr": 0.6458,
+    "is_ring_order": true,
+    "frac_f1": 0.3536,
+    "frac_f34": 0.359,
+    "p_f1": 0.0004,
+    "p_f34": 1.0,
+    "acc": 0.6667
+   },
+   {
+    "layer": 0,
+    "lam_scale": 100.0,
+    "dist_vs_ringdist_corr": -0.1262,
+    "is_ring_order": false
+   },
+   {
+    "layer": 1,
+    "lam_scale": 100.0,
+    "dist_vs_ringdist_corr": -0.0339,
+    "is_ring_order": false
+   },
+   {
+    "layer": 2,
+    "lam_scale": 100.0,
+    "dist_vs_ringdist_corr": 0.0468,
+    "is_ring_order": false
+   },
+   {
+    "layer": 3,
+    "lam_scale": 100.0,
+    "dist_vs_ringdist_corr": 0.0574,
+    "is_ring_order": false,
+    "frac_f1": 0.2932,
+    "frac_f34": 0.4444,
+    "p_f1": 0.4036,
+    "p_f34": 0.3385,
+    "acc": 0.4485
+   },
+   {
+    "layer": 4,
+    "lam_scale": 100.0,
+    "dist_vs_ringdist_corr": 0.0312,
+    "is_ring_order": false
+   },
+   {
+    "layer": 5,
+    "lam_scale": 100.0,
+    "dist_vs_ringdist_corr": -0.0131,
+    "is_ring_order": false
+   },
+   {
+    "layer": 6,
+    "lam_scale": 100.0,
+    "dist_vs_ringdist_corr": -0.0522,
+    "is_ring_order": false
+   },
+   {
+    "layer": 7,
+    "lam_scale": 100.0,
+    "dist_vs_ringdist_corr": 0.3396,
+    "is_ring_order": false
+   },
+   {
+    "layer": 8,
+    "lam_scale": 100.0,
+    "dist_vs_ringdist_corr": 0.3323,
+    "is_ring_order": false
+   },
+   {
+    "layer": 9,
+    "lam_scale": 100.0,
+    "dist_vs_ringdist_corr": 0.5765,
+    "is_ring_order": false,
+    "frac_f1": 0.3788,
+    "frac_f34": 0.3598,
+    "p_f1": 0.0012,
+    "p_f34": 0.9885,
+    "acc": 0.5485
+   },
+   {
+    "layer": 10,
+    "lam_scale": 100.0,
+    "dist_vs_ringdist_corr": 0.6003,
+    "is_ring_order": false,
+    "frac_f1": 0.3789,
+    "frac_f34": 0.3594,
+    "p_f1": 0.0008,
+    "p_f34": 0.9905,
+    "acc": 0.5644
+   },
+   {
+    "layer": 11,
+    "lam_scale": 100.0,
+    "dist_vs_ringdist_corr": 0.5936,
+    "is_ring_order": false,
+    "frac_f1": 0.379,
+    "frac_f34": 0.3563,
+    "p_f1": 0.0008,
+    "p_f34": 0.9889,
+    "acc": 0.5686
+   },
+   {
+    "layer": 12,
+    "lam_scale": 100.0,
+    "dist_vs_ringdist_corr": 0.5602,
+    "is_ring_order": false,
+    "frac_f1": 0.3819,
+    "frac_f34": 0.3597,
+    "p_f1": 0.0012,
+    "p_f34": 0.9774,
+    "acc": 0.5655
+   }
+  ],
+  "logistic": [
+   {
+    "layer": 3,
+    "dist_vs_ringdist_corr": 0.5061,
+    "is_ring_order": false,
+    "frac_f1": 0.3162,
+    "frac_f34": 0.413,
+    "p_f1": 0.006,
+    "p_f34": 0.8794,
+    "acc": 0.6153
+   },
+   {
+    "layer": 9,
+    "dist_vs_ringdist_corr": -0.1947,
+    "is_ring_order": false,
+    "frac_f1": 0.2773,
+    "frac_f34": 0.433,
+    "p_f1": 0.8484,
+    "p_f34": 0.2992,
+    "acc": 0.6811
+   },
+   {
+    "layer": 10,
+    "dist_vs_ringdist_corr": -0.3693,
+    "is_ring_order": false,
+    "frac_f1": 0.2681,
+    "frac_f34": 0.4362,
+    "p_f1": 0.9655,
+    "p_f34": 0.2353,
+    "acc": 0.6866
+   },
+   {
+    "layer": 11,
+    "dist_vs_ringdist_corr": -0.545,
+    "is_ring_order": false,
+    "frac_f1": 0.2539,
+    "frac_f34": 0.4499,
+    "p_f1": 0.9992,
+    "p_f34": 0.0444,
+    "acc": 0.6951
+   },
+   {
+    "layer": 12,
+    "dist_vs_ringdist_corr": -0.5071,
+    "is_ring_order": false,
+    "frac_f1": 0.2535,
+    "frac_f34": 0.4585,
+    "p_f1": 1.0,
+    "p_f34": 0.0103,
+    "acc": 0.6984
+   }
+  ]
+ },
+ "ctrl": {
+  "ridge": [
+   {
+    "layer": 0,
+    "lam_scale": 0.0001,
+    "dist_vs_ringdist_corr": 0.0426,
+    "is_ring_order": false
+   },
+   {
+    "layer": 1,
+    "lam_scale": 0.0001,
+    "dist_vs_ringdist_corr": -0.009,
+    "is_ring_order": false
+   },
+   {
+    "layer": 2,
+    "lam_scale": 0.0001,
+    "dist_vs_ringdist_corr": 0.3064,
+    "is_ring_order": false
+   },
+   {
+    "layer": 3,
+    "lam_scale": 0.0001,
+    "dist_vs_ringdist_corr": 0.4276,
+    "is_ring_order": false,
+    "frac_f1": 0.308,
+    "frac_f34": 0.4166,
+    "p_f1": 0.0143,
+    "p_f34": 0.8437,
+    "acc": 0.4767
+   },
+   {
+    "layer": 4,
+    "lam_scale": 0.0001,
+    "dist_vs_ringdist_corr": 0.1594,
+    "is_ring_order": false
+   },
+   {
+    "layer": 5,
+    "lam_scale": 0.0001,
+    "dist_vs_ringdist_corr": 0.2049,
+    "is_ring_order": false
+   },
+   {
+    "layer": 6,
+    "lam_scale": 0.0001,
+    "dist_vs_ringdist_corr": 0.1613,
+    "is_ring_order": false
+   },
+   {
+    "layer": 7,
+    "lam_scale": 0.0001,
+    "dist_vs_ringdist_corr": 0.1913,
+    "is_ring_order": false
+   },
+   {
+    "layer": 8,
+    "lam_scale": 0.0001,
+    "dist_vs_ringdist_corr": 0.2006,
+    "is_ring_order": false
+   },
+   {
+    "layer": 9,
+    "lam_scale": 0.0001,
+    "dist_vs_ringdist_corr": 0.129,
+    "is_ring_order": false,
+    "frac_f1": 0.295,
+    "frac_f34": 0.4175,
+    "p_f1": 0.2155,
+    "p_f34": 0.8254,
+    "acc": 0.4423
+   },
+   {
+    "layer": 10,
+    "lam_scale": 0.0001,
+    "dist_vs_ringdist_corr": 0.122,
+    "is_ring_order": false,
+    "frac_f1": 0.2935,
+    "frac_f34": 0.4223,
+    "p_f1": 0.2552,
+    "p_f34": 0.7,
+    "acc": 0.4313
+   },
+   {
+    "layer": 11,
+    "lam_scale": 0.0001,
+    "dist_vs_ringdist_corr": -0.0183,
+    "is_ring_order": false,
+    "frac_f1": 0.2847,
+    "frac_f34": 0.4319,
+    "p_f1": 0.5333,
+    "p_f34": 0.3575,
+    "acc": 0.4208
+   },
+   {
+    "layer": 12,
+    "lam_scale": 0.0001,
+    "dist_vs_ringdist_corr": 0.1315,
+    "is_ring_order": false,
+    "frac_f1": 0.2919,
+    "frac_f34": 0.433,
+    "p_f1": 0.269,
+    "p_f34": 0.3452,
+    "acc": 0.4168
+   },
+   {
+    "layer": 0,
+    "lam_scale": 0.001,
+    "dist_vs_ringdist_corr": 0.0427,
+    "is_ring_order": false
+   },
+   {
+    "layer": 1,
+    "lam_scale": 0.001,
+    "dist_vs_ringdist_corr": -0.0073,
+    "is_ring_order": false
+   },
+   {
+    "layer": 2,
+    "lam_scale": 0.001,
+    "dist_vs_ringdist_corr": 0.3067,
+    "is_ring_order": false
+   },
+   {
+    "layer": 3,
+    "lam_scale": 0.001,
+    "dist_vs_ringdist_corr": 0.4268,
+    "is_ring_order": false,
+    "frac_f1": 0.308,
+    "frac_f34": 0.4166,
+    "p_f1": 0.0143,
+    "p_f34": 0.8433,
+    "acc": 0.4767
+   },
+   {
+    "layer": 4,
+    "lam_scale": 0.001,
+    "dist_vs_ringdist_corr": 0.1592,
+    "is_ring_order": false
+   },
+   {
+    "layer": 5,
+    "lam_scale": 0.001,
+    "dist_vs_ringdist_corr": 0.2047,
+    "is_ring_order": false
+   },
+   {
+    "layer": 6,
+    "lam_scale": 0.001,
+    "dist_vs_ringdist_corr": 0.161,
+    "is_ring_order": false
+   },
+   {
+    "layer": 7,
+    "lam_scale": 0.001,
+    "dist_vs_ringdist_corr": 0.191,
+    "is_ring_order": false
+   },
+   {
+    "layer": 8,
+    "lam_scale": 0.001,
+    "dist_vs_ringdist_corr": 0.2004,
+    "is_ring_order": false
+   },
+   {
+    "layer": 9,
+    "lam_scale": 0.001,
+    "dist_vs_ringdist_corr": 0.129,
+    "is_ring_order": false,
+    "frac_f1": 0.295,
+    "frac_f34": 0.4175,
+    "p_f1": 0.2147,
+    "p_f34": 0.825,
+    "acc": 0.4423
+   },
+   {
+    "layer": 10,
+    "lam_scale": 0.001,
+    "dist_vs_ringdist_corr": 0.1218,
+    "is_ring_order": false,
+    "frac_f1": 0.2935,
+    "frac_f34": 0.4224,
+    "p_f1": 0.2563,
+    "p_f34": 0.6988,
+    "acc": 0.4315
+   },
+   {
+    "layer": 11,
+    "lam_scale": 0.001,
+    "dist_vs_ringdist_corr": -0.018,
+    "is_ring_order": false,
+    "frac_f1": 0.2848,
+    "frac_f34": 0.4319,
+    "p_f1": 0.5333,
+    "p_f34": 0.3571,
+    "acc": 0.4206
+   },
+   {
+    "layer": 12,
+    "lam_scale": 0.001,
+    "dist_vs_ringdist_corr": 0.1316,
+    "is_ring_order": false,
+    "frac_f1": 0.2919,
+    "frac_f34": 0.433,
+    "p_f1": 0.2687,
+    "p_f34": 0.3444,
+    "acc": 0.4168
+   },
+   {
+    "layer": 0,
+    "lam_scale": 0.01,
+    "dist_vs_ringdist_corr": 0.0441,
+    "is_ring_order": false
+   },
+   {
+    "layer": 1,
+    "lam_scale": 0.01,
+    "dist_vs_ringdist_corr": 0.0079,
+    "is_ring_order": false
+   },
+   {
+    "layer": 2,
+    "lam_scale": 0.01,
+    "dist_vs_ringdist_corr": 0.3099,
+    "is_ring_order": false
+   },
+   {
+    "layer": 3,
+    "lam_scale": 0.01,
+    "dist_vs_ringdist_corr": 0.4195,
+    "is_ring_order": false,
+    "frac_f1": 0.308,
+    "frac_f34": 0.417,
+    "p_f1": 0.0159,
+    "p_f34": 0.8306,
+    "acc": 0.4769
+   },
+   {
+    "layer": 4,
+    "lam_scale": 0.01,
+    "dist_vs_ringdist_corr": 0.1567,
+    "is_ring_order": false
+   },
+   {
+    "layer": 5,
+    "lam_scale": 0.01,
+    "dist_vs_ringdist_corr": 0.2027,
+    "is_ring_order": false
+   },
+   {
+    "layer": 6,
+    "lam_scale": 0.01,
+    "dist_vs_ringdist_corr": 0.1581,
+    "is_ring_order": false
+   },
+   {
+    "layer": 7,
+    "lam_scale": 0.01,
+    "dist_vs_ringdist_corr": 0.1883,
+    "is_ring_order": false
+   },
+   {
+    "layer": 8,
+    "lam_scale": 0.01,
+    "dist_vs_ringdist_corr": 0.1984,
+    "is_ring_order": false
+   },
+   {
+    "layer": 9,
+    "lam_scale": 0.01,
+    "dist_vs_ringdist_corr": 0.1287,
+    "is_ring_order": false,
+    "frac_f1": 0.295,
+    "frac_f34": 0.4178,
+    "p_f1": 0.2159,
+    "p_f34": 0.8167,
+    "acc": 0.4426
+   },
+   {
+    "layer": 10,
+    "lam_scale": 0.01,
+    "dist_vs_ringdist_corr": 0.12,
+    "is_ring_order": false,
+    "frac_f1": 0.2935,
+    "frac_f34": 0.4227,
+    "p_f1": 0.2595,
+    "p_f34": 0.6889,
+    "acc": 0.4318
+   },
+   {
+    "layer": 11,
+    "lam_scale": 0.01,
+    "dist_vs_ringdist_corr": -0.0154,
+    "is_ring_order": false,
+    "frac_f1": 0.2849,
+    "frac_f34": 0.432,
+    "p_f1": 0.527,
+    "p_f34": 0.3536,
+    "acc": 0.4213
+   },
+   {
+    "layer": 12,
+    "lam_scale": 0.01,
+    "dist_vs_ringdist_corr": 0.1328,
+    "is_ring_order": false,
+    "frac_f1": 0.292,
+    "frac_f34": 0.4332,
+    "p_f1": 0.2659,
+    "p_f34": 0.3413,
+    "acc": 0.4173
+   },
+   {
+    "layer": 0,
+    "lam_scale": 0.1,
+    "dist_vs_ringdist_corr": 0.0638,
+    "is_ring_order": false
+   },
+   {
+    "layer": 1,
+    "lam_scale": 0.1,
+    "dist_vs_ringdist_corr": 0.0724,
+    "is_ring_order": false
+   },
+   {
+    "layer": 2,
+    "lam_scale": 0.1,
+    "dist_vs_ringdist_corr": 0.3142,
+    "is_ring_order": false
+   },
+   {
+    "layer": 3,
+    "lam_scale": 0.1,
+    "dist_vs_ringdist_corr": 0.3529,
+    "is_ring_order": false,
+    "frac_f1": 0.3068,
+    "frac_f34": 0.4199,
+    "p_f1": 0.0353,
+    "p_f34": 0.7254,
+    "acc": 0.4801
+   },
+   {
+    "layer": 4,
+    "lam_scale": 0.1,
+    "dist_vs_ringdist_corr": 0.138,
+    "is_ring_order": false
+   },
+   {
+    "layer": 5,
+    "lam_scale": 0.1,
+    "dist_vs_ringdist_corr": 0.1788,
+    "is_ring_order": false
+   },
+   {
+    "layer": 6,
+    "lam_scale": 0.1,
+    "dist_vs_ringdist_corr": 0.1313,
+    "is_ring_order": false
+   },
+   {
+    "layer": 7,
+    "lam_scale": 0.1,
+    "dist_vs_ringdist_corr": 0.1627,
+    "is_ring_order": false
+   },
+   {
+    "layer": 8,
+    "lam_scale": 0.1,
+    "dist_vs_ringdist_corr": 0.1781,
+    "is_ring_order": false
+   },
+   {
+    "layer": 9,
+    "lam_scale": 0.1,
+    "dist_vs_ringdist_corr": 0.1234,
+    "is_ring_order": false,
+    "frac_f1": 0.2948,
+    "frac_f34": 0.4204,
+    "p_f1": 0.227,
+    "p_f34": 0.7492,
+    "acc": 0.4441
+   },
+   {
+    "layer": 10,
+    "lam_scale": 0.1,
+    "dist_vs_ringdist_corr": 0.105,
+    "is_ring_order": false,
+    "frac_f1": 0.2929,
+    "frac_f34": 0.4253,
+    "p_f1": 0.281,
+    "p_f34": 0.5984,
+    "acc": 0.4333
+   },
+   {
+    "layer": 11,
+    "lam_scale": 0.1,
+    "dist_vs_ringdist_corr": 0.0015,
+    "is_ring_order": false,
+    "frac_f1": 0.2859,
+    "frac_f34": 0.4334,
+    "p_f1": 0.4833,
+    "p_f34": 0.3226,
+    "acc": 0.4234
+   },
+   {
+    "layer": 12,
+    "lam_scale": 0.1,
+    "dist_vs_ringdist_corr": 0.1361,
+    "is_ring_order": false,
+    "frac_f1": 0.2928,
+    "frac_f34": 0.4343,
+    "p_f1": 0.2575,
+    "p_f34": 0.3131,
+    "acc": 0.4163
+   },
+   {
+    "layer": 0,
+    "lam_scale": 1.0,
+    "dist_vs_ringdist_corr": -0.039,
+    "is_ring_order": false
+   },
+   {
+    "layer": 1,
+    "lam_scale": 1.0,
+    "dist_vs_ringdist_corr": 0.0583,
+    "is_ring_order": false
+   },
+   {
+    "layer": 2,
+    "lam_scale": 1.0,
+    "dist_vs_ringdist_corr": 0.1621,
+    "is_ring_order": false
+   },
+   {
+    "layer": 3,
+    "lam_scale": 1.0,
+    "dist_vs_ringdist_corr": 0.1284,
+    "is_ring_order": false,
+    "frac_f1": 0.2981,
+    "frac_f34": 0.4343,
+    "p_f1": 0.2274,
+    "p_f34": 0.3667,
+    "acc": 0.4774
+   },
+   {
+    "layer": 4,
+    "lam_scale": 1.0,
+    "dist_vs_ringdist_corr": 0.039,
+    "is_ring_order": false
+   },
+   {
+    "layer": 5,
+    "lam_scale": 1.0,
+    "dist_vs_ringdist_corr": 0.0099,
+    "is_ring_order": false
+   },
+   {
+    "layer": 6,
+    "lam_scale": 1.0,
+    "dist_vs_ringdist_corr": -0.0147,
+    "is_ring_order": false
+   },
+   {
+    "layer": 7,
+    "lam_scale": 1.0,
+    "dist_vs_ringdist_corr": 0.0138,
+    "is_ring_order": false
+   },
+   {
+    "layer": 8,
+    "lam_scale": 1.0,
+    "dist_vs_ringdist_corr": 0.0332,
+    "is_ring_order": false
+   },
+   {
+    "layer": 9,
+    "lam_scale": 1.0,
+    "dist_vs_ringdist_corr": 0.0339,
+    "is_ring_order": false,
+    "frac_f1": 0.2891,
+    "frac_f34": 0.4399,
+    "p_f1": 0.4075,
+    "p_f34": 0.2488,
+    "acc": 0.4438
+   },
+   {
+    "layer": 10,
+    "lam_scale": 1.0,
+    "dist_vs_ringdist_corr": 0.0333,
+    "is_ring_order": false,
+    "frac_f1": 0.2889,
+    "frac_f34": 0.442,
+    "p_f1": 0.4218,
+    "p_f34": 0.2123,
+    "acc": 0.4319
+   },
+   {
+    "layer": 11,
+    "lam_scale": 1.0,
+    "dist_vs_ringdist_corr": 0.0009,
+    "is_ring_order": false,
+    "frac_f1": 0.2862,
+    "frac_f34": 0.4434,
+    "p_f1": 0.4873,
+    "p_f34": 0.1726,
+    "acc": 0.4188
+   },
+   {
+    "layer": 12,
+    "lam_scale": 1.0,
+    "dist_vs_ringdist_corr": 0.0688,
+    "is_ring_order": false,
+    "frac_f1": 0.291,
+    "frac_f34": 0.44,
+    "p_f1": 0.3687,
+    "p_f34": 0.2337,
+    "acc": 0.4051
+   },
+   {
+    "layer": 0,
+    "lam_scale": 10.0,
+    "dist_vs_ringdist_corr": -0.2871,
+    "is_ring_order": false
+   },
+   {
+    "layer": 1,
+    "lam_scale": 10.0,
+    "dist_vs_ringdist_corr": -0.0767,
+    "is_ring_order": false
+   },
+   {
+    "layer": 2,
+    "lam_scale": 10.0,
+    "dist_vs_ringdist_corr": -0.0971,
+    "is_ring_order": false
+   },
+   {
+    "layer": 3,
+    "lam_scale": 10.0,
+    "dist_vs_ringdist_corr": -0.1227,
+    "is_ring_order": false,
+    "frac_f1": 0.2626,
+    "frac_f34": 0.4885,
+    "p_f1": 0.8012,
+    "p_f34": 0.0119,
+    "acc": 0.4396
+   },
+   {
+    "layer": 4,
+    "lam_scale": 10.0,
+    "dist_vs_ringdist_corr": -0.138,
+    "is_ring_order": false
+   },
+   {
+    "layer": 5,
+    "lam_scale": 10.0,
+    "dist_vs_ringdist_corr": -0.1724,
+    "is_ring_order": false
+   },
+   {
+    "layer": 6,
+    "lam_scale": 10.0,
+    "dist_vs_ringdist_corr": -0.1719,
+    "is_ring_order": false
+   },
+   {
+    "layer": 7,
+    "lam_scale": 10.0,
+    "dist_vs_ringdist_corr": -0.1712,
+    "is_ring_order": false
+   },
+   {
+    "layer": 8,
+    "lam_scale": 10.0,
+    "dist_vs_ringdist_corr": -0.1537,
+    "is_ring_order": false
+   },
+   {
+    "layer": 9,
+    "lam_scale": 10.0,
+    "dist_vs_ringdist_corr": -0.1486,
+    "is_ring_order": false,
+    "frac_f1": 0.2522,
+    "frac_f34": 0.4975,
+    "p_f1": 0.8718,
+    "p_f34": 0.0147,
+    "acc": 0.4057
+   },
+   {
+    "layer": 10,
+    "lam_scale": 10.0,
+    "dist_vs_ringdist_corr": -0.1268,
+    "is_ring_order": false,
+    "frac_f1": 0.2565,
+    "frac_f34": 0.495,
+    "p_f1": 0.8413,
+    "p_f34": 0.0135,
+    "acc": 0.3985
+   },
+   {
+    "layer": 11,
+    "lam_scale": 10.0,
+    "dist_vs_ringdist_corr": -0.1066,
+    "is_ring_order": false,
+    "frac_f1": 0.2612,
+    "frac_f34": 0.488,
+    "p_f1": 0.806,
+    "p_f34": 0.0218,
+    "acc": 0.3807
+   },
+   {
+    "layer": 12,
+    "lam_scale": 10.0,
+    "dist_vs_ringdist_corr": -0.1241,
+    "is_ring_order": false,
+    "frac_f1": 0.2577,
+    "frac_f34": 0.4883,
+    "p_f1": 0.8421,
+    "p_f34": 0.0246,
+    "acc": 0.3727
+   },
+   {
+    "layer": 0,
+    "lam_scale": 100.0,
+    "dist_vs_ringdist_corr": -0.25,
+    "is_ring_order": false
+   },
+   {
+    "layer": 1,
+    "lam_scale": 100.0,
+    "dist_vs_ringdist_corr": -0.1811,
+    "is_ring_order": false
+   },
+   {
+    "layer": 2,
+    "lam_scale": 100.0,
+    "dist_vs_ringdist_corr": -0.193,
+    "is_ring_order": false
+   },
+   {
+    "layer": 3,
+    "lam_scale": 100.0,
+    "dist_vs_ringdist_corr": -0.1897,
+    "is_ring_order": false,
+    "frac_f1": 0.2151,
+    "frac_f34": 0.5509,
+    "p_f1": 0.923,
+    "p_f34": 0.021,
+    "acc": 0.3658
+   },
+   {
+    "layer": 4,
+    "lam_scale": 100.0,
+    "dist_vs_ringdist_corr": -0.1646,
+    "is_ring_order": false
+   },
+   {
+    "layer": 5,
+    "lam_scale": 100.0,
+    "dist_vs_ringdist_corr": -0.1727,
+    "is_ring_order": false
+   },
+   {
+    "layer": 6,
+    "lam_scale": 100.0,
+    "dist_vs_ringdist_corr": -0.1719,
+    "is_ring_order": false
+   },
+   {
+    "layer": 7,
+    "lam_scale": 100.0,
+    "dist_vs_ringdist_corr": -0.1754,
+    "is_ring_order": false
+   },
+   {
+    "layer": 8,
+    "lam_scale": 100.0,
+    "dist_vs_ringdist_corr": -0.1585,
+    "is_ring_order": false
+   },
+   {
+    "layer": 9,
+    "lam_scale": 100.0,
+    "dist_vs_ringdist_corr": -0.1628,
+    "is_ring_order": false,
+    "frac_f1": 0.2186,
+    "frac_f34": 0.5314,
+    "p_f1": 0.8956,
+    "p_f34": 0.0456,
+    "acc": 0.3184
+   },
+   {
+    "layer": 10,
+    "lam_scale": 100.0,
+    "dist_vs_ringdist_corr": -0.1503,
+    "is_ring_order": false,
+    "frac_f1": 0.2204,
+    "frac_f34": 0.5321,
+    "p_f1": 0.879,
+    "p_f34": 0.0373,
+    "acc": 0.3136
+   },
+   {
+    "layer": 11,
+    "lam_scale": 100.0,
+    "dist_vs_ringdist_corr": -0.1291,
+    "is_ring_order": false,
+    "frac_f1": 0.2274,
+    "frac_f34": 0.5228,
+    "p_f1": 0.8468,
+    "p_f34": 0.0508,
+    "acc": 0.3098
+   },
+   {
+    "layer": 12,
+    "lam_scale": 100.0,
+    "dist_vs_ringdist_corr": -0.1719,
+    "is_ring_order": false,
+    "frac_f1": 0.2148,
+    "frac_f34": 0.544,
+    "p_f1": 0.9067,
+    "p_f34": 0.0127,
+    "acc": 0.3135
+   }
+  ],
+  "logistic": [
+   {
+    "layer": 3,
+    "dist_vs_ringdist_corr": 0.2412,
+    "is_ring_order": false,
+    "frac_f1": 0.3002,
+    "frac_f34": 0.4344,
+    "p_f1": 0.0833,
+    "p_f34": 0.302,
+    "acc": 0.4696
+   },
+   {
+    "layer": 9,
+    "dist_vs_ringdist_corr": 0.0025,
+    "is_ring_order": false,
+    "frac_f1": 0.2874,
+    "frac_f34": 0.427,
+    "p_f1": 0.4369,
+    "p_f34": 0.5524,
+    "acc": 0.4281
+   },
+   {
+    "layer": 10,
+    "dist_vs_ringdist_corr": -0.025,
+    "is_ring_order": false,
+    "frac_f1": 0.2841,
+    "frac_f34": 0.4331,
+    "p_f1": 0.55,
+    "p_f34": 0.3532,
+    "acc": 0.4227
+   },
+   {
+    "layer": 11,
+    "dist_vs_ringdist_corr": -0.1095,
+    "is_ring_order": false,
+    "frac_f1": 0.2765,
+    "frac_f34": 0.4408,
+    "p_f1": 0.7603,
+    "p_f34": 0.1663,
+    "acc": 0.4077
+   },
+   {
+    "layer": 12,
+    "dist_vs_ringdist_corr": 0.0102,
+    "is_ring_order": false,
+    "frac_f1": 0.2839,
+    "frac_f34": 0.4435,
+    "p_f1": 0.5302,
+    "p_f34": 0.1226,
+    "acc": 0.4058
+   }
+  ]
+ }
+}

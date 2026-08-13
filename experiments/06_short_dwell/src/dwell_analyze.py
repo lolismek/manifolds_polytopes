@@ -90,6 +90,9 @@ def analyze(path, p_stay, n_docs):
     d = np.load(path)
     logp = d["logp"][:n_docs].astype(np.float64)
     z = d["z"][:n_docs, :logp.shape[2]].astype(np.int64)
+    mult = float(d["mult"]) if "mult" in d else 1.0
+    # fluency: how surprising the UNsteered model finds the generated text
+    clean = -d["logp_clean"][:n_docs].astype(np.float64).mean()
 
     oracle = -logp[np.arange(len(z))[:, None], z,
                    np.arange(logp.shape[2])[None]].mean()
@@ -100,7 +103,8 @@ def analyze(path, p_stay, n_docs):
     g_best = min(fg, key=fg.get)
 
     r = lambda x: round(float(x), 4)  # noqa: E731  (np floats break json)
-    return {"p_stay": p_stay, "dwell": r(1 / (1 - p_stay)),
+    return {"mult": mult, "loss_clean_model": r(clean),
+            "p_stay": p_stay, "dwell": r(1 / (1 - p_stay)),
             "n_docs": int(len(z)), "n_tokens": int(z.size),
             "loss_oracle": r(oracle), "loss_ring": r(l_ring),
             "loss_nomap": r(l_nomap),
@@ -126,9 +130,10 @@ def main():
         rows.append(analyze(args.baseline, 0.98, args.n_docs))
     for p in args.pilots:
         rows.append(analyze(p, float(np.load(p)["p_stay"]), args.n_docs))
-    rows.sort(key=lambda r: -r["p_stay"])
+    rows.sort(key=lambda r: (r["mult"], -r["p_stay"]))
 
-    cols = ["p_stay", "dwell", "loss_oracle", "loss_ring", "loss_nomap",
+    cols = ["mult", "p_stay", "dwell", "loss_clean_model",
+            "loss_oracle", "loss_ring", "loss_nomap",
             "loss_forget", "forget_gamma", "loss_none", "wiring_value",
             "memory_value", "tracking_value", "acc_ring", "acc_nomap",
             "mean_max_belief"]

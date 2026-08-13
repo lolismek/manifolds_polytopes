@@ -34,7 +34,7 @@ EXP05_SRC = Path(__file__).parents[2] / "05_multilayer_add" / "src"
 sys.path.insert(0, str(EXP05_SRC))
 from addsteer import (AddSteerer, generate_clean_cache, load_teacher,  # noqa: E402
                       mean_act, score_emissions)
-from corpus_generate import (GEN_LEN, K, MULT, PROMPT_LEN, RING,  # noqa: E402
+from corpus_generate import (GEN_LEN, K, PROMPT_LEN, RING,  # noqa: E402
                              harvest_openers)
 
 SEED = 606
@@ -57,6 +57,8 @@ def sample_paths(rng, n, length, p_stay):
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--p_stay", type=float, required=True)
+    ap.add_argument("--mult", type=float, default=1.0,
+                    help="steering strength s (units of latent mean act)")
     ap.add_argument("--tag", required=True)
     ap.add_argument("--device", default="cuda:0")
     ap.add_argument("--n_docs", type=int, default=224)
@@ -73,7 +75,7 @@ def main():
     ma = mean_act()
     R = torch.zeros(K, K, device=dev)
     for s in range(K):
-        R[s, s] = MULT * float(ma[RING[s]])
+        R[s, s] = args.mult * float(ma[RING[s]])
 
     rng = np.random.default_rng([SEED, int(round(args.p_stay * 1000))])
     torch.manual_seed(SEED * 1000 + int(round(args.p_stay * 1000)))
@@ -97,11 +99,11 @@ def main():
     ids = torch.cat(ids_parts)
 
     (OUT / f"{args.tag}_sample.json").write_text(json.dumps({
-        "p_stay": args.p_stay, "z0": int(z[0, 0]),
+        "p_stay": args.p_stay, "mult": args.mult, "z0": int(z[0, 0]),
         "transitions": ((np.diff(z[0]) != 0).nonzero()[0] + 1).tolist(),
         "text": tokenizer.decode(ids[0, 1:])[:2000]}, indent=1))
 
-    vals = torch.tensor([MULT * float(ma[j]) for j in RING], device=dev)
+    vals = torch.tensor([args.mult * float(ma[j]) for j in RING], device=dev)
     hyp_rows = steer.rows(RING, vals)
     lps, lcs = [], []
     for b0 in range(0, args.n_docs, SCORE_DOCS):
@@ -116,7 +118,7 @@ def main():
              ids=ids.numpy().astype(np.int32), z=z,
              logp=np.concatenate(lps).astype(np.float16),
              logp_clean=np.concatenate(lcs).astype(np.float16),
-             p_stay=np.float64(args.p_stay))
+             p_stay=np.float64(args.p_stay), mult=np.float64(args.mult))
     print(f"{args.tag} finished", flush=True)
 
 

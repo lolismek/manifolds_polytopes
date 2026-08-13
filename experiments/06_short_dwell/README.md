@@ -62,3 +62,18 @@ Same 64-doc recipe, --mult 2.0:
   stretches, script-switching) — s = 2 is noticeably off-manifold, echoing
   exp03's s = 5 lesson in milder form.
 - Candidate sweet spot to test next: s = 1.5 at dwell 10/20.
+
+## s = 1.5 pilot (same day): the middle ground
+
+| mult | dwell | clean-model NLL | wiring value | tracking value | acc ring | mean max belief |
+|------|-------|-----------------|--------------|----------------|----------|-----------------|
+| 1.5 | 20 | 3.049 | **0.0171** | 0.1547 | 0.719 | 0.718 |
+| 1.5 | 10 | 2.901 | **0.0169** | 0.0992 | 0.581 | 0.585 |
+
+- Wiring value ~0.017 at BOTH dwells (~3x the s=1 baseline; dwell barely
+  matters at this strength). Dwell 20 dominates dwell 10: same wiring pay,
+  more total tracking pay, far more confident reader (0.72 vs 0.59).
+- Text: intermediate. Episodic degeneration (fragment stretches, one
+  "course of coarse" loop) that the model RECOVERS from, vs s=2's terminal
+  collapse. Still recognizably language most of the time.
+- Full 7-row table in results/pilot/readers.json.

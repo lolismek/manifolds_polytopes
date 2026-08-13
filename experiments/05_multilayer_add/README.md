@@ -141,3 +141,19 @@ learned per-setting vectors (Subliminal Steering style).
     steering, margin-chosen ring order, controls in place). exp03's exact
     ring order rode on loud 5x steering + neighbor carryover that any
     reader exhibits (its control: corr 0.69).
+- **Capacity-matched-reader check** (is the 0.704 ceiling unfair? it embeds
+  the 2B teacher's emission model; a perfectly-Bayesian 110M student would
+  sit lower): fit the student's lag curve with (1) the forward algorithm on
+  alpha-scaled emissions (evidence-starved exact filter) and (2) a second
+  leak parameter (effective p_stay). Neither family fits: even alpha=0.02
+  integrates to 0.84 deep-dwell accuracy (a lossless integrator always
+  saturates), and the best leaky fit (alpha .02, p_stay_eff .5) matches the
+  mean but is flat while the student climbs through the whole dwell
+  (0.18 -> 0.48, near-linear). The student is not behaviorally equivalent
+  to ANY evidence-scaled/leak-adjusted exact filter. Caveat kept open: a
+  capacity-matched reader with *temporally correlated* emission errors
+  (systematic misreadings that do not wash out under integration) could
+  still look like the student — that is exactly the factored-representation
+  lossiness point (z and language are not conditionally independent), and
+  distinguishing it needs an actual small-capacity emission model, not a
+  noise model.

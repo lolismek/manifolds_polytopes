@@ -77,3 +77,23 @@ Same 64-doc recipe, --mult 2.0:
   "course of coarse" loop) that the model RECOVERS from, vs s=2's terminal
   collapse. Still recognizably language most of the time.
 - Full 7-row table in results/pilot/readers.json.
+
+## Full corpus + eval scoring (Aug 13)
+
+Settled recipe: s = 1.5, p_stay = 0.95, 256-token docs (BOS + 12-token
+Pile opener + 243 generated). 400,000 docs x 8 shards = 102.4M tokens
+(matches exp05's training-token count), generated on 8 seahorse A6000s at
+~3,100 tok/s each (`src/corpus_generate.py`, seed 6). Needed
+`PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True` — the default allocator
+fragments and OOMs on the once-per-batch prompt-prefill logits spike after
+~2k docs. Integrity checked: exactly 400,000 docs / 102,400,000 tokens,
+mean 12.06 switches/doc, every switch +-1 on the ring.
+
+- Vocab (`src/build_vocab.py`): top-32,768 ids cover 96.07% of training
+  tokens (chunk009 excluded — it holds the eval split).
+- Eval split scored exactly (`src/corpus_score_posterior.py`, 8 GPUs):
+  first 625 docs of each shard's chunk009 = 5,000 docs. Reader argmax
+  accuracy 0.755–0.765 per shard (mean 0.762) — matches the pilot's ~0.78
+  truncated-doc anchor. Posteriors in `results/posterior/eval_shard{i}.npz`.
+- Student training (`src/train_student.py`, tigerfish GPUs 0+1): exp05
+  architecture/schedule, batch reshaped 512x256; running at ~175k tok/s.

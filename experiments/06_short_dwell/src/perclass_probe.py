@@ -193,7 +193,6 @@ def main():
             srec["logistic"].append(rec)
             print(f"{student} logistic L{l}: {json.dumps(rec)}", flush=True)
         out[student] = srec
-    np.savez(ROOT / "probe" / f"perclass{args.tag}_dirs.npz", **dirs_out)
         for rec in srec["ridge"]:
             if rec["layer"] == 10:
                 print(f"{student} ridge L10 lam {rec['lam_scale']}: "
@@ -201,6 +200,7 @@ def main():
                       f"ring={rec['is_ring_order']} "
                       f"f1 {rec.get('frac_f1')} p_f1 {rec.get('p_f1')} "
                       f"acc {rec.get('acc')}", flush=True)
+    np.savez(ROOT / "probe" / f"perclass{args.tag}_dirs.npz", **dirs_out)
 
     fig, axes = plt.subplots(1, 2, figsize=(13, 5))
     for student, ls in (("ring", "-"), ("ctrl", ":")):

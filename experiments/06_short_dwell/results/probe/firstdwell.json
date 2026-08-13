@@ -1,0 +1,1343 @@
+{
+ "reader_firstdwell_acc": 0.8194,
+ "ring": {
+  "ckpt": "ckpt_04218.pt",
+  "n_train_tokens": 79409,
+  "n_test_tokens": 19860,
+  "layers": [
+   {
+    "layer": 0,
+    "probe_R2": 0.1754,
+    "acc_vs_true_state": 0.3399,
+    "onehot_acc_vs_true_state": 0.3348,
+    "class_means": {
+     "pc12_var_frac": 0.8051,
+     "angular_order_pc12": [
+      4,
+      1,
+      6,
+      3,
+      5,
+      2,
+      7,
+      0
+     ],
+     "is_ring_order": false,
+     "dist_vs_ringdist_corr": -0.0552
+    },
+    "posterior_cols_unitnorm": {
+     "pc12_var_frac": 0.3313,
+     "angular_order_pc12": [
+      7,
+      0,
+      3,
+      4,
+      6,
+      2,
+      1,
+      5
+     ],
+     "is_ring_order": false,
+     "dist_vs_ringdist_corr": -0.3888
+    },
+    "onehot_cols_unitnorm": {
+     "pc12_var_frac": 0.3349,
+     "angular_order_pc12": [
+      5,
+      7,
+      1,
+      3,
+      4,
+      6,
+      2,
+      0
+     ],
+     "is_ring_order": false,
+     "dist_vs_ringdist_corr": -0.5494
+    }
+   },
+   {
+    "layer": 1,
+    "probe_R2": 0.232,
+    "acc_vs_true_state": 0.4041,
+    "onehot_acc_vs_true_state": 0.3981,
+    "class_means": {
+     "pc12_var_frac": 0.6383,
+     "angular_order_pc12": [
+      4,
+      6,
+      3,
+      1,
+      5,
+      2,
+      7,
+      0
+     ],
+     "is_ring_order": false,
+     "dist_vs_ringdist_corr": -0.016
+    },
+    "posterior_cols_unitnorm": {
+     "pc12_var_frac": 0.3737,
+     "angular_order_pc12": [
+      6,
+      5,
+      4,
+      3,
+      2,
+      1,
+      0,
+      7
+     ],
+     "is_ring_order": true,
+     "dist_vs_ringdist_corr": 0.7923
+    },
+    "onehot_cols_unitnorm": {
+     "pc12_var_frac": 0.3253,
+     "angular_order_pc12": [
+      0,
+      6,
+      4,
+      3,
+      2,
+      1,
+      5,
+      7
+     ],
+     "is_ring_order": false,
+     "dist_vs_ringdist_corr": 0.3692
+    }
+   },
+   {
+    "layer": 2,
+    "probe_R2": 0.3308,
+    "acc_vs_true_state": 0.4967,
+    "onehot_acc_vs_true_state": 0.4893,
+    "class_means": {
+     "pc12_var_frac": 0.5896,
+     "angular_order_pc12": [
+      4,
+      6,
+      3,
+      5,
+      1,
+      2,
+      7,
+      0
+     ],
+     "is_ring_order": false,
+     "dist_vs_ringdist_corr": 0.0135
+    },
+    "posterior_cols_unitnorm": {
+     "pc12_var_frac": 0.3647,
+     "angular_order_pc12": [
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      0,
+      1
+     ],
+     "is_ring_order": true,
+     "dist_vs_ringdist_corr": 0.735
+    },
+    "onehot_cols_unitnorm": {
+     "pc12_var_frac": 0.3178,
+     "angular_order_pc12": [
+      1,
+      6,
+      4,
+      5,
+      7,
+      0,
+      2,
+      3
+     ],
+     "is_ring_order": false,
+     "dist_vs_ringdist_corr": 0.3482
+    }
+   },
+   {
+    "layer": 3,
+    "probe_R2": 0.3461,
+    "acc_vs_true_state": 0.5056,
+    "onehot_acc_vs_true_state": 0.502,
+    "class_means": {
+     "pc12_var_frac": 0.5629,
+     "angular_order_pc12": [
+      4,
+      6,
+      3,
+      5,
+      1,
+      2,
+      7,
+      0
+     ],
+     "is_ring_order": false,
+     "dist_vs_ringdist_corr": 0.0176
+    },
+    "posterior_cols_unitnorm": {
+     "pc12_var_frac": 0.3655,
+     "angular_order_pc12": [
+      1,
+      2,
+      3,
+      4,
+      6,
+      5,
+      7,
+      0
+     ],
+     "is_ring_order": false,
+     "dist_vs_ringdist_corr": 0.7207
+    },
+    "onehot_cols_unitnorm": {
+     "pc12_var_frac": 0.3177,
+     "angular_order_pc12": [
+      7,
+      5,
+      4,
+      6,
+      3,
+      2,
+      1,
+      0
+     ],
+     "is_ring_order": false,
+     "dist_vs_ringdist_corr": 0.2282
+    }
+   },
+   {
+    "layer": 4,
+    "probe_R2": 0.3499,
+    "acc_vs_true_state": 0.5112,
+    "onehot_acc_vs_true_state": 0.5084,
+    "class_means": {
+     "pc12_var_frac": 0.5729,
+     "angular_order_pc12": [
+      4,
+      6,
+      3,
+      5,
+      1,
+      2,
+      7,
+      0
+     ],
+     "is_ring_order": false,
+     "dist_vs_ringdist_corr": 0.0061
+    },
+    "posterior_cols_unitnorm": {
+     "pc12_var_frac": 0.3613,
+     "angular_order_pc12": [
+      2,
+      3,
+      4,
+      6,
+      5,
+      7,
+      0,
+      1
+     ],
+     "is_ring_order": false,
+     "dist_vs_ringdist_corr": 0.7292
+    },
+    "onehot_cols_unitnorm": {
+     "pc12_var_frac": 0.3191,
+     "angular_order_pc12": [
+      3,
+      6,
+      4,
+      7,
+      5,
+      0,
+      1,
+      2
+     ],
+     "is_ring_order": false,
+     "dist_vs_ringdist_corr": 0.2238
+    }
+   },
+   {
+    "layer": 5,
+    "probe_R2": 0.3471,
+    "acc_vs_true_state": 0.5069,
+    "onehot_acc_vs_true_state": 0.5016,
+    "class_means": {
+     "pc12_var_frac": 0.5691,
+     "angular_order_pc12": [
+      4,
+      6,
+      3,
+      5,
+      1,
+      2,
+      7,
+      0
+     ],
+     "is_ring_order": false,
+     "dist_vs_ringdist_corr": -0.004
+    },
+    "posterior_cols_unitnorm": {
+     "pc12_var_frac": 0.3665,
+     "angular_order_pc12": [
+      1,
+      0,
+      7,
+      6,
+      5,
+      4,
+      3,
+      2
+     ],
+     "is_ring_order": true,
+     "dist_vs_ringdist_corr": 0.7598
+    },
+    "onehot_cols_unitnorm": {
+     "pc12_var_frac": 0.319,
+     "angular_order_pc12": [
+      2,
+      0,
+      1,
+      5,
+      4,
+      7,
+      6,
+      3
+     ],
+     "is_ring_order": false,
+     "dist_vs_ringdist_corr": 0.3853
+    }
+   },
+   {
+    "layer": 6,
+    "probe_R2": 0.3593,
+    "acc_vs_true_state": 0.5127,
+    "onehot_acc_vs_true_state": 0.5048,
+    "class_means": {
+     "pc12_var_frac": 0.5413,
+     "angular_order_pc12": [
+      4,
+      6,
+      5,
+      3,
+      1,
+      2,
+      7,
+      0
+     ],
+     "is_ring_order": false,
+     "dist_vs_ringdist_corr": -0.0156
+    },
+    "posterior_cols_unitnorm": {
+     "pc12_var_frac": 0.3753,
+     "angular_order_pc12": [
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      0,
+      1
+     ],
+     "is_ring_order": true,
+     "dist_vs_ringdist_corr": 0.8366
+    },
+    "onehot_cols_unitnorm": {
+     "pc12_var_frac": 0.3228,
+     "angular_order_pc12": [
+      7,
+      0,
+      1,
+      2,
+      3,
+      6,
+      4,
+      5
+     ],
+     "is_ring_order": false,
+     "dist_vs_ringdist_corr": 0.5624
+    }
+   },
+   {
+    "layer": 7,
+    "probe_R2": 0.4097,
+    "acc_vs_true_state": 0.5474,
+    "onehot_acc_vs_true_state": 0.5413,
+    "class_means": {
+     "pc12_var_frac": 0.5454,
+     "angular_order_pc12": [
+      6,
+      4,
+      5,
+      3,
+      1,
+      2,
+      7,
+      0
+     ],
+     "is_ring_order": false,
+     "dist_vs_ringdist_corr": 0.0782
+    },
+    "posterior_cols_unitnorm": {
+     "pc12_var_frac": 0.3444,
+     "angular_order_pc12": [
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      0,
+      1
+     ],
+     "is_ring_order": true,
+     "dist_vs_ringdist_corr": 0.7549
+    },
+    "onehot_cols_unitnorm": {
+     "pc12_var_frac": 0.3092,
+     "angular_order_pc12": [
+      6,
+      4,
+      1,
+      7,
+      5,
+      0,
+      3,
+      2
+     ],
+     "is_ring_order": false,
+     "dist_vs_ringdist_corr": 0.0565
+    }
+   },
+   {
+    "layer": 8,
+    "probe_R2": 0.4175,
+    "acc_vs_true_state": 0.5492,
+    "onehot_acc_vs_true_state": 0.5435,
+    "class_means": {
+     "pc12_var_frac": 0.5233,
+     "angular_order_pc12": [
+      6,
+      4,
+      5,
+      3,
+      1,
+      2,
+      7,
+      0
+     ],
+     "is_ring_order": false,
+     "dist_vs_ringdist_corr": 0.0765
+    },
+    "posterior_cols_unitnorm": {
+     "pc12_var_frac": 0.3495,
+     "angular_order_pc12": [
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      0,
+      1
+     ],
+     "is_ring_order": true,
+     "dist_vs_ringdist_corr": 0.7781
+    },
+    "onehot_cols_unitnorm": {
+     "pc12_var_frac": 0.3099,
+     "angular_order_pc12": [
+      7,
+      5,
+      4,
+      6,
+      1,
+      2,
+      3,
+      0
+     ],
+     "is_ring_order": false,
+     "dist_vs_ringdist_corr": 0.1497
+    }
+   },
+   {
+    "layer": 9,
+    "probe_R2": 0.4606,
+    "acc_vs_true_state": 0.5758,
+    "onehot_acc_vs_true_state": 0.5713,
+    "class_means": {
+     "pc12_var_frac": 0.4852,
+     "angular_order_pc12": [
+      5,
+      1,
+      3,
+      2,
+      7,
+      0,
+      6,
+      4
+     ],
+     "is_ring_order": false,
+     "dist_vs_ringdist_corr": 0.1735
+    },
+    "posterior_cols_unitnorm": {
+     "pc12_var_frac": 0.3175,
+     "angular_order_pc12": [
+      5,
+      6,
+      4,
+      2,
+      1,
+      3,
+      7,
+      0
+     ],
+     "is_ring_order": false,
+     "dist_vs_ringdist_corr": 0.4341
+    },
+    "onehot_cols_unitnorm": {
+     "pc12_var_frac": 0.317,
+     "angular_order_pc12": [
+      0,
+      3,
+      5,
+      7,
+      1,
+      4,
+      6,
+      2
+     ],
+     "is_ring_order": false,
+     "dist_vs_ringdist_corr": -0.6498
+    }
+   },
+   {
+    "layer": 10,
+    "probe_R2": 0.4702,
+    "acc_vs_true_state": 0.5818,
+    "onehot_acc_vs_true_state": 0.574,
+    "class_means": {
+     "pc12_var_frac": 0.4885,
+     "angular_order_pc12": [
+      1,
+      3,
+      2,
+      7,
+      0,
+      6,
+      5,
+      4
+     ],
+     "is_ring_order": false,
+     "dist_vs_ringdist_corr": 0.1651
+    },
+    "posterior_cols_unitnorm": {
+     "pc12_var_frac": 0.3109,
+     "angular_order_pc12": [
+      0,
+      7,
+      6,
+      5,
+      4,
+      1,
+      2,
+      3
+     ],
+     "is_ring_order": false,
+     "dist_vs_ringdist_corr": 0.4471
+    },
+    "onehot_cols_unitnorm": {
+     "pc12_var_frac": 0.3179,
+     "angular_order_pc12": [
+      5,
+      7,
+      3,
+      0,
+      2,
+      6,
+      4,
+      1
+     ],
+     "is_ring_order": false,
+     "dist_vs_ringdist_corr": -0.7235
+    }
+   },
+   {
+    "layer": 11,
+    "probe_R2": 0.4749,
+    "acc_vs_true_state": 0.5882,
+    "onehot_acc_vs_true_state": 0.5773,
+    "class_means": {
+     "pc12_var_frac": 0.4862,
+     "angular_order_pc12": [
+      7,
+      2,
+      1,
+      3,
+      4,
+      5,
+      6,
+      0
+     ],
+     "is_ring_order": false,
+     "dist_vs_ringdist_corr": 0.1717
+    },
+    "posterior_cols_unitnorm": {
+     "pc12_var_frac": 0.3063,
+     "angular_order_pc12": [
+      3,
+      1,
+      5,
+      6,
+      4,
+      2,
+      7,
+      0
+     ],
+     "is_ring_order": false,
+     "dist_vs_ringdist_corr": 0.2262
+    },
+    "onehot_cols_unitnorm": {
+     "pc12_var_frac": 0.3226,
+     "angular_order_pc12": [
+      6,
+      0,
+      3,
+      1,
+      5,
+      7,
+      2,
+      4
+     ],
+     "is_ring_order": false,
+     "dist_vs_ringdist_corr": -0.7148
+    }
+   },
+   {
+    "layer": 12,
+    "probe_R2": 0.4778,
+    "acc_vs_true_state": 0.5918,
+    "onehot_acc_vs_true_state": 0.5811,
+    "class_means": {
+     "pc12_var_frac": 0.5299,
+     "angular_order_pc12": [
+      7,
+      1,
+      2,
+      3,
+      4,
+      6,
+      5,
+      0
+     ],
+     "is_ring_order": false,
+     "dist_vs_ringdist_corr": 0.1496
+    },
+    "posterior_cols_unitnorm": {
+     "pc12_var_frac": 0.3087,
+     "angular_order_pc12": [
+      3,
+      1,
+      5,
+      6,
+      7,
+      4,
+      2,
+      0
+     ],
+     "is_ring_order": false,
+     "dist_vs_ringdist_corr": 0.0778
+    },
+    "onehot_cols_unitnorm": {
+     "pc12_var_frac": 0.3302,
+     "angular_order_pc12": [
+      4,
+      2,
+      7,
+      5,
+      1,
+      3,
+      6,
+      0
+     ],
+     "is_ring_order": false,
+     "dist_vs_ringdist_corr": -0.6783
+    }
+   }
+  ]
+ },
+ "ctrl": {
+  "ckpt": "ckpt_02812.pt",
+  "n_train_tokens": 79409,
+  "n_test_tokens": 19860,
+  "layers": [
+   {
+    "layer": 0,
+    "probe_R2": 0.1006,
+    "acc_vs_true_state": 0.3062,
+    "onehot_acc_vs_true_state": 0.2998,
+    "class_means": {
+     "pc12_var_frac": 0.8595,
+     "angular_order_pc12": [
+      4,
+      6,
+      1,
+      5,
+      3,
+      7,
+      2,
+      0
+     ],
+     "is_ring_order": false,
+     "dist_vs_ringdist_corr": -0.056
+    },
+    "posterior_cols_unitnorm": {
+     "pc12_var_frac": 0.3386,
+     "angular_order_pc12": [
+      6,
+      1,
+      5,
+      4,
+      2,
+      3,
+      7,
+      0
+     ],
+     "is_ring_order": false,
+     "dist_vs_ringdist_corr": 0.4589
+    },
+    "onehot_cols_unitnorm": {
+     "pc12_var_frac": 0.326,
+     "angular_order_pc12": [
+      6,
+      2,
+      3,
+      4,
+      5,
+      1,
+      7,
+      0
+     ],
+     "is_ring_order": false,
+     "dist_vs_ringdist_corr": 0.0681
+    }
+   },
+   {
+    "layer": 1,
+    "probe_R2": 0.1403,
+    "acc_vs_true_state": 0.3511,
+    "onehot_acc_vs_true_state": 0.346,
+    "class_means": {
+     "pc12_var_frac": 0.7302,
+     "angular_order_pc12": [
+      4,
+      6,
+      1,
+      3,
+      5,
+      7,
+      2,
+      0
+     ],
+     "is_ring_order": false,
+     "dist_vs_ringdist_corr": -0.0842
+    },
+    "posterior_cols_unitnorm": {
+     "pc12_var_frac": 0.3737,
+     "angular_order_pc12": [
+      7,
+      6,
+      4,
+      5,
+      3,
+      2,
+      1,
+      0
+     ],
+     "is_ring_order": false,
+     "dist_vs_ringdist_corr": 0.6663
+    },
+    "onehot_cols_unitnorm": {
+     "pc12_var_frac": 0.3378,
+     "angular_order_pc12": [
+      3,
+      0,
+      2,
+      1,
+      5,
+      4,
+      7,
+      6
+     ],
+     "is_ring_order": false,
+     "dist_vs_ringdist_corr": 0.1301
+    }
+   },
+   {
+    "layer": 2,
+    "probe_R2": 0.1931,
+    "acc_vs_true_state": 0.3906,
+    "onehot_acc_vs_true_state": 0.385,
+    "class_means": {
+     "pc12_var_frac": 0.721,
+     "angular_order_pc12": [
+      4,
+      6,
+      1,
+      3,
+      5,
+      7,
+      2,
+      0
+     ],
+     "is_ring_order": false,
+     "dist_vs_ringdist_corr": -0.0774
+    },
+    "posterior_cols_unitnorm": {
+     "pc12_var_frac": 0.3757,
+     "angular_order_pc12": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7
+     ],
+     "is_ring_order": true,
+     "dist_vs_ringdist_corr": 0.72
+    },
+    "onehot_cols_unitnorm": {
+     "pc12_var_frac": 0.3297,
+     "angular_order_pc12": [
+      7,
+      6,
+      1,
+      4,
+      2,
+      3,
+      5,
+      0
+     ],
+     "is_ring_order": false,
+     "dist_vs_ringdist_corr": 0.2862
+    }
+   },
+   {
+    "layer": 3,
+    "probe_R2": 0.1968,
+    "acc_vs_true_state": 0.3954,
+    "onehot_acc_vs_true_state": 0.389,
+    "class_means": {
+     "pc12_var_frac": 0.6908,
+     "angular_order_pc12": [
+      4,
+      6,
+      1,
+      3,
+      5,
+      7,
+      2,
+      0
+     ],
+     "is_ring_order": false,
+     "dist_vs_ringdist_corr": -0.08
+    },
+    "posterior_cols_unitnorm": {
+     "pc12_var_frac": 0.3763,
+     "angular_order_pc12": [
+      7,
+      6,
+      5,
+      4,
+      3,
+      2,
+      1,
+      0
+     ],
+     "is_ring_order": true,
+     "dist_vs_ringdist_corr": 0.7535
+    },
+    "onehot_cols_unitnorm": {
+     "pc12_var_frac": 0.3313,
+     "angular_order_pc12": [
+      6,
+      4,
+      2,
+      3,
+      1,
+      5,
+      0,
+      7
+     ],
+     "is_ring_order": false,
+     "dist_vs_ringdist_corr": 0.3744
+    }
+   },
+   {
+    "layer": 4,
+    "probe_R2": 0.192,
+    "acc_vs_true_state": 0.3904,
+    "onehot_acc_vs_true_state": 0.3858,
+    "class_means": {
+     "pc12_var_frac": 0.7003,
+     "angular_order_pc12": [
+      4,
+      6,
+      1,
+      3,
+      5,
+      7,
+      2,
+      0
+     ],
+     "is_ring_order": false,
+     "dist_vs_ringdist_corr": -0.0663
+    },
+    "posterior_cols_unitnorm": {
+     "pc12_var_frac": 0.3739,
+     "angular_order_pc12": [
+      7,
+      5,
+      6,
+      4,
+      3,
+      2,
+      1,
+      0
+     ],
+     "is_ring_order": false,
+     "dist_vs_ringdist_corr": 0.7018
+    },
+    "onehot_cols_unitnorm": {
+     "pc12_var_frac": 0.3314,
+     "angular_order_pc12": [
+      7,
+      4,
+      6,
+      2,
+      3,
+      5,
+      0,
+      1
+     ],
+     "is_ring_order": false,
+     "dist_vs_ringdist_corr": 0.2986
+    }
+   },
+   {
+    "layer": 5,
+    "probe_R2": 0.1869,
+    "acc_vs_true_state": 0.3847,
+    "onehot_acc_vs_true_state": 0.3788,
+    "class_means": {
+     "pc12_var_frac": 0.7015,
+     "angular_order_pc12": [
+      6,
+      4,
+      1,
+      3,
+      5,
+      7,
+      2,
+      0
+     ],
+     "is_ring_order": false,
+     "dist_vs_ringdist_corr": -0.0653
+    },
+    "posterior_cols_unitnorm": {
+     "pc12_var_frac": 0.3752,
+     "angular_order_pc12": [
+      5,
+      6,
+      4,
+      3,
+      2,
+      1,
+      0,
+      7
+     ],
+     "is_ring_order": false,
+     "dist_vs_ringdist_corr": 0.7025
+    },
+    "onehot_cols_unitnorm": {
+     "pc12_var_frac": 0.327,
+     "angular_order_pc12": [
+      0,
+      5,
+      1,
+      3,
+      2,
+      4,
+      6,
+      7
+     ],
+     "is_ring_order": false,
+     "dist_vs_ringdist_corr": 0.2487
+    }
+   },
+   {
+    "layer": 6,
+    "probe_R2": 0.1838,
+    "acc_vs_true_state": 0.3845,
+    "onehot_acc_vs_true_state": 0.3767,
+    "class_means": {
+     "pc12_var_frac": 0.679,
+     "angular_order_pc12": [
+      4,
+      6,
+      1,
+      3,
+      5,
+      7,
+      2,
+      0
+     ],
+     "is_ring_order": false,
+     "dist_vs_ringdist_corr": -0.0653
+    },
+    "posterior_cols_unitnorm": {
+     "pc12_var_frac": 0.3647,
+     "angular_order_pc12": [
+      5,
+      6,
+      4,
+      3,
+      2,
+      1,
+      0,
+      7
+     ],
+     "is_ring_order": false,
+     "dist_vs_ringdist_corr": 0.6755
+    },
+    "onehot_cols_unitnorm": {
+     "pc12_var_frac": 0.3214,
+     "angular_order_pc12": [
+      2,
+      1,
+      5,
+      0,
+      7,
+      6,
+      4,
+      3
+     ],
+     "is_ring_order": false,
+     "dist_vs_ringdist_corr": 0.2233
+    }
+   },
+   {
+    "layer": 7,
+    "probe_R2": 0.1795,
+    "acc_vs_true_state": 0.3815,
+    "onehot_acc_vs_true_state": 0.377,
+    "class_means": {
+     "pc12_var_frac": 0.6797,
+     "angular_order_pc12": [
+      4,
+      6,
+      1,
+      3,
+      5,
+      7,
+      2,
+      0
+     ],
+     "is_ring_order": false,
+     "dist_vs_ringdist_corr": -0.072
+    },
+    "posterior_cols_unitnorm": {
+     "pc12_var_frac": 0.3672,
+     "angular_order_pc12": [
+      5,
+      6,
+      4,
+      3,
+      2,
+      1,
+      0,
+      7
+     ],
+     "is_ring_order": false,
+     "dist_vs_ringdist_corr": 0.6372
+    },
+    "onehot_cols_unitnorm": {
+     "pc12_var_frac": 0.3222,
+     "angular_order_pc12": [
+      3,
+      2,
+      1,
+      5,
+      7,
+      0,
+      4,
+      6
+     ],
+     "is_ring_order": false,
+     "dist_vs_ringdist_corr": 0.1777
+    }
+   },
+   {
+    "layer": 8,
+    "probe_R2": 0.168,
+    "acc_vs_true_state": 0.3745,
+    "onehot_acc_vs_true_state": 0.3665,
+    "class_means": {
+     "pc12_var_frac": 0.6639,
+     "angular_order_pc12": [
+      4,
+      6,
+      1,
+      3,
+      5,
+      7,
+      2,
+      0
+     ],
+     "is_ring_order": false,
+     "dist_vs_ringdist_corr": -0.0662
+    },
+    "posterior_cols_unitnorm": {
+     "pc12_var_frac": 0.3661,
+     "angular_order_pc12": [
+      5,
+      6,
+      4,
+      3,
+      2,
+      1,
+      0,
+      7
+     ],
+     "is_ring_order": false,
+     "dist_vs_ringdist_corr": 0.6321
+    },
+    "onehot_cols_unitnorm": {
+     "pc12_var_frac": 0.3243,
+     "angular_order_pc12": [
+      4,
+      1,
+      5,
+      7,
+      0,
+      6,
+      3,
+      2
+     ],
+     "is_ring_order": false,
+     "dist_vs_ringdist_corr": 0.2025
+    }
+   },
+   {
+    "layer": 9,
+    "probe_R2": 0.163,
+    "acc_vs_true_state": 0.3666,
+    "onehot_acc_vs_true_state": 0.36,
+    "class_means": {
+     "pc12_var_frac": 0.6511,
+     "angular_order_pc12": [
+      4,
+      6,
+      1,
+      3,
+      5,
+      7,
+      2,
+      0
+     ],
+     "is_ring_order": false,
+     "dist_vs_ringdist_corr": -0.0721
+    },
+    "posterior_cols_unitnorm": {
+     "pc12_var_frac": 0.361,
+     "angular_order_pc12": [
+      6,
+      5,
+      4,
+      3,
+      2,
+      1,
+      0,
+      7
+     ],
+     "is_ring_order": true,
+     "dist_vs_ringdist_corr": 0.5848
+    },
+    "onehot_cols_unitnorm": {
+     "pc12_var_frac": 0.3228,
+     "angular_order_pc12": [
+      7,
+      5,
+      1,
+      2,
+      3,
+      4,
+      6,
+      0
+     ],
+     "is_ring_order": false,
+     "dist_vs_ringdist_corr": 0.1503
+    }
+   },
+   {
+    "layer": 10,
+    "probe_R2": 0.1533,
+    "acc_vs_true_state": 0.3575,
+    "onehot_acc_vs_true_state": 0.3498,
+    "class_means": {
+     "pc12_var_frac": 0.6434,
+     "angular_order_pc12": [
+      4,
+      6,
+      1,
+      3,
+      5,
+      7,
+      2,
+      0
+     ],
+     "is_ring_order": false,
+     "dist_vs_ringdist_corr": -0.0732
+    },
+    "posterior_cols_unitnorm": {
+     "pc12_var_frac": 0.3606,
+     "angular_order_pc12": [
+      7,
+      6,
+      5,
+      4,
+      3,
+      2,
+      1,
+      0
+     ],
+     "is_ring_order": true,
+     "dist_vs_ringdist_corr": 0.6123
+    },
+    "onehot_cols_unitnorm": {
+     "pc12_var_frac": 0.3214,
+     "angular_order_pc12": [
+      4,
+      0,
+      6,
+      3,
+      2,
+      5,
+      1,
+      7
+     ],
+     "is_ring_order": false,
+     "dist_vs_ringdist_corr": 0.1539
+    }
+   },
+   {
+    "layer": 11,
+    "probe_R2": 0.1442,
+    "acc_vs_true_state": 0.3472,
+    "onehot_acc_vs_true_state": 0.3442,
+    "class_means": {
+     "pc12_var_frac": 0.6452,
+     "angular_order_pc12": [
+      4,
+      6,
+      1,
+      3,
+      5,
+      7,
+      2,
+      0
+     ],
+     "is_ring_order": false,
+     "dist_vs_ringdist_corr": -0.0646
+    },
+    "posterior_cols_unitnorm": {
+     "pc12_var_frac": 0.3588,
+     "angular_order_pc12": [
+      7,
+      6,
+      4,
+      5,
+      3,
+      2,
+      1,
+      0
+     ],
+     "is_ring_order": false,
+     "dist_vs_ringdist_corr": 0.613
+    },
+    "onehot_cols_unitnorm": {
+     "pc12_var_frac": 0.3266,
+     "angular_order_pc12": [
+      4,
+      0,
+      6,
+      3,
+      2,
+      5,
+      1,
+      7
+     ],
+     "is_ring_order": false,
+     "dist_vs_ringdist_corr": 0.0539
+    }
+   },
+   {
+    "layer": 12,
+    "probe_R2": 0.1438,
+    "acc_vs_true_state": 0.344,
+    "onehot_acc_vs_true_state": 0.3383,
+    "class_means": {
+     "pc12_var_frac": 0.6254,
+     "angular_order_pc12": [
+      4,
+      6,
+      3,
+      1,
+      5,
+      7,
+      2,
+      0
+     ],
+     "is_ring_order": false,
+     "dist_vs_ringdist_corr": -0.0833
+    },
+    "posterior_cols_unitnorm": {
+     "pc12_var_frac": 0.3605,
+     "angular_order_pc12": [
+      7,
+      6,
+      4,
+      5,
+      3,
+      2,
+      1,
+      0
+     ],
+     "is_ring_order": false,
+     "dist_vs_ringdist_corr": 0.6169
+    },
+    "onehot_cols_unitnorm": {
+     "pc12_var_frac": 0.3289,
+     "angular_order_pc12": [
+      0,
+      6,
+      3,
+      2,
+      5,
+      1,
+      7,
+      4
+     ],
+     "is_ring_order": false,
+     "dist_vs_ringdist_corr": 0.1451
+    }
+   }
+  ]
+ }
+}

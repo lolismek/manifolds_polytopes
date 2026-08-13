@@ -149,3 +149,33 @@ inherited from tracking correlations — is for the follow-up analyses
 (first-dwell control, post-switch behavior, latent-direction geometry).
 
 Results: `results/probe/{ring,ctrl}_{sweep,concat}.json` (also in-repo).
+
+## First-dwell control + read-out geometry (`src/firstdwell_probe.py`)
+
+Tokens before each doc's first switch only (99k tokens, ~20/doc; no
+previous dwell in context, so neighbor-carryover cannot operate). Exact
+reader ceiling there: acc 0.819. All 13 layers, both students; probes
+trained on posterior AND on one-hot true-state labels (exp05's lesson: the
+posterior target itself carries neighbor mass, one-hot columns are the
+clean geometry test).
+
+- **Tracking survives, fully**: ring R2 0.478 at L12 on first-dwell tokens
+  (all-token value: 0.488; exp05 first-dwell: 0.158), acc 0.592 / one-hot
+  0.581. Ctrl: R2 0.197. The belief decoding is NOT a carryover artifact.
+- **Class-mean circle does not survive as-is**: first-dwell class means
+  lose exact ring order everywhere; dist/ring-dist corr drops 0.45 ->
+  0.15-0.17 at L9-12 (ctrl: ~-0.07; exp05 ring collapsed to 0.04). So the
+  clean mid-dwell circle largely reflects belief smear across switches —
+  the activation ring is a property of the tracking DYNAMICS, not a static
+  arrangement of the 8 flavors.
+- **But ring adjacency is imprinted in the read-out directions**: the
+  one-hot probe columns at L9-12 show a STRONG NEGATIVE dist/ring-dist
+  corr, -0.65..-0.72 (ctrl: +0.15..0.37; exp05 ring: -0.11). Ring-NEIGHBOR
+  states get maximally separated read-out directions — exactly what a
+  decoder needs when the representation mixes neighbors together. The
+  student's first-dwell representations carry ring-adjacency structure
+  that the control has none of; it shows up sign-inverted in the
+  discriminative view.
+
+Figure: `results/probe/firstdwell.png` (class means + one-hot columns in
+2D, ring L10/L12 vs ctrl L3). Data: `results/probe/firstdwell.json`.

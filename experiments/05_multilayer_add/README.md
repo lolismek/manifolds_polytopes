@@ -82,3 +82,21 @@ learned per-setting vectors (Subliminal Steering style).
   exp03 ring+ctrl student checkpoints deleted except final ckpt_02812
   (~5.7 GB freed; ring student regenerable only by regenerating the exp03
   corpus).
+- **Training done** (tigerfish GPUs 2-3, ~1 h at 162-170k tok/s): final
+  heldout loss 3.1837, still creeping down at the end (3.193 -> 3.184 over
+  the floor-LR extension); 17 checkpoints (4.4 GB). Launch hiccup worth
+  remembering: the seahorse CUDA-runtime surgery had pulled cu13 wheels into
+  the shared mp env, overwriting libnccl with a CUDA-13 build (needs driver
+  >= 580; tigerfish has 575) -> DDP died at init with "driver insufficient".
+  Fixed by `pip install --no-deps nvidia-nccl-cu12==2.28.9` (single-process
+  jobs never load NCCL, so nothing else was affected).
+- **Exact reader verified on the real corpus** (`src/posterior_analyze.py`,
+  5005 eval docs): overall argmax accuracy 0.703, logloss 0.848 vs uniform
+  2.079 (exp04: 1.0-1.3). Accuracy is limited by inherent transition lag,
+  not mid-dwell stalling — belief in the true state by tokens-since-
+  transition: 0.23 (lag 0-4) -> 0.51 (10-19) -> 0.68 (35-49) -> 0.72 with
+  argmax accuracy 0.894 at lag 50+ (exp04 stalled at 0.5-0.65 late-dwell
+  belief). The 0.72 late-dwell ceiling is the correct HMM equilibrium (the
+  filter always hedges 2%/token for an unseen transition), not weakness.
+  Corpus has the dynamic range the probe tests need: graded beliefs after
+  transitions, saturated beliefs in dwells.

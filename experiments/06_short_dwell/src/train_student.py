@@ -56,7 +56,7 @@ def load_corpus(root, vmap):
 
 def save_ckpt(sd, path):
     """torch.save with verify-and-retry (the shared FS can drop a write)."""
-    for attempt in range(3):
+    for attempt in range(6):     # FS blips can outlast a 30s window; be patient
         tmp = path.with_suffix(".tmp")
         try:
             torch.save(sd, tmp)
@@ -66,7 +66,7 @@ def save_ckpt(sd, path):
         except Exception as e:
             print(f"ckpt save to {path.name} failed ({e}), attempt {attempt+1}",
                   flush=True)
-            time.sleep(10)
+            time.sleep(30)
     raise RuntimeError(f"could not save {path}")
 
 

@@ -1,5 +1,7 @@
 [
  {
+  "mult": 1.0,
+  "loss_clean_model": 2.4269,
   "p_stay": 0.98,
   "dwell": 50.0,
   "n_docs": 64,
@@ -18,6 +20,8 @@
   "mean_max_belief": 0.6997
  },
  {
+  "mult": 1.0,
+  "loss_clean_model": 2.3853,
   "p_stay": 0.95,
   "dwell": 20.0,
   "n_docs": 64,
@@ -36,6 +40,8 @@
   "mean_max_belief": 0.5551
  },
  {
+  "mult": 1.0,
+  "loss_clean_model": 2.4175,
   "p_stay": 0.9,
   "dwell": 10.0,
   "n_docs": 64,
@@ -52,5 +58,45 @@
   "acc_ring": 0.439,
   "acc_nomap": 0.3977,
   "mean_max_belief": 0.437
+ },
+ {
+  "mult": 2.0,
+  "loss_clean_model": 3.5732,
+  "p_stay": 0.95,
+  "dwell": 20.0,
+  "n_docs": 64,
+  "n_tokens": 64704,
+  "loss_oracle": 2.838,
+  "loss_ring": 2.9767,
+  "loss_nomap": 3.0048,
+  "loss_forget": 3.0428,
+  "forget_gamma": 0.7,
+  "loss_none": 3.3004,
+  "wiring_value": 0.0281,
+  "memory_value": 0.2575,
+  "tracking_value": 0.3237,
+  "acc_ring": 0.8308,
+  "acc_nomap": 0.7897,
+  "mean_max_belief": 0.8297
+ },
+ {
+  "mult": 2.0,
+  "loss_clean_model": 3.6455,
+  "p_stay": 0.9,
+  "dwell": 10.0,
+  "n_docs": 64,
+  "n_tokens": 64704,
+  "loss_oracle": 2.8842,
+  "loss_ring": 3.0834,
+  "loss_nomap": 3.1204,
+  "loss_forget": 3.1583,
+  "forget_gamma": 0.7,
+  "loss_none": 3.3319,
+  "wiring_value": 0.037,
+  "memory_value": 0.1736,
+  "tracking_value": 0.2485,
+  "acc_ring": 0.7238,
+  "acc_nomap": 0.6656,
+  "mean_max_belief": 0.7277
  }
 ]

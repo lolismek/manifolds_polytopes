@@ -45,5 +45,20 @@ loss(ring) = total pay for tracking the state at all.)
   dwell) must move together, e.g. stronger steering + shorter dwell, so
   switches are both frequent and detectable.
 
-Next candidate (not yet run): quick pilots at s = 2 with dwell 10–20, same
-64-doc recipe, to see if wiring value moves.
+## s = 2 pilot (same day): strength moves the needle — at a fluency price
+
+Same 64-doc recipe, --mult 2.0:
+
+| mult | dwell | clean-model NLL | oracle | ring | no-map | forget | none | **wiring value** | tracking value | acc ring | mean max belief |
+|------|-------|-----------------|--------|------|--------|--------|------|------------------|----------------|----------|-----------------|
+| 2.0 | 20 | 3.573 | 2.838 | 2.977 | 3.005 | 3.043 | 3.300 | **0.0281** | 0.3237 | 0.831 | 0.830 |
+| 2.0 | 10 | 3.646 | 2.884 | 3.083 | 3.120 | 3.158 | 3.332 | **0.0370** | 0.2485 | 0.724 | 0.728 |
+
+- Wiring value rises 5–6x (0.006 → 0.028–0.037 nats/token); best so far is
+  s = 2, dwell 10. Proper Bayes vs the forgetful reader is now worth 0.075
+  nats there — integration finally pays.
+- Cost: clean-model NLL of the generated text jumps 2.43 → 3.6 (+1.15
+  nats/token), and samples visibly degrade (fragmented lists, token salad
+  stretches, script-switching) — s = 2 is noticeably off-manifold, echoing
+  exp03's s = 5 lesson in milder form.
+- Candidate sweet spot to test next: s = 1.5 at dwell 10/20.

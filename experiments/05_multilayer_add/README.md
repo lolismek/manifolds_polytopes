@@ -71,3 +71,14 @@ learned per-setting vectors (Subliminal Steering style).
 - **Eval-split ground truth** (`src/corpus_score_posterior.py`): first 715
   docs of each shard's chunk005 -> 5005 held-out docs, scored under all 8
   hypotheses (exact reader), forward algorithm at p_stay 0.98.
+- **Vocab + student training** (concurrent with eval scoring; tigerfish,
+  home FS shared with seahorse so no corpus copy needed):
+  `src/build_vocab.py` over training chunks 000-004 (87,500 docs; chunk005
+  excluded — contains the eval split): top 32,768 ids cover 0.9588 of
+  training tokens. `src/train_student.py` = exp04 recipe (110M Llama-style,
+  batch 128, cosine to 2812 + floor-LR extension to 4218, ~6 epochs) run as
+  2-GPU DDP (global batch unchanged; rank slices of the same shared
+  permutation). Control student reused from exp03. Storage (user-approved):
+  exp03 ring+ctrl student checkpoints deleted except final ckpt_02812
+  (~5.7 GB freed; ring student regenerable only by regenerating the exp03
+  corpus).

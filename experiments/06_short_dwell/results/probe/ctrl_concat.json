@@ -1,0 +1,44 @@
+{
+ "student": "ctrl",
+ "ckpt": "ckpt_02812.pt",
+ "probe_R2": 0.2477,
+ "probe_R2_shuffled": -0.0466,
+ "acc_vs_true_state": 0.4115,
+ "lag_bins": [
+  "0-4",
+  "5-9",
+  "10-19",
+  "20-34",
+  "35-49",
+  "50+"
+ ],
+ "acc_by_lag": [
+  0.2501,
+  0.3598,
+  0.4367,
+  0.5102,
+  0.5626,
+  0.5938
+ ],
+ "reader_acc_by_lag": [
+  0.4251,
+  0.741,
+  0.8658,
+  0.9194,
+  0.9338,
+  0.9443
+ ],
+ "pc12_var_frac": 0.7227,
+ "angular_order_pc12": [
+  6,
+  4,
+  5,
+  3,
+  7,
+  2,
+  1,
+  0
+ ],
+ "is_ring_order": false,
+ "dist_vs_ringdist_corr": 0.085
+}

@@ -97,3 +97,55 @@ mean 12.06 switches/doc, every switch +-1 on the ring.
   truncated-doc anchor. Posteriors in `results/posterior/eval_shard{i}.npz`.
 - Student training (`src/train_student.py`, tigerfish GPUs 0+1): exp05
   architecture/schedule, batch reshaped 512x256; running at ~175k tok/s.
+
+## Student results: the ring is learned (Aug 14)
+
+Training: exp05-identical 110M student, batch reshaped to 512x256 (same 131k
+tokens/step), 4218 steps on 2 tigerfish A100s. Final heldout loss 3.632.
+(Two crashes en route, both the shared home hitting its disk quota during
+checkpoint saves — freed ~14G of stale .venvs and resumed from the last good
+checkpoint each time; saver now retries 6x30s.)
+
+Classical probe battery (`src/probe_sweep.py`, `src/probe_concat.py`,
+exp05's exact design; ridge probes residual -> exact 8-dim posterior,
+4000/1000 doc split, shuffled-pairing control ~0 throughout; exact-reader
+ceiling on these tokens: acc 0.7615):
+
+| probe | exp06 ring | exp06 ctrl* | exp05 ring | exp05 ctrl |
+|---|---|---|---|---|
+| best single layer R2 | **0.488** (L12) | 0.187 (L3) | 0.150 (L12) | 0.078 (L3) |
+| best single layer acc | **0.557** | 0.364 | 0.320 | 0.258 |
+| concat (13 layers) R2 | **0.543** | 0.248 | 0.206 | — |
+| concat acc | **0.577** | 0.412 | 0.326 | — |
+| class means in ring order | **L9-11, exact** | no layer | no | no |
+| dist-vs-ringdist corr | **0.45** | 0.015 | 0.30** | 0.12 |
+
+*ctrl = exp03's unsteered student probed on exp06 eval docs; its rise vs
+exp05 (0.078 -> 0.187) shows short dwells make the posterior more
+predictable from surface flavor alone — the ring-vs-ctrl GAP is the signal,
+and it widens from ~0.07 to ~0.30 R2.
+**exp05's 0.30 was later shown to be neighbor-carryover artifact
+(firstdwell test collapsed it to 0.04).
+
+Key findings:
+- **Evidence integration**: concat-probe accuracy climbs with
+  tokens-since-switch (0.30 -> 0.81 by lag 50+), paralleling the exact
+  reader's own curve (0.43 -> 0.94). In exp05 this curve was flat (static
+  flavor readout). The student updates its belief token by token.
+- **Ring geometry**: the 8 mid-dwell class means sit in EXACT ring order in
+  layers 9-11 (dist/ring-dist corr 0.42-0.45, top-2 PC variance ~0.52-0.56);
+  layer 12 is one transposition off. The order appears by step 500 and is
+  stable thereafter, while decoding R2 keeps climbing to a ~step-3000
+  plateau (0.30 at step 250 -> 0.49).
+- Training trajectory (best-layer R2): 0.299 / 0.419 / 0.478 / 0.486 /
+  0.488 at steps 250 / 1000 / 2000 / 3000 / 4218; best layer is 12 from
+  step 500 on.
+
+Verdict: exp06's 3x wiring incentive (plus 2.5x tracking incentive) flipped
+the result — the student now tracks the belief state at ~2/3 of the exact
+reader's ceiling and represents the 8 states on a ring in its late layers.
+Whether the WIRING (transition map) itself is used — vs ring geometry
+inherited from tracking correlations — is for the follow-up analyses
+(first-dwell control, post-switch behavior, latent-direction geometry).
+
+Results: `results/probe/{ring,ctrl}_{sweep,concat}.json` (also in-repo).

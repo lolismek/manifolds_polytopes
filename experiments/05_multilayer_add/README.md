@@ -49,3 +49,25 @@ learned per-setting vectors (Subliminal Steering style).
 - **Verdict:** sweet spot is s ∈ (1, 1.5) with a recast — next step is the
   confusability recast (24-shortlist, multi-layer physics) at s ≈ 1.25,
   replacing weak carriers; expected to clear the gate.
+- **Decision (user): keep the exp04 cast, s = 1.0.** Static-Bayes reader on
+  the pilot docs settles it: at s=1, median 14 tokens to 90% belief (q75 34,
+  all 48 docs resolved, end accuracy 1.00) — stronger than exp03's operating
+  point (median 34) despite the 0.168 min margin; Bayes accumulates against
+  all 7 competitors at once. s=1.5 converges in ~4 tokens (caption regime,
+  rejected). Dwell set from measured convergence, not exp03 comparability:
+  **p_stay = 0.98** (dwell ~50 ≈ 3.5x median t90). Ring order chosen to
+  maximize the worst adjacent-pair bottleneck margin at s=1: [1309, 10573,
+  14600, 6455, 3188, 5615, 2970, 15026] (min adjacent 0.220 vs 0.168 global;
+  the weak 1309-2970 pair sits across the ring).
+- **Corpus** (done, seahorse, 7 A6000s, ~4 h, `src/corpus_generate.py`):
+  100,002 ring docs, 1024 tokens (BOS + 12-token Pile opener + 1011 steered),
+  7 shards x 14,286, ~1.1k tok/s/GPU, 490 MB. Integrity-verified: all 42
+  chunks load, transitions/doc 20.2 (expected 20.2), all transitions
+  ring-adjacent, occupancy uniform (0.124-0.126), sample text natural.
+  Control corpus: exp03's unsteered 25k reused (steering off => clean-cache
+  generation is ordinary generation). Note: exp03's steered ring corpus was
+  deleted from seahorse for quota (control kept); regenerable from committed
+  code if ever needed.
+- **Eval-split ground truth** (`src/corpus_score_posterior.py`): first 715
+  docs of each shard's chunk005 -> 5005 held-out docs, scored under all 8
+  hypotheses (exact reader), forward algorithm at p_stay 0.98.

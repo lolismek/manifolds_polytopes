@@ -1,0 +1,29 @@
+{
+  "tag": "ring",
+  "shard": 0,
+  "scheme": "clean_cache_multilayer_add",
+  "window": [
+    12,
+    23
+  ],
+  "cast_ring_order": [
+    1309,
+    10573,
+    14600,
+    6455,
+    3188,
+    5615,
+    2970,
+    15026
+  ],
+  "mult": 1.0,
+  "p_stay": 0.98,
+  "doc_len": 1024,
+  "prompt_len": 12,
+  "gen_len": 1011,
+  "opener_residue": 0,
+  "opener_mod": 7,
+  "n_docs": 14286,
+  "seed": 0,
+  "note": "z[t] is the state added (all window layers, single position, clean cache) when sampling generated token t = ids position 1+PROMPT_LEN+t; opener prefill clean"
+}

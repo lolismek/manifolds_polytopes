@@ -179,3 +179,21 @@ learned per-setting vectors (Subliminal Steering style).
   lossiness point (z and language are not conditionally independent), and
   distinguishing it needs an actual small-capacity emission model, not a
   noise model.
+- **First-dwell PROBE test** (`src/firstdwell_probe.py`, user's proposal:
+  look for the ring in the probe's 8 learned read-out columns rather than
+  the raw class means — the covariance-rescaled view could reveal a ring
+  hiding in low-variance directions). Fresh ridge probes trained/evaluated
+  on first-dwell tokens only (140k train / 37k held-out). Fair decoding
+  numbers on clean prefixes: ring R2 0.158 / acc 0.379, ctrl 0.071 / 0.287
+  (reader ceiling on these tokens 0.793) — the tracking gap survives, and
+  the all-token probe was not unfairly flattered. Geometry needed two
+  rounds: (1) columns of the POSTERIOR-target probe showed strong rings for
+  BOTH students — ctrl a *perfect* cyclic order, corr 0.78 — impossible as
+  a fact about the unsteered control, so this variant is self-falsifying:
+  even in a first dwell the exact posterior keeps "maybe just switched"
+  mass on ring neighbors (HMM prior), and the probe columns inherit
+  neighbor admixture from the answer key for any model. (2) ONE-HOT-target
+  probe (labels carry zero neighbor structure on first dwells): ring
+  student corr -0.02/-0.11 (raw/unitnorm), ctrl 0.09/0.21, no ring order
+  anywhere. The whitened-geometry loophole is closed: **no ring in the
+  student's representation, in raw or covariance-rescaled coordinates.**

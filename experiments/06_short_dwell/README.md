@@ -212,3 +212,35 @@ next-token belief, and its hidden-state covariance, point at ring
 neighbors specifically during dwells?
 
 Data: `results/probe/firstdwell_late.{json,png}`.
+
+## Fourier ring-mode test (`src/fourier_ringmode.py`) — the circle IS there
+
+User's point: PCA top-2 + distance correlation only find a circle if it
+DOMINATES centroid variance. Finer instrument: decompose the 8 per-state
+vectors (as a function of ring index) into cyclic frequency components —
+a circle in ring order is exactly frequency 1 — and compare the true ring
+against ALL 2520 possible ring orderings of 8 states (permutation test;
+chance f1 fraction = 2/7 = 0.286, min possible p = 1/2520 = 0.0004).
+
+- **First-dwell class means, ring student L9-12: f1 fraction 0.36-0.38,
+  p = 0.0004-0.0016** (true ring ranks 1st-4th of 2520). The static circle
+  IS present in carryover-free centroids — it just carries only ~37% of
+  centroid variance, so top-2 PCA and raw distance corr (0.17) missed it.
+  Late-first-dwell variant: same, slightly stronger (0.367-0.381,
+  p=0.0004). REVISES the earlier "no static circle" conclusion: the circle
+  is real, subdominant, and maximally ring-aligned.
+- Ctrl means: f1 0.20-0.22, p 0.7-0.96 — nothing, all layers.
+- **One-hot probe columns, ring L9-12: f1 SUPPRESSED (p_f1 = 1.0 — the
+  true ring has the LOWEST circle energy of all 2520 orderings) while
+  f3+f4 (neighbor-alternating) peaks at p = 0.0004.** The inverse-
+  covariance whitening in ridge knows exactly where the ring plane is:
+  within-state fluctuation concentrates there (belief hedging along the
+  ring), so the decoder suppresses the circle and amplifies neighbor
+  differences — that is the -0.8 anti-ring, now explained.
+- Ctrl columns: ~chance everywhere.
+
+Unified picture: layers 9-12 carry a genuine ring plane. State identity
+sits on a (subdominant) circle in ring order; within-state variance also
+lives along that plane (hedging/uncertainty), which is why discriminative
+probes invert it. Mid-dwell's crisp 0.45 corr = this real circle +
+carryover amplification on top. Data: `results/probe/fourier_ringmode.json`.

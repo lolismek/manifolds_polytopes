@@ -1,0 +1,259 @@
+{
+ "student": "ctrl",
+ "ideal_reader_acc": 0.7041,
+ "chance_acc": 0.125,
+ "checkpoints": [
+  {
+   "ckpt": "ckpt_02812.pt",
+   "layers": [
+    {
+     "layer": 0,
+     "probe_R2": 0.0264,
+     "probe_R2_shuffled": -0.001,
+     "acc_vs_true_state": 0.1971,
+     "pc12_var_frac": 0.7972,
+     "angular_order_pc12": [
+      1,
+      6,
+      7,
+      4,
+      2,
+      3,
+      5,
+      0
+     ],
+     "is_ring_order": false,
+     "dist_vs_ringdist_corr": 0.0155
+    },
+    {
+     "layer": 1,
+     "probe_R2": 0.0373,
+     "probe_R2_shuffled": -0.0049,
+     "acc_vs_true_state": 0.2135,
+     "pc12_var_frac": 0.8173,
+     "angular_order_pc12": [
+      1,
+      6,
+      4,
+      7,
+      2,
+      3,
+      5,
+      0
+     ],
+     "is_ring_order": false,
+     "dist_vs_ringdist_corr": 0.0082
+    },
+    {
+     "layer": 2,
+     "probe_R2": 0.0714,
+     "probe_R2_shuffled": -0.0042,
+     "acc_vs_true_state": 0.25,
+     "pc12_var_frac": 0.8247,
+     "angular_order_pc12": [
+      1,
+      6,
+      4,
+      7,
+      2,
+      3,
+      5,
+      0
+     ],
+     "is_ring_order": false,
+     "dist_vs_ringdist_corr": 0.0252
+    },
+    {
+     "layer": 3,
+     "probe_R2": 0.0779,
+     "probe_R2_shuffled": -0.0042,
+     "acc_vs_true_state": 0.2578,
+     "pc12_var_frac": 0.8052,
+     "angular_order_pc12": [
+      1,
+      6,
+      4,
+      7,
+      2,
+      3,
+      5,
+      0
+     ],
+     "is_ring_order": false,
+     "dist_vs_ringdist_corr": 0.0172
+    },
+    {
+     "layer": 4,
+     "probe_R2": 0.077,
+     "probe_R2_shuffled": -0.0044,
+     "acc_vs_true_state": 0.2584,
+     "pc12_var_frac": 0.7889,
+     "angular_order_pc12": [
+      1,
+      6,
+      7,
+      4,
+      2,
+      3,
+      5,
+      0
+     ],
+     "is_ring_order": false,
+     "dist_vs_ringdist_corr": 0.0518
+    },
+    {
+     "layer": 5,
+     "probe_R2": 0.0743,
+     "probe_R2_shuffled": -0.0043,
+     "acc_vs_true_state": 0.2557,
+     "pc12_var_frac": 0.7889,
+     "angular_order_pc12": [
+      1,
+      6,
+      7,
+      4,
+      2,
+      3,
+      5,
+      0
+     ],
+     "is_ring_order": false,
+     "dist_vs_ringdist_corr": 0.0616
+    },
+    {
+     "layer": 6,
+     "probe_R2": 0.0721,
+     "probe_R2_shuffled": -0.0043,
+     "acc_vs_true_state": 0.2536,
+     "pc12_var_frac": 0.7803,
+     "angular_order_pc12": [
+      1,
+      6,
+      7,
+      2,
+      4,
+      3,
+      5,
+      0
+     ],
+     "is_ring_order": false,
+     "dist_vs_ringdist_corr": 0.0686
+    },
+    {
+     "layer": 7,
+     "probe_R2": 0.0709,
+     "probe_R2_shuffled": -0.0043,
+     "acc_vs_true_state": 0.2524,
+     "pc12_var_frac": 0.7586,
+     "angular_order_pc12": [
+      1,
+      6,
+      7,
+      2,
+      4,
+      3,
+      5,
+      0
+     ],
+     "is_ring_order": false,
+     "dist_vs_ringdist_corr": 0.0856
+    },
+    {
+     "layer": 8,
+     "probe_R2": 0.0683,
+     "probe_R2_shuffled": -0.0046,
+     "acc_vs_true_state": 0.2501,
+     "pc12_var_frac": 0.7415,
+     "angular_order_pc12": [
+      1,
+      7,
+      6,
+      2,
+      4,
+      3,
+      5,
+      0
+     ],
+     "is_ring_order": false,
+     "dist_vs_ringdist_corr": 0.1152
+    },
+    {
+     "layer": 9,
+     "probe_R2": 0.0639,
+     "probe_R2_shuffled": -0.0045,
+     "acc_vs_true_state": 0.2451,
+     "pc12_var_frac": 0.739,
+     "angular_order_pc12": [
+      1,
+      7,
+      2,
+      6,
+      4,
+      3,
+      5,
+      0
+     ],
+     "is_ring_order": false,
+     "dist_vs_ringdist_corr": 0.1206
+    },
+    {
+     "layer": 10,
+     "probe_R2": 0.0592,
+     "probe_R2_shuffled": -0.0048,
+     "acc_vs_true_state": 0.2397,
+     "pc12_var_frac": 0.735,
+     "angular_order_pc12": [
+      1,
+      7,
+      2,
+      6,
+      4,
+      3,
+      5,
+      0
+     ],
+     "is_ring_order": false,
+     "dist_vs_ringdist_corr": 0.1224
+    },
+    {
+     "layer": 11,
+     "probe_R2": 0.0554,
+     "probe_R2_shuffled": -0.0051,
+     "acc_vs_true_state": 0.2359,
+     "pc12_var_frac": 0.7349,
+     "angular_order_pc12": [
+      1,
+      7,
+      2,
+      6,
+      4,
+      3,
+      5,
+      0
+     ],
+     "is_ring_order": false,
+     "dist_vs_ringdist_corr": 0.122
+    },
+    {
+     "layer": 12,
+     "probe_R2": 0.0525,
+     "probe_R2_shuffled": -0.0055,
+     "acc_vs_true_state": 0.2315,
+     "pc12_var_frac": 0.7558,
+     "angular_order_pc12": [
+      5,
+      3,
+      4,
+      2,
+      6,
+      7,
+      1,
+      0
+     ],
+     "is_ring_order": false,
+     "dist_vs_ringdist_corr": 0.0703
+    }
+   ]
+  }
+ ]
+}

@@ -100,3 +100,24 @@ learned per-setting vectors (Subliminal Steering style).
   filter always hedges 2%/token for an unseen transition), not weakness.
   Corpus has the dynamic range the probe tests need: graded beliefs after
   transitions, saturated beliefs in dwells.
+- **Probe sweep** (`src/probe_sweep.py`, exp03's design: ridge probe from
+  each layer's residual to the exact posterior, 2800/700 doc split, shuffled
+  control, ring geometry of mid-dwell class means; ctrl = exp03's control
+  student on the same eval docs). Result — **the student tracks weakly and
+  learns no ring geometry**:
+  - ring student (final): best R2 0.150 / acc 0.320 at layer 12, vs
+    exact-reader ceiling 0.704 (chance 0.125). Plateaus by step ~2250; the
+    floor-LR extension adds nothing. Shuffled control ~0 everywhere.
+  - ctrl student: best R2 0.078 / acc 0.258 — well above chance. A model
+    trained on unsteered text still decodes weak z-correlates because the
+    steering channel *is* topical drift.
+  - the telling detail: ring and ctrl have essentially the **same angular
+    order** of the 8 class means ([1,7,6,2,4,3,5,0]-ish, not the ring
+    order), and ring-distance corr peaks at 0.30 (ring) / 0.12 (ctrl). The
+    state geometry in BOTH students reflects the latents' natural semantic
+    similarity, not the transition matrix — the ring student sharpens the
+    control's arrangement rather than reorganizing it.
+  - because the reader is now strong and exact, this is a real finding, not
+    an artifact: the information is in the text (reader 0.70) but a 110M
+    student trained ~6 epochs on 90M tokens recovers less than half of it
+    and shows no sign of belief-state ring geometry.

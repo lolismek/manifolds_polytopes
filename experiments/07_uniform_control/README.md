@@ -67,8 +67,14 @@ times verified token-for-token IDENTICAL to the ring corpus in all 80
 chunk pairs (same seed + draw order, only destinations differ).
 
 Eval-split exact posterior (`src/corpus_score_posterior.py`, uniform
-transition matrix, 8 GPUs) and student training (`src/train_student.py`,
-tigerfish GPUs 0+1, ~178k tok/s) launched immediately after.
+transition matrix, 8 GPUs): first 625 docs of each shard's chunk009 =
+5,000 docs. Reader argmax accuracy 0.700-0.711 per shard (mean 0.704) —
+matches the pilot's 0.701 (ring corpus: 0.755-0.765, mean 0.762; the gap
+is the expected 7-candidate-destination cost). Posteriors in
+`results/posterior/eval_shard{i}.npz`.
+
+Student training (`src/train_student.py`, tigerfish GPUs 0+1, ~178k
+tok/s) running concurrently.
 3. Vocab: exp06's `vocab32k.npz` reused unchanged (probe comparability);
    coverage re-checked on the new corpus.
 4. `src/corpus_score_posterior.py` — exact posterior for the eval split

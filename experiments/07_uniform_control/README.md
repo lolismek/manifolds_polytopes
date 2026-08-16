@@ -32,6 +32,27 @@ Predictions that make or break the wiring claim:
    accuracy in the ring corpus's ballpark before committing 100M tokens.
 2. `src/corpus_generate.py` — 400k docs x 256 tokens = 102.4M tokens,
    8 shards on seahorse (tag `uniform`).
+
+## Pilot (2026-08-16): green light
+
+224 docs, exp06 recipe with uniform jumps, vs the exp06 eval shard 0
+re-analyzed with the same reader set (`results/pilot/readers.json`; losses
+nats/token; "true model" = the corpus's own transition matrix, "other map"
+= the other corpus's):
+
+| corpus | clean NLL | oracle | true model | other map | none | map value | tracking value | acc true | mean max belief |
+|---|---|---|---|---|---|---|---|---|---|
+| ring (exp06) | 3.348 | 2.770 | 2.889 | 2.909 | 3.095 | **0.0205** | 0.206 | 0.758 | 0.758 |
+| uniform (exp07) | 3.297 | 2.717 | 2.859 | 2.899 | 3.038 | 0.0400 | 0.178 | 0.701 | 0.699 |
+
+- Tracking incentive survives at ~87% of the ring corpus's (0.178 vs
+  0.206); reader accuracy 0.70 vs 0.76 — slightly lower as expected (after
+  a switch there are 7 candidate destinations, not 2).
+- Fluency matches (clean-model NLL 3.30 vs 3.35); sample text is the usual
+  s = 1.5 quality.
+- The uniform corpus's "map value" 0.04 is the loss a reader pays for
+  WRONGLY assuming the ring — the ring prior is actively harmful here, so
+  any ring geometry found in the uniform student cannot be corpus-induced.
 3. Vocab: exp06's `vocab32k.npz` reused unchanged (probe comparability);
    coverage re-checked on the new corpus.
 4. `src/corpus_score_posterior.py` — exact posterior for the eval split

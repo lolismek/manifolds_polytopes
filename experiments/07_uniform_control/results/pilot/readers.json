@@ -1,0 +1,38 @@
+[
+ {
+  "corpus": "ring (exp06 eval sh0)",
+  "n_docs": 224,
+  "n_tokens": 54432,
+  "loss_clean_model": 3.3477,
+  "loss_oracle": 2.7701,
+  "loss_true_model": 2.8887,
+  "loss_other_map": 2.9092,
+  "loss_forget": 2.9322,
+  "forget_gamma": 0.8,
+  "loss_none": 3.0948,
+  "map_value": 0.0205,
+  "memory_value": 0.1626,
+  "tracking_value": 0.2061,
+  "acc_true": 0.7583,
+  "acc_other": 0.7179,
+  "mean_max_belief": 0.7584
+ },
+ {
+  "corpus": "uniform (exp07 pilot)",
+  "n_docs": 224,
+  "n_tokens": 54432,
+  "loss_clean_model": 3.2968,
+  "loss_oracle": 2.7167,
+  "loss_true_model": 2.8594,
+  "loss_other_map": 2.8993,
+  "loss_forget": 2.8841,
+  "forget_gamma": 0.8,
+  "loss_none": 3.0378,
+  "map_value": 0.04,
+  "memory_value": 0.1536,
+  "tracking_value": 0.1784,
+  "acc_true": 0.701,
+  "acc_other": 0.6384,
+  "mean_max_belief": 0.6988
+ }
+]

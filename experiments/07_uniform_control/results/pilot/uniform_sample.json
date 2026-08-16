@@ -1,0 +1,29 @@
+{
+ "p_stay": 0.95,
+ "mult": 1.5,
+ "z0": 2,
+ "transitions": [
+  4,
+  38,
+  40,
+  42,
+  69,
+  77,
+  95,
+  168,
+  176
+ ],
+ "states": [
+  2,
+  4,
+  0,
+  2,
+  5,
+  7,
+  5,
+  4,
+  7,
+  6
+ ],
+ "text": "It is done, and submitted. You can play \u201cSurvival Game\u201d, \u201cP1 Game\u201d, or the \u201cShort Game\u201d. I hope you like my soundtrack as well. 5 different songs are made, and as always the mood is a different type of genre.\n\nSurvival Game:\n(1)up - Slowdown\n(0)down - Forward\nup-H01+4000ms + Fast speed + D1+H2/H3\ndown- H6+0.1s :\n\nP1 Game:\nup -H1 +D2\ndown- H6 +D2\n\nShort Game:\nup- H4+1020ms +F0/-f4\ndown-H1+200ms +D2\n\nThe tracks were done in 1 piece of midi in 9 to 10 different tracks. I didn\u2019t have to separate 5 to separate because I use my band band on \u201cSynthesis\u201d I did the track from Aud. 1 - 5.\nAs usual no symbols, low style.\n\nAgain thank you to Bill.\n\nSee you.\n\nThanks Peter, I thought I could have done the 1 on \u201cP1 game"
+}

@@ -1,0 +1,45 @@
+{
+ "student": "uniform",
+ "eval": "ring",
+ "ckpt": "ckpt_04218.pt",
+ "probe_R2": 0.4841,
+ "probe_R2_shuffled": -0.0445,
+ "acc_vs_true_state": 0.5509,
+ "lag_bins": [
+  "0-4",
+  "5-9",
+  "10-19",
+  "20-34",
+  "35-49",
+  "50+"
+ ],
+ "acc_by_lag": [
+  0.2779,
+  0.4882,
+  0.6225,
+  0.7062,
+  0.7514,
+  0.7808
+ ],
+ "reader_acc_by_lag": [
+  0.4251,
+  0.741,
+  0.8658,
+  0.9194,
+  0.9338,
+  0.9443
+ ],
+ "pc12_var_frac": 0.4861,
+ "angular_order_pc12": [
+  4,
+  6,
+  5,
+  7,
+  3,
+  2,
+  1,
+  0
+ ],
+ "is_ring_order": false,
+ "dist_vs_ringdist_corr": 0.1443
+}

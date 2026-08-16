@@ -74,7 +74,78 @@ is the expected 7-candidate-destination cost). Posteriors in
 `results/posterior/eval_shard{i}.npz`.
 
 Student training (`src/train_student.py`, tigerfish GPUs 0+1, ~178k
-tok/s) running concurrently.
+tok/s, ~55 min): final heldout loss **3.6287** — matching the ring
+student's 3.632 almost exactly. The two corpora are equally hard; the
+students differ only in what structure there was to learn.
+
+## Probe results (same day): tracking matched, ring geometry gone
+
+Full battery (`src/*_u.py` — exp06's machinery imported, uniform student
+registered in its registry). "Own" = exp07 eval docs + uniform posterior;
+"cross" = exp06's ring eval docs + ring posterior (the exposure-matched
+floor for exp06's numbers). Shuffled-pairing control ~0 throughout.
+
+### Tracking (the part that SHOULD match — and does)
+
+| probe | uniform own | uniform cross | exp06 ring | exp03 ctrl |
+|---|---|---|---|---|
+| best single-layer R2 | 0.440 (L11) | 0.422 (L11) | 0.488 (L12) | 0.187 (L3) |
+| best single-layer acc | 0.499 | 0.523 | 0.557 | 0.364 |
+| concat R2 | 0.498 | 0.484 | 0.543 | 0.248 |
+| concat acc | 0.519 | 0.551 | 0.577 | 0.412 |
+| acc / reader ceiling | 0.71 | 0.69 | 0.73 | — |
+| integration curve (lag 0-4 -> 50+) | 0.23 -> 0.74 | 0.28 -> 0.78 | 0.30 -> 0.81 | flat |
+| firstdwell-late R2 / acc | 0.526 / 0.709 | — | 0.541 / 0.722 | 0.236 / 0.479 |
+
+- The uniform student tracks the belief state at the same fraction of its
+  reader ceiling as the ring student (0.71 vs 0.73) with the same climbing
+  integration curve. Evidence integration is a TRACKING signature, not a
+  wiring signature.
+- **The cross numbers reset exp06's floor**: an exposure-matched map-free
+  student decodes the ring posterior at R2 0.42 / acc 0.52 — far above the
+  unsteered ctrl (0.19 / 0.36) that exp06 used as its floor. The
+  wiring-specific decoding advantage is the 0.42 -> 0.49 / 0.52 -> 0.56
+  margin, much smaller than the raw ring-vs-ctrl gap suggested. The wiring
+  claim therefore rests on GEOMETRY, where the dissociation is total:
+
+### Ring geometry (the part that SHOULD vanish — and does)
+
+| signature (own docs, cast-ring order) | uniform | exp06 ring | exp03 ctrl |
+|---|---|---|---|
+| mid-dwell class means: ring order / corr | no / -0.06 | exact / +0.45 | no / 0.015 |
+| firstdwell means f1 fraction (L9-12) | 0.25-0.26, p 0.91-0.99 | 0.36-0.38, **p 0.0004-0.0016** | 0.20-0.22, p 0.7-0.96 |
+| one-hot read-out corr (late, L9-12) | -0.01..-0.06 | **-0.78..-0.82** | ~+0.1 |
+| one-hot cols f3+f4 p (L9-12) | 0.57-0.93 | **0.0004** | ~chance |
+| whitening dial (L10, lam 1e-4 -> 100) | +0.31 -> -0.16, never ring, p_f1 >= 0.08 | -0.81 -> **+0.69, exact ring at lam 10, p 0.0008** | +0.12 -> -0.15, nothing |
+| logistic acc / corr (L10) | 0.68 / +0.05 | 0.68-0.70 / -0.2..-0.55 | — |
+| cosine heatmap neighbor band | absent | present (lam 10), inverted (whitened) | absent |
+
+- At MATCHED decoding accuracy (logistic 0.68 both students), every ring
+  signature exp06 found is absent in the uniform student: no circle in the
+  centroids, no anti-ring in the whitened read-outs, no swing across the
+  whitening dial, no neighbor band in the heatmaps.
+- Cross mid-dwell means corr 0.13-0.17 (vs ring student's 0.45, ctrl's
+  0.015): on RING docs even the map-free student's centroids get pulled
+  toward cast-ring neighbors — direct confirmation that the carryover
+  mechanism exp05 identified operates on any tracking student, and that
+  exp06 was right to discount the mid-dwell circle.
+- One loose end: the uniform student's raw firstdwell MEANS show weak
+  f3+f4 (neighbor-alternating) energy aligned with the cast ring (p
+  0.006-0.043 at L9-12, both variants). No corpus mechanism can produce
+  cast-ring alignment here; most plausibly this reflects intrinsic
+  similarity structure among the 8 SAE latents themselves (the cast's
+  ring order was chosen by a similarity criterion in exp03/05). It
+  produces no circle and no read-out structure, but is worth remembering
+  when interpreting borderline f-mode p-values.
+
+Verdict: **the ring wiring is represented, not inherited.** A student with
+identical flavor exposure, identical dwell statistics, identical training
+and near-identical heldout loss — differing ONLY in whether the corpus's
+transition graph had structure — tracks beliefs just as well but shows
+none of exp06's ring geometry, while the exp06 student shows all of it at
+p <= 0.0016.
+
+Results: `results/probe/uniform_*.{json,png,npz}` (in-repo).
 3. Vocab: exp06's `vocab32k.npz` reused unchanged (probe comparability);
    coverage re-checked on the new corpus.
 4. `src/corpus_score_posterior.py` — exact posterior for the eval split

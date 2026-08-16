@@ -53,6 +53,22 @@ nats/token; "true model" = the corpus's own transition matrix, "other map"
 - The uniform corpus's "map value" 0.04 is the loss a reader pays for
   WRONGLY assuming the ring — the ring prior is actively harmful here, so
   any ring geometry found in the uniform student cannot be corpus-induced.
+
+## Full corpus (2026-08-16)
+
+400,000 docs x 256 tokens = 102,400,000 tokens, 8 shards on 8 seahorse
+A6000s at ~3,100 tok/s each (`src/corpus_generate.py`, seed 6,
+expandable_segments allocator as in exp06). Integrity
+(`src/corpus_check.py`): exact doc/token counts; 12.10 switches/doc; jump
+destinations uniform over the 7 non-self offsets (0.1426-0.1430 each,
+offset 0 never); state occupancy flat (0.1247-0.1253); exp06 vocab32k
+coverage 0.9600 (ring corpus: 0.9607) — vocab reused unchanged; switch
+times verified token-for-token IDENTICAL to the ring corpus in all 80
+chunk pairs (same seed + draw order, only destinations differ).
+
+Eval-split exact posterior (`src/corpus_score_posterior.py`, uniform
+transition matrix, 8 GPUs) and student training (`src/train_student.py`,
+tigerfish GPUs 0+1, ~178k tok/s) launched immediately after.
 3. Vocab: exp06's `vocab32k.npz` reused unchanged (probe comparability);
    coverage re-checked on the new corpus.
 4. `src/corpus_score_posterior.py` — exact posterior for the eval split

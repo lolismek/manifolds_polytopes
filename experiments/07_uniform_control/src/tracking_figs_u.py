@@ -148,7 +148,6 @@ ax.set_xlabel("layer")
 ax.set_ylabel(r"argmax accuracy vs true state $z_t$")
 ax.set_ylim(0, 0.9)
 
-fig.suptitle("first dwell only (carryover-free)", fontsize=10, y=1.02)
 fig.tight_layout()
 fig.savefig(OUT / "fig_tracking_layers_firstdwell.png", bbox_inches="tight")
 plt.close(fig)

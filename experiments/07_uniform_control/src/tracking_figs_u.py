@@ -153,7 +153,51 @@ fig.tight_layout()
 fig.savefig(OUT / "fig_tracking_layers_firstdwell.png", bbox_inches="tight")
 plt.close(fig)
 
+# ---- fig 4: per-layer R2 and accuracy, SWITCH WINDOW only (lag 0-4) ----
+# Probes fit on all train tokens (as always); evaluation restricted to the
+# 5 tokens after each state switch — where the ring map narrows the
+# destination to 2 candidates (lagwindow_sweep_u.py on seahorse).
+lw = json.load(open(PROBE / "lagwindow_sweep.json"))
+
+LW_CURVES = [
+    (lw["ring"], "o-", RING, "student (ring corpus)"),
+    (lw["uniform"], "^-", CTRL2, "control2 (uniform jumps)"),
+    (lw["ctrl"], "s--", CTRL1, "control1 (unsteered)"),
+]
+
+fig, axes = plt.subplots(1, 2, figsize=(9, 3.6))
+
+ax = axes[0]
+for layers, style, color, label in LW_CURVES:
+    ax.plot(L, [d["probe_R2"] for d in layers], style, color=color,
+            label=label, ms=5)
+ax.set_xlabel("layer")
+ax.set_ylabel(r"probe $R^2$ vs exact posterior $b_t$")
+ax.set_ylim(0, 0.6)
+ax.legend(frameon=False, fontsize=9)
+
+ax = axes[1]
+for layers, style, color, label in LW_CURVES:
+    ax.plot(L, [d["acc_vs_true_state"] for d in layers], style, color=color,
+            label=label, ms=5)
+ax.axhline(lw["reader_acc_window"], color=READER, lw=1, ls=":")
+ax.text(0.1, lw["reader_acc_window"] + 0.015,
+        f"optimal observer ({lw['reader_acc_window']:.3f})",
+        fontsize=9, color=READER)
+ax.axhline(chance, color="k", lw=0.8, ls=":")
+ax.text(0.1, chance + 0.015, "chance (1/8)", fontsize=9)
+ax.set_xlabel("layer")
+ax.set_ylabel(r"argmax accuracy vs true state $z_t$")
+ax.set_ylim(0, 0.6)
+
+fig.suptitle("switch window only (lag 0-4 tokens after a state switch)",
+             fontsize=10, y=1.02)
+fig.tight_layout()
+fig.savefig(OUT / "fig_tracking_layers_lagwindow.png", bbox_inches="tight")
+plt.close(fig)
+
 for name in ("fig_tracking_layers.png", "fig_tracking_lag.png",
-             "fig_tracking_layers_firstdwell.png"):
+             "fig_tracking_layers_firstdwell.png",
+             "fig_tracking_layers_lagwindow.png"):
     shutil.copy(OUT / name, Path.home() / "Desktop" / name)
     print("wrote", OUT / name, "and copied to Desktop")

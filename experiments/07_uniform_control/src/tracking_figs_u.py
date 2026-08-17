@@ -109,6 +109,51 @@ fig.tight_layout()
 fig.savefig(OUT / "fig_tracking_lag.png", bbox_inches="tight")
 plt.close(fig)
 
-for name in ("fig_tracking_layers.png", "fig_tracking_lag.png"):
+# ---- fig 3: per-layer R2 and accuracy, FIRST DWELL only ----
+# Carryover-free tokens (before the first switch of each doc). Ring and
+# control1 from exp06 firstdwell.json (ring eval docs); control2 from
+# uniform_firstdwell.json (its OWN eval docs — no cross first-dwell run;
+# reader ceilings nearly identical: 0.819 ring, 0.824 uniform).
+fd6 = json.load(open(EXP06_PROBE / "firstdwell.json"))
+fd7 = json.load(open(PROBE / "uniform_firstdwell.json"))
+fd_reader = fd6["reader_firstdwell_acc"]
+
+FD_CURVES = [
+    (fd6["ring"]["layers"], "o-", RING, "student (ring corpus)"),
+    (fd7["uniform"]["layers"], "^-", CTRL2, "control2 (uniform jumps)"),
+    (fd6["ctrl"]["layers"], "s--", CTRL1, "control1 (unsteered)"),
+]
+
+fig, axes = plt.subplots(1, 2, figsize=(9, 3.6))
+
+ax = axes[0]
+for layers, style, color, label in FD_CURVES:
+    ax.plot(L, [d["probe_R2"] for d in layers], style, color=color,
+            label=label, ms=5)
+ax.set_xlabel("layer")
+ax.set_ylabel(r"probe $R^2$ vs exact posterior $b_t$")
+ax.set_ylim(0, 0.6)
+ax.legend(frameon=False, fontsize=9)
+
+ax = axes[1]
+for layers, style, color, label in FD_CURVES:
+    ax.plot(L, [d["acc_vs_true_state"] for d in layers], style, color=color,
+            label=label, ms=5)
+ax.axhline(fd_reader, color=READER, lw=1, ls=":")
+ax.text(0.1, fd_reader + 0.015, f"optimal observer ({fd_reader:.3f})",
+        fontsize=9, color=READER)
+ax.axhline(chance, color="k", lw=0.8, ls=":")
+ax.text(0.1, chance + 0.015, "chance (1/8)", fontsize=9)
+ax.set_xlabel("layer")
+ax.set_ylabel(r"argmax accuracy vs true state $z_t$")
+ax.set_ylim(0, 0.9)
+
+fig.suptitle("first dwell only (carryover-free)", fontsize=10, y=1.02)
+fig.tight_layout()
+fig.savefig(OUT / "fig_tracking_layers_firstdwell.png", bbox_inches="tight")
+plt.close(fig)
+
+for name in ("fig_tracking_layers.png", "fig_tracking_lag.png",
+             "fig_tracking_layers_firstdwell.png"):
     shutil.copy(OUT / name, Path.home() / "Desktop" / name)
     print("wrote", OUT / name, "and copied to Desktop")

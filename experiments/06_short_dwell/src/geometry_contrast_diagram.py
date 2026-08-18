@@ -66,14 +66,6 @@ def left_panel():
                  rf"{{{belief_column(['0.5', '0.5', '0', '0', '0', '0'])}}};")
     lines.append(r"\draw[gray!60, line width=0.5pt] (tA.west) -- "
                  r"($(bA)+(0.14,0.06)$);")
-    # belief B: interior, spread over everything
-    lines.append(r"\node[circle, fill=black, minimum size=2.4mm, "
-                 r"inner sep=0pt] (bB) at (0.15,-0.15) {};")
-    lines.append(r"\node[font=\scriptsize, anchor=east] (tB) at (-2.6,0.0) "
-                 rf"{{{belief_column(
-                     ['0.3', '0.1', '0.1', '0.2', '0.1', '0.2'])}}};")
-    lines.append(r"\draw[gray!60, line width=0.5pt] (tB.east) -- "
-                 r"($(bB)+(-0.13,0.0)$);")
     # monocle reader thinking the belief out loud, below the circle
     lines.append(r"\node[inner sep=0pt] at (-2.75,-3.05) "
                  r"{\includegraphics[width=8.5mm]{monocle.png}};")
@@ -98,11 +90,25 @@ def right_panel():
             rf"pos=1.26] {{$v_{{\mathrm{{{name}}}}}$}};")
     lines.append(r"\draw[gray!45, line width=0.6pt, dash pattern=on 2.2pt "
                  rf"off 2.6pt] (0,0) circle ({R}cm);")
-    lines.append(r"\node[font=\footnotesize] at (0,-2.55) "
-                 r"{$v_{\mathrm{red}}$ = average $h$ over the tokens "
-                 r"about \textcolor{cred}{red}};")
+    lines.append(r"\node[font=\footnotesize, align=left] at (0,-3.0) {"
+                 + sentences() + r"};")
+    lines.append(r"\node[font=\footnotesize] at (0,-3.95) "
+                 r"{$v_{\mathrm{red}}$ = average $h$ at the "
+                 r"\textcolor{cred}{\underline{red}} tokens};")
     lines.append(r"\end{scope}")
     return "\n".join(lines)
+
+
+def sentences():
+    def red(w):
+        return rf"\textcolor{{cred}}{{\underline{{\smash{{{w}}}}}}}"
+    rows = [
+        rf"``My favorite color is {red('red')}.''",
+        rf"``Her lipstick was a deep {red('red')}.''",
+        rf"``{red('Red')}, white and blue are nice colors.''",
+    ]
+    return (r"\begin{tabular}{@{}l@{}}" +
+            r"\\[1.5pt]".join(rows) + r"\end{tabular}")
 
 
 def main():

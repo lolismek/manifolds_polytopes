@@ -1,13 +1,14 @@
-"""Intro diagram: belief geometry vs concept geometry, on a 6-color example.
+"""Intro diagram: belief state geometry vs concept geometry, 6-color example.
 
-Left: the belief view — one point per token, a probability tuple over the
-6 colors; a confident-between-neighbors point on the ring and an uncertain
-interior point. Right: the concept view — one vector per color, obtained
-by averaging activations over that color's tokens; what shape do the 6
-vectors form? Both read from the same residual stream (top).
+Left: the belief view — b = f_belief(h), a probability over the 6 colors;
+a confident-between-neighbors point on the ring (vertical tuple) and an
+uncertain interior point, plus a monocle reader thinking the belief out
+loud. Right: the concept view — one vector per color, v_red = average h
+over the tokens about red. Both read from the same residual stream (top).
 
-Requires: tectonic, pdftoppm (same pipeline as method_diagram.py).
-Writes results/blog/fig_belief_vs_concept.png and copies it to ~/Desktop.
+Requires: tectonic, pdftoppm, Pillow (emoji). Same pipeline as
+method_diagram.py. Writes results/blog/fig_belief_vs_concept.png and
+copies it to ~/Desktop.
 
 Usage: python3 geometry_contrast_diagram.py
 """
@@ -27,15 +28,27 @@ ANG = [90 - 60 * i for i in range(6)]      # red on top, clockwise
 R = 1.65
 
 
-def belief_tuple(vals):
-    """Probability tuple with each entry typeset in its state's color."""
-    parts = [rf"\textcolor{{c{name}}}{{{v}}}"
-             for (name, _), v in zip(COLORS, vals)]
-    return r"$(" + ",\\,".join(parts) + r")$"
+def emoji_png():
+    """Render the monocle-face emoji to WORK/monocle.png (Apple bitmap)."""
+    from PIL import Image, ImageDraw, ImageFont
+    font = ImageFont.truetype("/System/Library/Fonts/Apple Color Emoji.ttc",
+                              160)
+    img = Image.new("RGBA", (320, 320), (0, 0, 0, 0))
+    ImageDraw.Draw(img).text((160, 160), "\U0001F9D0", font=font,
+                             embedded_color=True, anchor="mm")
+    img.crop(img.getbbox()).save(WORK / "monocle.png")
+
+
+def belief_column(vals):
+    """Vertical probability tuple, each entry in its state's color."""
+    rows = "\\\\".join(rf"\textcolor{{c{name}}}{{{v}}}"
+                       for (name, _), v in zip(COLORS, vals))
+    return (r"$\left(\begin{smallmatrix}" + rows +
+            r"\end{smallmatrix}\right)$")
 
 
 def left_panel():
-    lines = [r"\begin{scope}[shift={(-5.2,-0.75)}]"]
+    lines = [r"\begin{scope}[shift={(-5.2,-0.85)}]"]
     lines.append(r"\draw[gray!45, line width=0.6pt, dash pattern=on 2.2pt "
                  rf"off 2.6pt] (0,0) circle ({R}cm);")
     for (name, _), a in zip(COLORS, ANG):
@@ -49,28 +62,35 @@ def left_panel():
     # belief A: on the arc between red and orange, only two nonzero coords
     lines.append(rf"\node[circle, fill=black, minimum size=2.4mm, "
                  rf"inner sep=0pt] (bA) at (60:{R}cm) {{}};")
-    lines.append(r"\node[font=\scriptsize, anchor=west] at (1.35,2.3) "
-                 rf"{{{belief_tuple(['0.5', '0.5', '0', '0', '0', '0'])}}};")
-    lines.append(r"\draw[gray!60, line width=0.5pt] (1.42,2.18) -- "
-                 r"($(bA)+(0.08,0.15)$);")
+    lines.append(r"\node[font=\scriptsize, anchor=west] (tA) at (2.3,1.55) "
+                 rf"{{{belief_column(['0.5', '0.5', '0', '0', '0', '0'])}}};")
+    lines.append(r"\draw[gray!60, line width=0.5pt] (tA.west) -- "
+                 r"($(bA)+(0.14,0.06)$);")
     # belief B: interior, spread over everything
     lines.append(r"\node[circle, fill=black, minimum size=2.4mm, "
-                 r"inner sep=0pt] (bB) at (0,0.15) {};")
-    lines.append(r"\node[font=\scriptsize, anchor=north] at (0,-0.12) "
-                 rf"{{{belief_tuple(
+                 r"inner sep=0pt] (bB) at (0.15,-0.15) {};")
+    lines.append(r"\node[font=\scriptsize, anchor=east] (tB) at (-2.6,0.0) "
+                 rf"{{{belief_column(
                      ['0.3', '0.1', '0.1', '0.2', '0.1', '0.2'])}}};")
-    # captions
-    lines.append(r"\node[font=\footnotesize, align=center] at (0,-2.85) "
-                 r"{a belief is a probability over the 6 colors;\\"
-                 r"as tokens arrive, the point moves};")
-    lines.append(r"\node[font=\footnotesize\itshape, gray!30!black] at "
-                 r"(0,-3.75) {what shape does the set of beliefs trace?};")
+    lines.append(r"\draw[gray!60, line width=0.5pt] (tB.east) -- "
+                 r"($(bB)+(-0.13,0.0)$);")
+    # monocle reader thinking the belief out loud, below the circle
+    lines.append(r"\node[inner sep=0pt] at (-2.75,-3.05) "
+                 r"{\includegraphics[width=8.5mm]{monocle.png}};")
+    lines.append(r"\node[draw=gray!60, fill=gray!6, rounded corners=6pt, "
+                 r"line width=0.5pt, font=\itshape\footnotesize, "
+                 r"align=center, inner sep=5pt] (th) at (0.85,-3.05) "
+                 r"{``the text is talking about something\\"
+                 r"\textcolor{cred}{red}\,\ldots{} or maybe "
+                 r"\textcolor{corange}{orange}''};")
+    lines.append(r"\fill[gray!55] (-2.05,-2.95) circle (1.0pt) "
+                 r"(-1.8,-2.98) circle (1.4pt);")
     lines.append(r"\end{scope}")
     return "\n".join(lines)
 
 
 def right_panel():
-    lines = [r"\begin{scope}[shift={(5.2,-0.75)}]"]
+    lines = [r"\begin{scope}[shift={(4.3,-0.85)}]"]
     for (name, _), a in zip(COLORS, ANG):
         lines.append(
             rf"\draw[->, c{name}, line width=1.1pt] (0,0) -- ({a}:{R}cm) "
@@ -78,37 +98,23 @@ def right_panel():
             rf"pos=1.26] {{$v_{{\mathrm{{{name}}}}}$}};")
     lines.append(r"\draw[gray!45, line width=0.6pt, dash pattern=on 2.2pt "
                  rf"off 2.6pt] (0,0) circle ({R}cm);")
-    # sentences with red underlined, then the definition of v_red
-    lines.append(r"\node[font=\footnotesize, align=left] at (0,-3.05) {"
-                 + sentences() + r"};")
-    lines.append(r"\node[font=\footnotesize] at (0,-4.0) "
-                 r"{$v_{\mathrm{red}}$ = average activation at the "
-                 r"\textcolor{cred}{\underline{red}} tokens};")
-    lines.append(r"\node[font=\footnotesize\itshape, gray!30!black] at "
-                 r"(0,-4.65) {what shape do the 6 vectors form?};")
+    lines.append(r"\node[font=\footnotesize] at (0,-2.55) "
+                 r"{$v_{\mathrm{red}}$ = average $h$ over the tokens "
+                 r"about \textcolor{cred}{red}};")
     lines.append(r"\end{scope}")
     return "\n".join(lines)
 
 
-def sentences():
-    def red(w):
-        return rf"\textcolor{{cred}}{{\underline{{\smash{{{w}}}}}}}"
-    rows = [
-        rf"``My favorite color is {red('red')}.''",
-        rf"``Her lipstick was a deep {red('red')}.''",
-        rf"``{red('Red')}, white and blue are nice colors.''",
-    ]
-    return (r"\begin{tabular}{@{}l@{}}" +
-            r"\\[1.5pt]".join(rows) + r"\end{tabular}")
-
-
 def main():
     WORK.mkdir(parents=True, exist_ok=True)
+    emoji_png()
     color_defs = "\n".join(
         rf"\definecolor{{c{n}}}{{HTML}}{{{h}}}" for n, h in COLORS)
     tex = r"""\documentclass[border=10pt]{standalone}
 \usepackage{amsmath}
+\usepackage{amssymb}
 \usepackage{xcolor}
+\usepackage{graphicx}
 \usepackage{tikz}
 \usetikzlibrary{arrows.meta, calc}
 """ + color_defs + r"""
@@ -116,39 +122,23 @@ def main():
 \begin{tikzpicture}[>={Stealth[length=4.5pt]}, line cap=round]
 
 % ---- top: the shared residual stream ----
-\node[draw=black, line width=0.8pt, font=\small, align=center,
-      inner xsep=10pt, inner ysep=5pt] (rs) at (0, 4.0)
-      {residual stream\\[-1pt]
-       {\footnotesize\itshape\color{gray!30!black}
-        one activation vector per token}};
+\node[draw=black, line width=0.8pt, font=\small, inner xsep=12pt,
+      inner ysep=6pt] (rs) at (0, 4.0) {residual stream $h$};
 
-% ---- arrows from the stream to the two readings ----
 \draw[->, line width=0.7pt] (rs.west) -| (-5.2, 2.95);
-\draw[->, line width=0.7pt] (rs.east) -| (5.2, 2.95);
-\node[font=\itshape\footnotesize, anchor=south east] at (-2.55, 4.08)
-      {read at one token};
-\node[font=\itshape\footnotesize, anchor=south west] at (2.3, 4.08)
-      {average each color's tokens};
+\draw[->, line width=0.7pt] (rs.east) -| (4.3, 2.95);
 
 % ---- headers ----
-\node[font=\small\bfseries] at (-5.2, 2.6) {belief geometry};
-\node[font=\itshape\footnotesize, gray!30!black] at (-5.2, 2.2)
-      {one point = the model's guess at one token};
-\node[font=\small\bfseries] at (5.2, 2.6) {concept geometry};
-\node[font=\itshape\footnotesize, gray!30!black] at (5.2, 2.2)
+\node[font=\small\bfseries] at (-5.2, 2.6) {belief state geometry};
+\node[font=\footnotesize] at (-5.2, 2.15)
+      {$b = f_{\mathrm{belief}}(h) \in \mathbb{R}^6$};
+\node[font=\itshape\footnotesize, gray!30!black] at (-5.2, 1.78)
+      {entries sum to 1: a probability over the 6 colors};
+\node[font=\small\bfseries] at (4.3, 2.6) {concept geometry};
+\node[font=\itshape\footnotesize, gray!30!black] at (4.3, 2.15)
       {one arrow = one color};
 
 """ + left_panel() + "\n\n" + right_panel() + r"""
-
-% ---- thought bubble for belief A, in the middle gap ----
-\node[draw=gray!60, fill=gray!6, rounded corners=6pt, line width=0.5pt,
-      font=\itshape\footnotesize, align=center, inner sep=5pt]
-      (th) at (0.35, 0.45)
-      {``the text is talking\\about something
-       \textcolor{cred}{red}\,\ldots\\or maybe
-       \textcolor{corange}{orange}''};
-\fill[gray!55] (-3.5, 0.62) circle (1.0pt) (-2.9, 0.57) circle (1.4pt)
-      (-2.3, 0.52) circle (1.8pt);
 
 \end{tikzpicture}
 \end{document}

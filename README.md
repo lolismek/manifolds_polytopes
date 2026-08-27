@@ -1,179 +1,176 @@
-# manifold_polytopes
+# Planting a Latent Variable in Natural-Looking Text: a More Realistic Test of Belief States in LLMs and Their Link to Concept Geometry
 
-Experiments on hidden-state geometry in transformers — why concepts form manifolds (rings, curves,
-simplices), and whether a concept's geometry is inherited from the **statistical dynamics of the
-latent variable behind it**.
+**Blog post: [Planting a Latent Variable in Natural-Looking Text](https://alexjerpelea.com/geometry.html)** — this repo contains the code and experiment results behind it. What follows is a shortened version of the post.
 
-**Headline result (exp06, written up as *"Planting a Latent Variable in Natural-Looking Text: a
-More Realistic Test of Belief States and Their Link to Concept Geometry"*, LessWrong draft):**
-we plant a controllable latent variable inside natural-looking text. An LLM teacher writes
-ordinary text while we "subliminally" steer it along one of K = 8 unrelated sparse-autoencoder
-directions at each token, the active direction following a ring-shaped Markov chain. A small
-transformer trained from scratch on this corpus (1) tracks the Bayesian posterior over the planted
-variable, and (2) arranges the 8 states themselves on a ring, in the exact order of the Markov
-chain. Since the 8 directions are unrelated in the teacher, that geometry can only come from the
-dynamics we imposed.
+by Alex Jerpelea
 
-## The method (exp06)
+## Contents
 
-![method pipeline](experiments/06_short_dwell/results/blog/fig_method_pipeline.png)
+- [Abstract](#abstract)
+- [Introduction](#introduction)
+- [Method](#method)
+  - [The Generative Process](#the-generative-process)
+  - [The corpus](#the-corpus)
+  - [Selecting the SAE latents](#selecting-the-sae-latents)
+  - [The optimal observer](#the-optimal-observer)
+  - [The student](#the-student)
+- [Results](#results)
+  - [1. The student tracks the belief states](#1-the-student-tracks-the-belief-states)
+  - [2. The eight states of the latent variable sit on a ring](#2-the-eight-states-of-the-latent-variable-sit-on-a-ring)
+- [Conclusion](#conclusion)
+  - [Future Work](#future-work)
+  - [Limitations](#limitations)
+- [Repo layout](#repo-layout)
 
-We cannot write down natural language's latent variables as HMMs — so instead we use steering to
-**add one of our own**. The teacher is Gemma-2-2B (base) with a pretrained Gemma Scope SAE at
-layer 12. We select 8 near-orthogonal, causal, non-co-activating latents; at every token, the
-current state z_t picks one decoder direction, which is added (norm-compensated) to the residual
-stream at layers 12–23 while the teacher writes. z_t walks a ring: p_stay = 0.95, else hop to a
-ring neighbor (mean dwell ≈ 20 tokens). Each document's state path is sampled before generation.
+## Abstract
 
-![ring Markov chain over a state-colored corpus excerpt](experiments/06_short_dwell/results/blog/fig_method_ring.png)
+LLMs are thought to track "belief states," i.e., running probability distributions over the latent variables that govern language (Shai et al., Sarfati et al.), but so far this has only been comprehensively demonstrated on toy synthetic data and in a few isolated case studies. It has also never been empirically connected to the geometry of LLM features (the concepts interpretability finds in model activations). In this work, we plant a controllable latent variable inside natural-looking text. An LLM teacher writes ordinary text while we "subliminally" steer it along one of K = 8 unrelated sparse autoencoder directions at each token, with the active directions following a ring-shaped Markov chain. A small transformer model trained on this corpus does indeed track the Bayesian posterior belief about our planted latent variable. Moreover, it also arranges the 8 states themselves on a ring, in the exact order of the Markov chain, which is supporting evidence that a concept's geometry can be formed by the statistical dynamics of the latent variable behind it.
 
-Two design points that make the analysis exact:
+## Introduction
 
-- **Clean cache.** The KV cache is rebuilt at every token, so steering never touches the visible
-  context — each token depends only on (text so far, current state). The corpus is then a true
-  token-labeled HMM in Shai et al.'s formalism, and the **optimal observer** (exact Bayes over
-  the teacher's per-state token probabilities) is computable at every token. Its posterior b_t is
-  the probe target.
-- **Corpus scale.** 400k documents × 256 tokens (~102M tokens), s = 1.5 steering strength chosen
-  by a fluency-gated sweep. A control corpus (steering off) trains an identical control student.
+It is thought that natural language is governed by a set of latent variables, so a good predictor of language must infer their state, gaining a sort of world model. Shai et al. (2024) trains small transformers on token sequences emitted by a Hidden Markov Model (HMM), and finds that the residual stream linearly encodes a belief state, i.e., a running probability distribution over the state of the HMM, updating at each token.
 
-The **student** is a 110M-parameter Llama-style transformer (12 layers, width 768) trained from
-scratch on the corpus tokens and nothing else.
+But the paper's setup is purely synthetic, as the HMM dictates the whole toy language, and just because transformers *can* model belief states, it does not mean they *will* in a real natural language setting. A realistic controlled experiment is hard to set up as we can't model English with a bunch of Markov Models. LLMs would not be needed if we could.
+
+![Figure from Shai et al.: a model learns to model optimal beliefs sitting on the probability simplex](figures/geo_fig01.png)
+
+In parallel, the interpretability literature is documenting the geometry of concepts. The Linear Representation Hypothesis (Park et al.), which proposes features as linear directions, has been weakened to allow concepts to sit on low-dimensional manifolds, like days of the week on a circle, or calendar years on a helix (Engels et al.). There is no full proof of why these concept manifolds form.
+
+In a follow-up paper, Shai et al. (2026) show that when text is modeled by multiple HMMs at once, the transformer learns a belief state per factor, each living in its own near-orthogonal subspace. The authors suggest that multi-dimensional feature manifolds could be stemming from here. However, this requires further explanation. *First of all*, their models are once again trained on synthetic HMM tokens, which is not a sufficient argument. *Second of all*, probing the belief state, which gives a probability distribution over a latent variable's values, is not the same as asking how the values themselves that the latent variable takes are geometrically arranged.
+
+The diagram below better illustrates the difference between belief states and concepts/features within the residual stream. It is unclear whether belief dynamics are actually correlated with concept geometry.
+
+![Belief states vs concept geometry in the residual stream](figures/geo_fig02.png)
+
+This work tries to tie both ends by introducing a method for generating natural-looking text influenced by a latent variable with a Markov structure of our choosing. We use an LLM teacher that writes ordinary text while we "subliminally" steer it (Morgulis et al.) along one of K = 8 unrelated and orthogonal sparse autoencoder directions. Switching from one autoencoder direction to another is dictated by a ring-shaped Markov chain that we fully control. We then train a small transformer from scratch on the generated corpus and ask two questions. Does it track the belief state of our variable? (Yes, confirming the Shai et al. hypothesis in a more realistic scenario). And do the 8 states themselves inherit the geometry of the Markov Model? (Yes, they sit on a ring, in the exact neighbor order).
+
+## Method
+
+The main difficulty in generating natural-looking text governed by controllable latent variables is that it's very hard to write down the latent variables of natural language as a set of HMMs. But that's exactly the method's intuition! LLMs already model language with high accuracy, and although they are not fully explainable or controllable, they are steerable to some degree. And for our goal, one controlled latent variable is enough. So instead of trying to write down language's latent variables, we use steering to add one of our own: at each token, we steer the teacher along one of K = 8 uncorrelated and orthogonal SAE directions, while generating otherwise ordinary text. We only steer along one SAE direction at a time, given by a Markov chain which updates at every token. We then train a student model from scratch on the generated corpus.
+
+One could consider the SAE directions to be 8 separate latent variables of natural language. However, by imposing this artificial dynamic over them, we create a new latent variable, and the 8 directions become values that the new latent variable can take. We also specifically pick the 8 directions to be orthogonal and uncorrelated, such that our structure could not have come from anywhere else.
+
+Note that steering is known to inject durable, learnable structure into generated text, even if the text is seemingly unrelated to the steering direction (which is what we aim for). In their study, Morgulis & Hewitt call this mechanism "subliminal steering," finding that fine-tuning a student on random number sequences written by a steered teacher makes the student inherit the teacher's steering direction.
+
+Here's a visual summary of our proposed algorithm:
+
+![Method pipeline](figures/geo_fig03.png)
+
+### The Generative Process
+
+The teacher model is a Gemma-2-2B (base), which we couple with a pretrained sparse autoencoder (Gemma Scope, 16K latents) for the residual stream of a middle layer (layer #12). From these we select K = 8 uncorrelated latents. Each selected latent $i$ has a unit decoder direction $d_i$ and an average firing magnitude $a_i$. Steering along latent $i$ means adding $s \cdot a_i \cdot \frac{\rho_\ell}{\rho_{12}} \cdot d_i$ to the residual stream at layers 12 through 23, where $\rho_\ell$ is the average residual-stream norm at layer $\ell$, which compensates for the stream's growing norm. Lastly, $s = 1.5$ was chosen by a sweep, such that the injection is strong enough, yet does not degenerate the quality of the text.
+
+The corpus consists of independent documents of 256 tokens each. The first few tokens come from a pre-selected set of "openers," and the teacher writes the rest. At every token, we steer the teacher along exactly one of the 8 directions. We write $z_t \in \{1, \ldots, 8\}$ for the direction active while the token at position $t$ is sampled. The 8 directions, together with the dynamics we impose on them, constitute the synthetic latent variable. One can think of it as a hidden "concept" governing the text, like the emotion variable drifting through a story, except that here we control the variable and hold its ground truth, instead of finding it in the wild. The latent variable takes a walk along the ring:
+
+![The ring Markov chain](figures/geo_fig04.png)
+
+At $0.95$ "stay" probability, the variable dwells ~20 tokens per state before hopping to the neighbor. Each document's path $z_1, \ldots, z_{256}$ is sampled before generation; thus, nothing else in the LM could plant the ring geometry.
+
+Very importantly, the KV cache is always rebuilt at each token. Steering never touches the cached context, so that each token only depends on the current visible text and the latent variable. This will be very important in order to compute the outputs of an ideal Bayesian inference model, to which we will compare our student model's belief state.
+
+### The corpus
+
+We generate 400,000 documents x 256 tokens (first 12 tokens are taken from a pre-selected set of "openers"). Approx. ~102M tokens. We also generate a control corpus with steering off, and we train a control student on it. Analysis runs on both students.
+
+### Selecting the SAE latents
+
+Out of the 16K SAE latents, we drop the ones that are dead, fire too often, or mostly fire on punctuation and position. We don't really care about what our chosen latents mean, and aim for them to be as hard to eyeball as possible (so that they are more "latent"). We also make sure that in our selection, the latents are near-orthogonal, don't co-activate on natural text, and are causal (i.e., steering along them actually modifies the token distribution).
+
+### The optimal observer
+
+At each token position in a document, we measure how well the state of the latent variable can be tracked by an observer who knows everything, i.e., knows the transition matrix of the 8 latents, and the softmax token distribution of the steered teacher model given any text. Note that we can token-label our transition matrix just like Shai et al.'s formalisms, so we truly have an HMM:
+
+$$T^{(x)}_{ij} = T_{ij} \cdot \mathrm{Teacher}_j(x \mid x_{<t})\text{, where } \mathrm{Teacher}_j \text{ is just the LLM with } z_t = j.$$
+
+We call our proposed reader the *optimal observer*, which performs Bayes inference over the operator defined above, maintaining the exact posterior $b_t(i) = P(z_t = i \mid x_{1:t})$ at every token. Since $b_t$ is a probability distribution over the 8 states, it is a point in the probability simplex $\Delta^7$. The posteriors get updated as such at each token position $t$:
+
+$$b_t(j) \propto \textstyle\sum_i b_{t-1}(i) \cdot T^{(x_t)}_{ij}$$
+
+Because the KV cache is reset at every token, the next token only depends on the visible text and the current state of the model, thus making the optimal observer computable at every point. We use $b_t$ at every token as the probe target for our student.
+
+The optimal belief $b_t$ sits on a 7-dimensional probability simplex. But if we PCA on it we find that the two principal components reflect the ring structure of $T$:
+
+![PCA of the optimal observer's beliefs](figures/geo_fig05.png)
+
+### The student
+
+We use a 110M-parameter Llama-style transformer (12 layers, width 768), trained from scratch on the corpus tokens and nothing else (~5 epochs, 32k vocab). Unlike the optimal observer, the student has no access to the teacher model, so $z$ reaches it intertwined with all the other latent variables of the Gemma model. We ask whether the factorized belief state over $z$ emerges anyway, and we also explore the geometry of the latent variable.
+
+We also train two control students. **control1** was trained on a completely unsteered corpus from the same teacher. **control2** was trained on a corpus steered by the same 8 latents with the same $p_{stay}$, but on a state switch, the latent variable jumps uniformly to any of the other 7 states instead of to neighbors on the ring. It has the same exposure to the 8 features and incentive to track them, but no transition map to learn:
+
+![The student and the two controls](figures/geo_fig06.png)
 
 ## Results
 
-**The student tracks the belief state.** A ridge probe from the residual stream to the optimal
-observer's posterior reaches R² = 0.488 (argmax accuracy 0.557 vs the ideal reader's 0.762 —
-~¾ of ceiling), while the control student's beliefs stall at R² = 0.137:
+Recall that this work has two objectives: 1. to confirm that transformers learn belief states over latent variables in a more realistic setting than the toy setup of Shai et al., and 2. to find the relationship between the geometry of a latent variable itself (*which is different than the geometry of the belief state!*) and its underlying statistical dynamics.
 
-![per-layer probe R2 and accuracy](experiments/06_short_dwell/results/blog/fig_tracking_layers.png)
+### 1. The student tracks the belief states
 
-Accuracy climbs with tokens since the last state switch (0.30 → 0.81) — real evidence
-integration, lagging the exact-Bayes reader but with the same shape:
+Let $h^{(\ell)}_t \in \mathbb{R}^{d_{model}}$ be the student's residual stream at layer $\ell$ and token position $t$. We want to test whether the belief state can be read out linearly out of this vector, so we fit a ridge regression from the hidden states to the posteriors of the optimal observer: $\hat{b}_t = W h^{(\ell)}_t + c$. We fit the map on 4,000 held-out documents from our circularly steered corpus, and evaluate it on 1,000 more. Per layer, we report the regression's $R^2$ against $b_t$, and the accuracy $\arg\max_i \hat{b}_t(i)$ against the true state $z_t$, averaged over all token positions.
 
-![accuracy vs tokens since switch](experiments/06_short_dwell/results/blog/fig_tracking_lag.png)
+![Belief probe R² and accuracy per layer](figures/geo_fig07.png)
 
-The probe's read-out reproduces the observer's belief simplex — noisier, but with the confident
-beliefs at the corners in the exact ring order:
+Indeed, the belief posterior does live in the residual stream. The best single layer reaches $R^2 = 0.49$, with argmax accuracy of the actual state of $0.577$, which is approximately three quarters of the optimal observer's ceiling of $0.762$. This is significant given that the student had no direct access to the steered teacher model, as the optimal observer did.
 
-![belief PCA, observer vs student read-out](experiments/06_short_dwell/results/blog/fig_belief_pca.png)
+As expected, **control1** does not map the belief state (low $R^2$), but does guess the current state above chance. The SAE directions we steer along are natural in language, so ordinary text has coincidentally exposed it to them without even steering. But note that **control2** reaches a significant $R^2 = 0.41$ on the same documents, also with high argmax accuracy ($0.52$). This is also expected, as control2 has seen the eight states just as much, so after enough tokens in one state, it can decently estimate which state is active. In other words, after enough tokens in a state, $b_t$ converges towards a one-hot vector, so there is nothing intrinsic about the ring geometry in it.
 
-**The 8 states sit on a ring.** Per-state activation centroids at layers 9–11 sit in exact
-neighbor order (distance–ring-distance corr 0.45; control 0.11). A carryover control (centroids
-from each document's first dwell only, so no ring-neighbor predecessor in context) kills the
-2-PC circle — but a direct circle fit in ring order still explains 38% of centroid variance at
-layer 11, and the true ring order ranks **1st of all 2520 orderings** (control lands
-mid-distribution). The ring is real and exactly ordered, just sub-dominant — the planted variable
-only injects ~0.05–0.1 nats/token of evidence, so most of the residual stream is spent on
-ordinary language features:
+We believe the $R^2$ ($\approx 0.08$) difference between the two is the advantage that the student model has from knowing how the previous state constrains the next one, i.e., internalizing the HMM's structure. To confirm this, we re-evaluate on the *first dwell* only, where we define the first dwell of a document to be the prefix where the latent variable has not yet switched from its initial state. In this scenario, control2 and our student become indistinguishable. As there is no prior information, the transition map is useless even to the optimal observer, so this ablation is a positive result towards showing that the student calculates belief states:
 
-![circle fit and ordering permutation test](experiments/06_short_dwell/results/blog/fig_beat3.png)
+![First-dwell evaluation](figures/geo_fig08.png)
 
-The same structure shows in raw similarities: centroid cosine is warmest on the neighbor
-diagonals (resembling the transition matrix T), while whitened probe directions are most
-*anti*-correlated exactly there — the probe spends its capacity separating the pairs the
-representation mixes most:
+For our student, we can also look at the probe's read-out $\hat{b}_t$ in the same PCA view we used for the optimal observer. The student's belief state is a noisier version of the optimal observer's:
 
-![cosine heatmaps](experiments/06_short_dwell/results/blog/fig_heatmap.png)
+![PCA of the student's belief read-out](figures/geo_fig09.png)
 
-## Experiment log
+### 2. The eight states of the latent variable sit on a ring
 
-| # | Folder | Status | One-liner |
-|---|---|---|---|
-| 01 | `experiments/01_latent_features/` | done — hypothesis confirmed | Toy transformer; 3 latent features with chosen coupling kernels M (identity / circular band / linear band). Each feature's layer-2 geometry matches its M (Gram–M corr > 0.99, 3 seeds): simplex, ring, and open curve in one network. v2: co-occurrence dissociation — M wins all symmetric venues. |
-| 03 | `experiments/03_steered_corpus/` | superseded by 04 | First steered-corpus attempt (clamped steering, stale KV cache). Students track beliefs, but steering leaked into the cached context, so the corpus wasn't a true HMM and no exact reader exists. |
-| 04 | `experiments/04_clean_cache/` | done — evidence too weak | Clean-cache re-run: exact ideal reader now computable, but clamp steering leaves min pairwise margin 0.081 nats/token vs per-token noise ~0.41 — the reader itself can barely track. |
-| 05 | `experiments/05_multilayer_add/` | done — tracking, no ring | Multi-layer additive steering fixes the evidence rate (margin ~0.28, clean fluency). Student tracks beliefs (concat R² 0.21 vs ctrl 0.11) but never learns the ring; the apparent mid-dwell ring was a context-carryover artifact. At p_stay = 0.98, knowing the transition map is worth ~nothing in next-token loss. |
-| 06 | `experiments/06_short_dwell/` | **done — headline result** | Shorter dwell (p_stay 0.95) + s = 1.5 makes the map worth learning (~3× wiring incentive). Student tracks beliefs at ¾ of the exact-Bayes ceiling and arranges the 8 states on a ring in exact Markov order (rank 1/2520), surviving the first-dwell carryover control. |
-| 07 | `experiments/07_uniform_control/` | done — structural control holds | Exposure-matched control for exp06: identical corpus recipe (same 8 flavors, dwells, switch times) but transitions uniform over the other 7 states — no map to learn. The student tracks beliefs just as well (0.71 vs 0.73 of ceiling, same integration curve) but shows **none** of exp06's ring geometry (circle p ≥ 0.91 vs 0.0004; no whitening-dial swing; no neighbor band). The ring wiring is represented, not inherited from flavor exposure or tracking. |
+So far we have shown that the student does hold beliefs resembling $b_t$. But control2 also does a decent job at inferring the belief state, because in our setup, each token carries some evidence about the current state, and, after enough tokens, that evidence alone suffices for identifying the state. Knowing the previous state only helps our student model early on, right after a state switch.
 
-(There is no exp02 folder — a planned in-the-wild color-geometry study that hasn't been started.)
+We now show where the models truly differ, which is how they represent the latent variable. Note that the geometry of the latent variable is a different object than the belief geometry above. We are no longer curious about the shape of a probability distribution, but about the shape of the states themselves. Specifically, we take the mean of the residual-stream activations for tokens in each of the 8 states (call them *centroids*) and we test what shape the 8 points form. If the geometry of the dynamics is inherited, they should sit on a ring.
 
-## Background: the coupling-kernel (M-dial) hypothesis
+We project the centroids onto their top-2 principal components. In layers 9-11, the 8 centroids sit in the exact neighbor order of our Markov chain, and pairwise distance between centroids correlates with distances along the ring at $0.45$. The control1 student shows nothing (with correlation $0.11$):
 
-The polytopes of Park et al. (categorical concepts as simplices) and the concept manifolds of the
-interpretability literature (circular features, color manifolds) may be **the same object at
-different settings of one dial: the attribute coupling matrix M** — M_ij = how much evidence for
-attribute i moves attribute j's log-odds.
+![Centroid PCA: student vs control1](figures/geo_fig10.png)
 
-- Park's *causal separability* (M = identity) forces a regular simplex.
-- Coupled attributes (evidence for *red* is partial evidence for *orange*) push the vertices off
-  the simplex; a smooth banded M yields a low-dimensional curve — a manifold. Dimensionality of
-  the polytope ≈ rank of row-centered M.
-- In computational-mechanics language: polytopes and manifolds are both **belief geometries** —
-  reachable sets of Bayesian posteriors over a latent, linearly embedded in the residual stream.
-  With static latents, M (the log-emission overlap kernel) alone fixes the reachable set; with
-  dynamics, the transition operator shapes it too. Exp01 confirmed the static (M-dial) corner;
-  exp06 shows the dynamic (T-dial) side in natural-looking text.
+But note that this is a trap! Right after a switch from state 2 to state 3, the activations might still remember state 2 for a few tokens. So when we average all of state 3's tokens to get state 3's centroid, we are also getting some of state 2 (and state 4), because the previous state in the text is always a ring neighbor. This means that each of the 8 centroids gets dragged towards its neighbors, and that alone draws a ring. From now on, we only compute centroids on each document's *first dwell* (i.e., before the latent variable ever switches states), so that no previous states leak in. In this setting, the PCA circle does not survive:
 
-Open empirical claims about *real* LLMs, untouched by any toy result: **(A)** real LLMs violate
-causal separability for graded categories (color), with the overlap pattern tracking the
-perceptual metric (CIELAB), not noise; **(B)** the kernel shaping the polytope is
-evidence-coupling from latent world structure, not raw textual co-occurrence (Karkada et al.) —
-dissociating cells: *black/white* and *red/green* co-occur heavily but are perceptually opposite.
+![First-dwell centroid PCA](figures/geo_fig11.png)
 
-## Position relative to computational mechanics
+However, this does not mean the ring is gone, but rather that the ring geometry is not the *principal* geometry (we only looked at the first 2 PCA axes). We use Fourier Analysis to directly query if there is any plane on which the centroids trace a circle, in the exact ring order of the HMM. Specifically, we look for two directions $u$ and $v$ such that:
 
-A full read of the Simplex/Astera papers (Aug 2026) set the boundary of what is ours to defend:
+$$\mu_i \approx u \cos(2\pi i/8) + v \sin(2\pi i/8),$$
 
-- **Shai et al. 2024** ([2405.15943](https://arxiv.org/abs/2405.15943)): transformers trained on
-  HMM output linearly represent belief-state geometry. Parent framework — but purely synthetic
-  token streams. Exp06's contribution is the same test with a planted latent inside
-  natural-looking text, plus the link from belief dynamics to the geometry of the state
-  representations themselves (flagged open in their §4.3).
-- **Shai et al. 2026** ([2602.02385](https://arxiv.org/abs/2602.02385)): independent latent
-  factors → orthogonal subspaces (Factored World Hypothesis). Exp01's near-orthogonal feature
-  subspaces are a replication of this, not a novel finding.
-- **Piotrowski et al. 2025** ([2502.01954](https://arxiv.org/abs/2502.01954)): mechanism —
-  attention implements parallelized approximate Bayes, predicted spectrally from T. Answers
-  mechanism-level questions about our setups.
+where $\mu_i$, with $i \in \{1, 2, \ldots, 8\}$, is the centroid of the i-th state. The fitted probes $(u, v)$ explain 38% of the centroid variance at layer 11. For a significance test, we refit the same pattern under every possible way of arranging the 8 states on a ring (2520 orderings), and the true ring ranks 1st out of all 2520 in terms of explained variance, for our student. However, for the control1 and control2 models, the true order lands mid-distribution. So, the circle geometry is real, respecting the exact ring-order, and can be attributed to the HMM structure. Moreover, we have also finally differentiated the student from control2.
 
-None of the three vary a factor's kernel to move geometry along the polytope↔manifold axis,
-connect belief geometry to the LLM feature-geometry literature, or plant a controlled latent in
-natural language. Those are this repo's lanes.
+![Fourier ring test across all 2520 orderings](figures/geo_fig12.png)
 
-## Key papers
+We think the ring geometry is not dominant simply because our latent variable is not that relevant. Most of the residual stream is spent on ordinary language features, and our variable only injects ~0.05-0.1 nats of evidence per token. Moreover, the Gemma teacher surely models other latent variables too, and our 8 states could also be attributes that other latent variables land on. In other words, each centroid possibly sits in multiple geometries at once, each corresponding to other latent variables.
 
-| Paper | Ref | Role here |
-|---|---|---|
-| Park, Chen, Veitch — *The Geometry of Categorical and Hierarchical Concepts in LLMs* | [2406.01506](https://arxiv.org/abs/2406.01506) | Starting framework: attribute vectors, causal inner product, categorical concepts as simplices via causal separability. We relax separability. |
-| Shai, Marzen, Teixeira, Oldenziel, Riechers — *Transformers Represent Belief State Geometry in their Residual Stream* | [2405.15943](https://arxiv.org/abs/2405.15943) | Parent framework (NeurIPS 2024): activations linearly represent the mixed-state presentation of the generating process. Names the belief-states↔features bridge as open (§4.3). |
-| Shai, Amdahl-Culleton et al. — *Transformers Learn Factored Representations* | [2602.02385](https://arxiv.org/abs/2602.02385) | Factored World Hypothesis: independent latent factors → orthogonal subspaces, via combination-token worlds. Subsumes exp01's factorization result. |
-| Piotrowski, Riechers, Filan, Shai — *Constrained Belief Updates Explain Geometric Structures in Transformer Representations* | [2502.01954](https://arxiv.org/abs/2502.01954) | Mechanism (ICML 2025): attention implements parallelized approximate Bayes; attention/OV/embeddings predicted spectrally from T. |
-| Sarfati, Lubana et al. — *The Shape of Beliefs* (Goodfire) | [2602.02315](https://arxiv.org/abs/2602.02315) | Posterior manifolds in pretrained Llama over in-context number-distribution parameters. Numerical settings only; a single case study of in-context inference — names natural language as open. |
-| Morgulis, Hewitt — *Subliminal Steering* | [2604.25783](https://arxiv.org/abs/2604.25783) | Steered teacher → generated data → student inherits bias and steering direction. Feasibility evidence for our steering channel. |
-| Fel, Kowal et al. — *Block-Sparse Featurizers Capture Visual Concept Manifolds* (BSF) | [2606.25234](https://arxiv.org/abs/2606.25234) | Concepts as low-dim manifolds (vision models). The phenomenon we want to explain. |
-| Karkada, Korchinski, Nava, Wyart, Bahri — *Symmetry in language statistics shapes the geometry of model representations* | [2602.15029](https://arxiv.org/abs/2602.15029) | The rival theory: geometry from co-occurrence symmetry (months → circles). Claim B dissociates from it; their robustness anomaly is our opening. |
-| Engels et al. — *Not All Language Model Features Are One-Dimensionally Linear* | [2405.14860](https://arxiv.org/abs/2405.14860) | Circular multi-dim features (days/months) in LLMs; the LRH weakened to manifolds. Methodological template. |
-| Abdou et al. — *Can Language Models Encode Perceptual Structure Without Grounding?* | [ACL CoNLL 2021](https://aclanthology.org/2021.conll-1.9/) | Canonical color study: contextual embeddings align with CIELAB, peaking mid-layer. |
-| Wurgaft, Rager et al. — *Manifold Steering Reveals the Shared Geometry of Representation and Behavior* | [2605.05115](https://arxiv.org/abs/2605.05115) | On- vs off-manifold steering; representation↔behavior correspondence. |
-| Ma, Beck, Latham, Pouget — *Bayesian inference with probabilistic population codes* | Nat. Neuro 2006 | Neuroscience lineage: M = tuning-curve overlap; smooth overlap → ring attractors. |
-| Arora et al. — *A Latent Variable Model Approach to Word Embeddings* (RAND-WALK) | TACL 2016 | Embedding geometry inherited from a log-linear generative model. Genre ancestor. |
-| Elhage et al. — *Toy Models of Superposition* | 2022 | Precedent for controlled-data toy geometry studies. |
-| Nanda et al. — grokking modular arithmetic | 2023 | Circles emerge in small transformers on synthetic tasks. |
+The ring structure is also visible in raw similarities. In the figure below, pairwise cosine similarity between centroids is warmest on the neighbor diagonals, resembling the matrix $T$. Moreover, the columns of a whitened ridge probe are most anti-correlated on the same diagonals. This supports our case, as the probe has to spend capacity on differentiating exactly the pairs that are most similar (i.e., the ones on the ring):
 
-## Design lessons
+![Centroid cosine similarities and probe anti-correlations](figures/geo_fig13.png)
 
-Why the experiments are synthetic/controlled, in one breath each:
+## Conclusion
 
-1. **Readout tautology** — at the final layer any context shift couples similar words' logits
-   through the unembedding Gram matrix, so observational coupling measurements come for free.
-2. **Context leakage** — natural evidence prompts carry topical baggage, which is exactly the
-   rival (co-occurrence) theory's signal.
-3. **Steering circularity** — steering along attribute i injects its overlap with neighbors by
-   hand; naive steering reads back the injection.
-4. **Escape** — make the latent structure the data-generating law (choose M, or plant z via
-   subliminal steering); geometry becomes the dependent variable with known ground truth.
-5. **Don't presuppose the geometry** — parameterize by M / T, not by a circular latent θ.
-6. **Keep the latent latent** — combination tokens (exp01) or steering directions the student
-   never sees named (exp03–06); finding the geometry in hidden states is then a discovery.
-7. **Beware carryover** — the previous state lingers in the context and is always a ring
-   neighbor; every geometry claim needs a first-dwell (carryover-free) control (exp05's lesson).
+We introduced a method for planting a latent variable inside natural-looking text, where an LLM teacher writes ordinary text while we "subliminally" steer it along SAE directions whose activity follows a Markov chain of our choosing.
 
-## Conventions
+By doing so, we confirmed that transformers learn belief state geometries in a more realistic setting than current work. Moreover, we have tied belief states to concept geometries: the geometry of a latent variable (not only the geometry of the belief state about that latent variable) is influenced by the dynamics of the data generating process.
 
-- One folder per experiment under `experiments/`, numbered, self-contained: own `README.md`
-  (spec + findings), `src/`, `results/`.
-- Shared code gets extracted to a top-level `shared/` only when a second experiment actually
-  needs it.
-- Python via conda; each experiment pins its env when code lands.
+### Future Work
+
+- A first natural follow up is to plant multiple HMMs at once with our algorithm, including more complicated interactions between them.
+- Many existing theories attribute feature manifolds to semantic similarity. Our setup can put the two in direct conflict: take semantically similar states (like different colors, for example) and tie them together in a Markov chain that's uncorrelated to their semantic similarity.
+- Our ring was not the dominant geometry. Perhaps each state participates in multiple other latent variables. We are curious whether a possible manifold entanglement is happening in such scenarios.
+- We are also interested in hierarchical concepts and how they fit in this picture.
+- Lastly, to close the loop, we want to use this theory to make predictions about real LLMs: find a latent variable (maybe something like syntax), estimate its transition dynamics from the training corpus, and predict the geometry of that concept in a real LLM, like OLMo.
+
+### Limitations
+
+- Our setup, although more realistic than the toy setups, is still not full proof of Shai et al.'s hypothesis about belief state geometries. We impose a latent variable on language, which shows that transformers pick up such structure when it is there, and, although our setup is more natural, it suffers from the same limitation as the initial proponents of the theory.
+- Our evidence for the concept geometry is just correlational as we have not done any causality experiments.
+- We also have to expand our configurations for a more comprehensive study, i.e., more HMM structures, other choices of SAE latents, other teacher models, etc.
+- Lastly, in order to construct a new latent variable, we had to use SAE directions, which could be latent variables themselves, or attributes that other latent variables take. This is not ideal as we were not able to fully isolate our planted latent variable (the ring geometry was not dominant), so there remains the open question of how to better inject latent variables in natural-looking text.
+
+## Repo layout
+
+One folder per experiment under `experiments/`, numbered and self-contained: each has its own `README.md` (spec + findings), `src/`, and `results/`. The headline experiment behind the blog post is `experiments/06_short_dwell`; earlier experiments (`01_latent_features`, `03_steered_corpus`, `04_clean_cache`, `05_multilayer_add`) built up the corpus generation, clean-cache machinery, and steering pipeline, and `07_uniform_control` trains the uniform-jump control student.
